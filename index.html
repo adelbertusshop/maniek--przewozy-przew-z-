@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Maniek — Pewny Przewóz</title>
 
 <!-- Dodany EmailJS -->
@@ -11,115 +11,284 @@
 <style>
   /* Kolory: granat (#1B2A41), jasny błękit (#4FA3FF), akcent złoto (#DAA520) */
   :root{
-    --bg-deep:#0f1724; /* ciemniejsze granatowe tło */
-    --card:#172433;    /* karta */
+    --bg-deep:#0f1724;
+    --card:#172433;
     --accent:#4FA3FF;
     --accent-2:#DAA520;
     --muted:#9fb3d6;
     --white:#ffffff;
   }
 
-  *{box-sizing:border-box}
+  *{box-sizing:border-box; margin:0; padding:0;}
   body{
-    margin:0;
     font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     background: linear-gradient(180deg, rgba(11,19,33,0.94) 0%, rgba(9,13,22,0.92) 100%), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat fixed;
     color:var(--white);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     padding-bottom:60px;
+    min-height:100vh;
   }
 
+  /* Poprawki responsywności */
   header{
-    background: rgba(27,42,65,0.9);
+    background: rgba(27,42,65,0.95);
     border-bottom: 1px solid rgba(79,163,255,0.08);
-    padding:18px 16px;
+    padding:12px 16px;
     position:sticky;
     top:0;
-    z-index:40;
+    z-index:100;
+    backdrop-filter: blur(10px);
   }
-  .container{ max-width:1100px; margin:0 auto; padding:0 16px; }
-  .brand{ display:flex; align-items:center; gap:12px; }
+  
+  .container{ 
+    max-width:1100px; 
+    margin:0 auto; 
+    padding:0 16px; 
+    width:100%;
+  }
+  
+  .brand{ 
+    display:flex; 
+    align-items:center; 
+    gap:10px; 
+    flex-wrap:wrap;
+  }
+  
   .logo {
-    width:52px;height:52px;border-radius:8px;
+    width:44px;
+    height:44px;
+    border-radius:8px;
     background:linear-gradient(135deg,var(--accent),#2b6ce3);
-    display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1724;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:#0b1724;
     box-shadow:0 3px 14px rgba(11,19,33,0.5);
+    flex-shrink:0;
   }
-  .brand h1{ margin:0; font-size:20px;line-height:1; }
-  .brand p{ margin:0;font-size:12px;color:var(--muted); }
+  
+  .brand h1{ 
+    margin:0; 
+    font-size:clamp(14px, 4vw, 16px);
+    line-height:1.2;
+  }
+  
+  .brand p{ 
+    margin:0;
+    font-size:clamp(10px, 3vw, 12px);
+    color:var(--muted);
+    width:100%;
+  }
 
-  nav{ margin-left:auto; display:flex; gap:10px; align-items:center; }
-  .btn {
-    background:transparent;border:1px solid rgba(255,255,255,0.06); color:var(--white);
-    padding:8px 12px;border-radius:8px;font-weight:600;cursor:pointer;text-decoration:none;
+  nav{ 
+    margin-left:auto; 
+    display:flex; 
+    gap:8px; 
+    align-items:center;
+    flex-wrap:wrap;
   }
+  
+  .btn {
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06); 
+    color:var(--white);
+    padding:6px 10px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    font-size:12px;
+    white-space:nowrap;
+  }
+  
   .btn.primary{ background:var(--accent); color:#072033; border:none; }
   .btn.ghost{ background:transparent; }
 
-  main{ padding:28px 0; }
+  main{ 
+    padding:20px 0;
+    min-height:calc(100vh - 200px);
+  }
 
   .grid{
     display:grid;
-    grid-template-columns: 1fr 360px;
-    gap:20px;
+    grid-template-columns: 1fr;
+    gap:16px;
     align-items:start;
   }
 
-  /* Responsive */
-  @media (max-width:960px){
-    .grid{ grid-template-columns:1fr; padding:0 8px; }
-    nav{ display:none; }
+  /* Poprawki responsywności dla większych ekranów */
+  @media (min-width: 768px) {
+    .grid{ 
+      grid-template-columns: 1fr 360px;
+      gap:20px;
+    }
+    
+    .brand p{
+      width:auto;
+    }
+    
+    .btn {
+      padding:8px 12px;
+      font-size:14px;
+    }
+    
+    header {
+      padding:16px;
+    }
+  }
+
+  /* Ukrywanie nav na małych ekranach */
+  @media (max-width: 480px) {
+    nav{ 
+      display:none; 
+    }
+    
+    .brand {
+      justify-content:center;
+      text-align:center;
+    }
   }
 
   .card{
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
     border-radius:12px;
-    padding:18px;
+    padding:16px;
     box-shadow: 0 6px 20px rgba(2,6,23,0.6);
     border:1px solid rgba(255,255,255,0.03);
+    width:100%;
   }
 
-  h2{ margin:0 0 10px 0; color:var(--accent); font-size:18px; }
-  label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
+  h2{ 
+    margin:0 0 10px 0; 
+    color:var(--accent); 
+    font-size:clamp(16px, 4vw, 18px);
+  }
+  
+  label{ 
+    display:block; 
+    font-size:13px; 
+    color:var(--muted); 
+    margin-bottom:6px; 
+  }
+  
   input[type=text], input[type=email], input[type=tel], input[type=datetime-local], textarea, select, input[type=number]{
-    width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);
-    background:rgba(255,255,255,0.02); color:var(--white); outline:none; font-size:14px;
+    width:100%; 
+    padding:10px 12px; 
+    border-radius:8px; 
+    border:1px solid rgba(255,255,255,0.06);
+    background:rgba(255,255,255,0.02); 
+    color:var(--white); 
+    outline:none; 
+    font-size:14px;
+    min-height:44px;
   }
-  textarea{ min-height:90px; resize:vertical; }
+  
+  textarea{ 
+    min-height:90px; 
+    resize:vertical; 
+  }
 
-  .form-row{ display:flex; gap:10px; }
-  .form-row .col{ flex:1; }
+  .form-row{ 
+    display:flex; 
+    flex-direction:column;
+    gap:10px; 
+  }
+  
+  .form-row .col{ 
+    flex:1; 
+    width:100%;
+  }
+
+  @media (min-width: 480px) {
+    .form-row{
+      flex-direction:row;
+    }
+  }
 
   .submit {
-    display:inline-block;padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),#2b6ce3);
-    color:#021224;font-weight:700;cursor:pointer;margin-top:8px;
+    display:inline-block;
+    padding:12px 16px;
+    border-radius:10px;
+    border:none;
+    background:linear-gradient(90deg,var(--accent),#2b6ce3);
+    color:#021224;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:8px;
+    font-size:14px;
+    min-height:44px;
+    width:100%;
+  }
+
+  @media (min-width: 480px) {
+    .submit {
+      width:auto;
+    }
   }
 
   .muted{ color:var(--muted); font-size:13px; margin-top:8px; }
 
   /* Driver panel / reservations list */
-  .panel-title{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
-  table{ width:100%; border-collapse:collapse; margin-top:12px; font-size:14px; }
-  th,td{ padding:8px 10px; border-bottom:1px dashed rgba(255,255,255,0.04); text-align:left; }
+  .panel-title{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  table{ width:100%; border-collapse:collapse; margin-top:12px; font-size:14px; overflow-x:auto; display:block; }
+  th,td{ padding:8px 10px; border-bottom:1px dashed rgba(255,255,255,0.04); text-align:left; white-space:nowrap; }
   th{ color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:0.6px; }
 
   .chip{ background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:999px; font-size:13px; display:inline-block; color:var(--muted); }
 
   /* icons-row for trust */
-  .icons-row{ display:flex; gap:12px; justify-content:center; margin:14px 0; }
-  .icon-box{ display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px; border-radius:10px; background:rgba(255,255,255,0.02); width:120px; text-align:center;}
-  .icon-emoji{ font-size:28px; }
+  .icons-row{ 
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap:10px;
+    justify-content:center;
+    margin:14px 0;
+  }
+  
+  .icon-box{ 
+    display:flex; 
+    flex-direction:column; 
+    align-items:center; 
+    gap:6px; 
+    padding:12px; 
+    border-radius:10px; 
+    background:rgba(255,255,255,0.02); 
+    text-align:center;
+    min-height:80px;
+  }
+  
+  .icon-emoji{ font-size:24px; }
 
-  footer{ text-align:center; color:var(--muted); padding:24px 8px; margin-top:20px; }
+  footer{ 
+    text-align:center; 
+    color:var(--muted); 
+    padding:20px 8px; 
+    margin-top:20px; 
+    font-size:13px;
+  }
+  
   .small{ font-size:13px;color:var(--muted); }
 
   /* opinie */
-  .opinie{ font-style:italic; opacity:0.95; font-size:15px; }
-  .opinie-wrap{ display:flex; align-items:center; gap:12px; justify-content:space-between; }
+  .opinie{ font-style:italic; opacity:0.95; font-size:15px; line-height:1.4; }
+  .opinie-wrap{ display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap; }
 
   /* ribbon / trust */
-  .ribbon{ position:fixed; right:14px; bottom:18px; background:var(--accent-2); color:#072033; padding:10px 14px; border-radius:999px; font-weight:700; box-shadow:0 6px 18px rgba(10,14,25,0.6); z-index:60; }
+  .ribbon{ 
+    position:fixed; 
+    right:10px; 
+    bottom:70px; 
+    background:var(--accent-2); 
+    color:#072033; 
+    padding:8px 12px; 
+    border-radius:999px; 
+    font-weight:700; 
+    box-shadow:0 6px 18px rgba(10,14,25,0.6); 
+    z-index:60;
+    font-size:12px;
+  }
 
   /* NOWE STYLE DODANE DLA REGULAMINU I PARTNERÓW */
   .hidden { display: none !important; }
@@ -127,27 +296,38 @@
   #rules {
     background: var(--card) !important;
     border-top: 1px solid rgba(255,255,255,0.05);
-    margin-top: 40px;
+    margin-top: 30px;
+    padding:20px 0;
   }
   
   #rules .max-w-5xl {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding:0 16px;
   }
   
   #rules h2, #rules h3 {
     color: var(--accent);
+    font-size:clamp(20px, 5vw, 24px);
+  }
+  
+  #rules h3 {
+    font-size:clamp(18px, 4vw, 20px);
   }
   
   #rules p {
     color: var(--muted);
     line-height: 1.6;
+    font-size:14px;
+    margin-bottom:12px;
   }
   
   .lang-flag {
     border-radius: 3px;
     transition: transform 0.2s;
+    width:32px;
+    height:24px;
+    cursor:pointer;
   }
   
   .lang-flag:hover {
@@ -157,32 +337,32 @@
   #partners {
     background: rgba(11,19,33,0.95) !important;
     border-top: 1px solid rgba(255,255,255,0.05);
+    padding:30px 0;
   }
   
   #partners .max-w-6xl {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding:0 16px;
   }
   
   #partners h2 {
     color: var(--accent);
     text-align: center;
     margin-bottom: 20px;
+    font-size:clamp(20px, 5vw, 24px);
   }
   
   #partners p {
     color: var(--muted);
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+    font-size:14px;
   }
   
   .grid-cols-2 {
     grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .gap-10 {
-    gap: 2.5rem;
+    gap:15px;
   }
   
   .place-items-center {
@@ -201,7 +381,7 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   
-  .hover\:shadow-lg:hover {
+  .hover-shadow-lg:hover {
     box-shadow: 0 8px 25px rgba(0,0,0,0.4);
   }
   
@@ -218,8 +398,199 @@
   }
   
   @media (min-width: 768px) {
-    .md\:grid-cols-4 {
+    .md-grid-cols-4 {
       grid-template-columns: repeat(4, 1fr);
+      gap:25px;
+    }
+    
+    #rules {
+      padding:30px 0;
+    }
+    
+    #partners {
+      padding:40px 0;
+    }
+  }
+
+  /* STYLE CZATBOTA */
+  .chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: inherit;
+  }
+
+  .chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #2b6ce3);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .chatbot-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  .chatbot-window {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 350px;
+    max-width: 90vw;
+    height: 500px;
+    max-height: 70vh;
+    background: var(--card);
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .chatbot-header {
+    background: rgba(27,42,65,0.95);
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chatbot-title {
+    font-weight: bold;
+    color: var(--accent);
+  }
+
+  .chatbot-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 18px;
+  }
+
+  .chatbot-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    line-height: 1.4;
+    font-size: 14px;
+  }
+
+  .message.user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: #072033;
+    border-bottom-right-radius: 5px;
+  }
+
+  .message.bot {
+    align-self: flex-start;
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    border-bottom-left-radius: 5px;
+  }
+
+  .chatbot-input {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    gap: 10px;
+  }
+
+  .chatbot-input input {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    outline: none;
+    font-size: 14px;
+  }
+
+  .chatbot-send {
+    background: var(--accent);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: #072033;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .typing-indicator {
+    display: none;
+    align-self: flex-start;
+    background: rgba(255,255,255,0.05);
+    padding: 10px 15px;
+    border-radius: 15px;
+    border-bottom-left-radius: 5px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .quick-action {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .quick-action:hover {
+    background: var(--accent);
+    color: #072033;
+  }
+
+  @media (max-width: 480px) {
+    .chatbot-container {
+      bottom: 15px;
+      right: 15px;
+    }
+    
+    .chatbot-window {
+      width: 320px;
+      right: -50px;
+    }
+    
+    .chatbot-toggle {
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
     }
   }
 </style>
@@ -227,12 +598,12 @@
 <body>
 
 <header>
-  <div class="container" style="display:flex;align-items:center;">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
     <div class="brand">
       <div class="logo">MP</div>
       <div>
-        <h1 style="font-size:16px;margin-bottom:2px;">Maniek — Pewny Przewóz</h1>
-        <p style="margin-top:0;">Bezpiecznie. Na czas. Zawsze.</p>
+        <h1>Maniek — Pewny Przewóz</h1>
+        <p>Bezpiecznie. Na czas. Zawsze.</p>
       </div>
     </div>
 
@@ -296,12 +667,12 @@
             <textarea id="notes" placeholder="Bagaż, dzieci, specjalne potrzeby..."></textarea>
           </div>
 
-          <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+          <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
             <button type="submit" class="submit">Wyślij rezerwację</button>
             <div class="muted" id="formStatus"></div>
           </div>
 
-          <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — zostanie ona zapisana lokalnie (kierowca może ją zobaczyć po zalogowaniu na Panel kierowcy). Później dodamy wysyłkę e-mail.</p>
+          <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — zostanie ona zapisana lokalnie (kierowca może ją zobaczyć po zalogowaniu na Panel kierowcy).</p>
         </form>
       </div>
 
@@ -356,13 +727,13 @@
         <button class="btn primary" id="openPanelMobile">Otwórz Panel</button>
 
         <div id="panelArea" style="display:none; margin-top:12px;">
-          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
-            <input id="panelPass" type="password" placeholder="Wprowadź hasło" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">
+            <input id="panelPass" type="password" placeholder="Wprowadź hasło" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06); min-width:150px;">
             <button id="panelLogin" class="btn">Zaloguj</button>
           </div>
 
           <div id="reservationsList" style="margin-top:12px;"></div>
-          <div style="margin-top:10px;">
+          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
             <button id="exportCsv" class="btn ghost">Eksportuj CSV</button>
             <button id="clearAll" class="btn ghost" title="Usuń wszystkie lokalne rezerwacje">Usuń</button>
           </div>
@@ -457,26 +828,53 @@
       Współpracujemy z firmami, które gwarantują najwyższą jakość, bezpieczeństwo i profesjonalizm.
     </p>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 place-items-center">
+    <div class="grid grid-cols-2 md-grid-cols-4 gap-10 place-items-center">
       <!-- MIEJSCA NA LOGA PARTNERÓW -->
-      <div class="p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition cursor-pointer">
+      <div class="p-4 bg-gray-50 rounded-lg shadow hover-shadow-lg transition cursor-pointer">
         <img src="https://dummyimage.com/140x60/cccccc/000000&text=Partner+1" class="w-full" />
       </div>
 
-      <div class="p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition cursor-pointer">
+      <div class="p-4 bg-gray-50 rounded-lg shadow hover-shadow-lg transition cursor-pointer">
         <img src="https://dummyimage.com/140x60/cccccc/000000&text=Partner+2" class="w-full" />
       </div>
 
-      <div class="p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition cursor-pointer">
+      <div class="p-4 bg-gray-50 rounded-lg shadow hover-shadow-lg transition cursor-pointer">
         <img src="https://dummyimage.com/140x60/cccccc/000000&text=Reklama+1" class="w-full" />
       </div>
 
-      <div class="p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition cursor-pointer">
+      <div class="p-4 bg-gray-50 rounded-lg shadow hover-shadow-lg transition cursor-pointer">
         <img src="https://dummyimage.com/140x60/cccccc/000000&text=Reklama+2" class="w-full" />
       </div>
     </div>
   </div>
 </section>
+
+<!-- CZATBOT -->
+<div class="chatbot-container">
+  <button class="chatbot-toggle">💬</button>
+  <div class="chatbot-window">
+    <div class="chatbot-header">
+      <div class="chatbot-title">Asystent Maniek</div>
+      <button class="chatbot-close">×</button>
+    </div>
+    <div class="chatbot-messages">
+      <div class="message bot">
+        Cześć! Jestem asystent Maniek. Jak mogę Ci pomóc? 😊
+      </div>
+      <div class="quick-actions">
+        <div class="quick-action" data-question="Ile kosztuje przejazd do Berlina?">Cena do Berlina</div>
+        <div class="quick-action" data-question="Jakie są wolne terminy?">Wolne terminy</div>
+        <div class="quick-action" data-question="Jakie są zasady bezpieczeństwa?">Bezpieczeństwo</div>
+        <div class="quick-action" data-question="Maksymalna liczba pasażerów?">Liczba pasażerów</div>
+      </div>
+    </div>
+    <div class="typing-indicator">Asystent pisze...</div>
+    <div class="chatbot-input">
+      <input type="text" placeholder="Zadaj pytanie..." id="chatbotInput">
+      <button class="chatbot-send">➤</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="container">
@@ -488,13 +886,10 @@
 
 <script>
   // --- Inicjalizacja EmailJS ---
-  // UWAGA: Zastąp "Twój_User_ID" swoim prawdziwym User ID z konta EmailJS
   emailjs.init("Twój_User_ID");
 
   // --- podstawowe ustawienia ---
   document.getElementById('curYear').textContent = new Date().getFullYear();
-  
-  // BEZPIECZEŃSTWO: Zmienione hasło na trudniejsze
   const SECRET_PASS = 'Maniek2024!Secure';
 
   // Opinie rotator
@@ -508,7 +903,7 @@
   function showOpinion(){ document.getElementById('opiniaText').textContent = opinie[opinIndex]; opinIndex=(opinIndex+1)%opinie.length; }
   showOpinion(); setInterval(showOpinion,4500);
 
-  // --- lokalne przechowywanie rezerwacji (localStorage) ---
+  // --- lokalne przechowywanie rezerwacji ---
   const STORAGE_KEY = 'maniek_reservations_v1';
 
   function loadReservations(){
@@ -517,6 +912,7 @@
       return data ? JSON.parse(data) : [];
     } catch(e){ return []; }
   }
+  
   function saveReservations(arr){
     localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
   }
@@ -524,14 +920,10 @@
   // --- Ulepszona mapa Google ---
   function updateMapRoute(from, to) {
     if (!from || !to) return;
-    
-    // Prosta wersja - możesz rozbudować z Google Maps API
-    // UWAGA: Aby to działało, potrzebujesz klucza Google Maps API
     const mapUrl = `https://www.google.com/maps/embed/v1/directions?key=TWÓJ_KLUCZ_API&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&language=pl`;
     document.getElementById('mapEmbed').src = mapUrl;
   }
 
-  // Event listeners do pól "from" i "to" dla mapy
   document.getElementById('from').addEventListener('blur', function() {
     const from = this.value;
     const to = document.getElementById('to').value;
@@ -544,7 +936,7 @@
     if (from && to) updateMapRoute(from, to);
   });
 
-  // --- Ulepszony formularz z EmailJS ---
+  // --- Formularz z EmailJS ---
   const form = document.getElementById('bookingForm');
   const formStatus = document.getElementById('formStatus');
 
@@ -564,20 +956,16 @@
       created_at: new Date().toISOString()
     };
 
-    // prosty client-side validation
     if(!r.name || !r.phone || !r.from || !r.to || !r.date){
       formStatus.textContent = 'Wypełnij wszystkie wymagane pola.';
       setTimeout(()=>formStatus.textContent='','3500');
       return;
     }
 
-    // zapisz lokalnie
     const arr = loadReservations();
     arr.unshift(r);
     saveReservations(arr);
 
-    // WYŚLIJ EMAIL przez EmailJS
-    // UWAGA: Zastąp "Twój_Service_ID" i "Twój_Template_ID" swoimi ID z EmailJS
     emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
       name: r.name,
       phone: r.phone,
@@ -596,14 +984,12 @@
       formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
       form.reset();
       setTimeout(()=>formStatus.textContent='','4200');
-      console.error('EmailJS error:', error);
     });
 
-    // (opcjonalnie) pokaż pinezki lub trasę na mapie
     renderReservationsTable(); 
   });
 
-  // Panel kierowcy: logika
+  // --- Panel kierowcy ---
   const panelArea = document.getElementById('panelArea');
   const panelLoginBtn = document.getElementById('panelLogin');
   const panelPassInput = document.getElementById('panelPass');
@@ -615,7 +1001,6 @@
     panelArea.style.display='block';
     document.getElementById('panelPass').focus();
   }
-  function hidePanelUI(){ panelArea.style.display='none'; }
 
   openPanelBtn.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:0,behavior:'smooth'}); });
   openPanelMobile.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); });
@@ -623,7 +1008,6 @@
   panelLoginBtn.addEventListener('click', ()=> {
     const pass = panelPassInput.value || '';
     if(pass === SECRET_PASS){
-      // zalogowany
       document.getElementById('panelPass').value = '';
       renderReservationsTable();
       document.getElementById('panelPass').placeholder = 'Zalogowano';
@@ -648,7 +1032,6 @@
     reservationsList.innerHTML = html;
   }
 
-  // expose changeStatus to inline select
   window.changeStatus = function(sel){
     const id = sel.dataset.id;
     const newStatus = sel.value;
@@ -658,7 +1041,6 @@
     renderReservationsTable();
   };
 
-  // export CSV
   document.getElementById('exportCsv').addEventListener('click', ()=> {
     const arr = loadReservations();
     if(arr.length===0){ alert('Brak rezerwacji do eksportu.'); return; }
@@ -672,20 +1054,157 @@
     URL.revokeObjectURL(url);
   });
 
-  // clear all (local)
   document.getElementById('clearAll').addEventListener('click', ()=>{
     if(!confirm('Usunąć wszystkie lokalne rezerwacje?')) return;
     localStorage.removeItem(STORAGE_KEY);
     renderReservationsTable();
   });
 
-  // initial render if panel open
   renderReservationsTable();
 
-  // helper: escape HTML
   function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
-  // ---- NOWY KOD DLA REGULAMINU I JĘZYKÓW ----
+  // --- CZATBOT ---
+  const chatbotToggle = document.querySelector('.chatbot-toggle');
+  const chatbotWindow = document.querySelector('.chatbot-window');
+  const chatbotClose = document.querySelector('.chatbot-close');
+  const chatbotInput = document.getElementById('chatbotInput');
+  const chatbotSend = document.querySelector('.chatbot-send');
+  const chatbotMessages = document.querySelector('.chatbot-messages');
+  const typingIndicator = document.querySelector('.typing-indicator');
+  const quickActions = document.querySelectorAll('.quick-action');
+
+  // Baza wiedzy czatbota
+  const knowledgeBase = {
+    // Cennik i trasy
+    prices: {
+      'berlin': '350-450 PLN',
+      'warszawa': '250-350 PLN', 
+      'kraków': '200-300 PLN',
+      'wrocław': '180-280 PLN',
+      'gdańsk': '300-400 PLN'
+    },
+    
+    // Informacje ogólne
+    info: {
+      'max passengers': 'Maksymalnie 7 pasażerów + kierowca',
+      'safety': 'Pasy bezpieczeństwa obowiązkowe, zakaz alkoholu, regularne przeglądy techniczne',
+      'payment': 'Płatność gotówką lub przelewem, 50% zaliczki przy rezerwacji',
+      'luggage': 'Dopuszczamy bagaż do 20kg na osobę',
+      'animals': 'Zwierzęta małe w transporterkach za dopłatą 50 PLN',
+      'cancellation': 'Bezpłatne odwołanie do 24h przed przejazdem'
+    },
+    
+    // Standardowe odpowiedzi
+    responses: {
+      'greeting': 'Cześć! Jestem asystent Maniek. Mogę pomóc z rezerwacjami, cenami, trasami i bezpieczeństwem. 😊',
+      'help': 'Mogę pomóc Ci z: rezerwacjami, cenami przejazdów, dostępnymi terminami, zasadami bezpieczeństwa i innymi pytaniami.',
+      'unknown': 'Przepraszam, nie znam odpowiedzi na to pytanie. Proszę skontaktuj się bezpośrednio z Maniekiem pod numerem +48 600 000 000.',
+      'booking': 'Aby zarezerwować przejazd, użyj formularza na stronie lub zadzwoń do Manieka bezpośrednio.',
+      'contact': 'Kontakt: Maniek +48 600 000 000, email: maniek@pewnyprzewoz.pl'
+    }
+  };
+
+  // Otwieranie/zamykanie czatbota
+  chatbotToggle.addEventListener('click', () => {
+    chatbotWindow.style.display = 'flex';
+    chatbotToggle.style.display = 'none';
+  });
+
+  chatbotClose.addEventListener('click', () => {
+    chatbotWindow.style.display = 'none';
+    chatbotToggle.style.display = 'flex';
+  });
+
+  // Szybkie akcje
+  quickActions.forEach(action => {
+    action.addEventListener('click', () => {
+      const question = action.getAttribute('data-question');
+      chatbotInput.value = question;
+      sendMessage();
+    });
+  });
+
+  // Wysyłanie wiadomości
+  function sendMessage() {
+    const message = chatbotInput.value.trim();
+    if (!message) return;
+
+    addMessage(message, 'user');
+    chatbotInput.value = '';
+
+    // Symulacja pisania
+    typingIndicator.style.display = 'block';
+    
+    setTimeout(() => {
+      typingIndicator.style.display = 'none';
+      const response = generateResponse(message);
+      addMessage(response, 'bot');
+    }, 1000 + Math.random() * 1000);
+  }
+
+  chatbotSend.addEventListener('click', sendMessage);
+  chatbotInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  // Dodawanie wiadomości do czatu
+  function addMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+    messageDiv.textContent = text;
+    chatbotMessages.appendChild(messageDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  // Generowanie odpowiedzi
+  function generateResponse(message) {
+    const lowerMessage = message.toLowerCase();
+    
+    // Powitanie
+    if (lowerMessage.includes('cześć') || lowerMessage.includes('hej') || lowerMessage.includes('witam')) {
+      return knowledgeBase.responses.greeting;
+    }
+    
+    // Ceny
+    for (const [city, price] of Object.entries(knowledgeBase.prices)) {
+      if (lowerMessage.includes(city)) {
+        return `Przejazd do ${city.charAt(0).toUpperCase() + city.slice(1)} kosztuje ${price}. Cena zależy od dokładnej lokalizacji i liczby pasażerów.`;
+      }
+    }
+    
+    // Informacje ogólne
+    for (const [key, info] of Object.entries(knowledgeBase.info)) {
+      if (lowerMessage.includes(key)) {
+        return info;
+      }
+    }
+    
+    // Specyficzne pytania
+    if (lowerMessage.includes('termin') || lowerMessage.includes('wolny') || lowerMessage.includes('dostęp')) {
+      const reservations = loadReservations();
+      const today = new Date();
+      const busyDates = reservations.map(r => new Date(r.date).toDateString());
+      return `Aktualnie mam ${reservations.length} rezerwacji. Proszę sprawdzić konkretną datę przez formularz rezerwacji lub zadzwoń bezpośrednio.`;
+    }
+    
+    if (lowerMessage.includes('rezerwacja') || lowerMessage.includes('zamówienie')) {
+      return knowledgeBase.responses.booking;
+    }
+    
+    if (lowerMessage.includes('kontakt') || lowerMessage.includes('telefon') || lowerMessage.includes('numer')) {
+      return knowledgeBase.responses.contact;
+    }
+    
+    if (lowerMessage.includes('pomoc') || lowerMessage.includes('co umiesz')) {
+      return knowledgeBase.responses.help;
+    }
+    
+    // Domyślna odpowiedź
+    return knowledgeBase.responses.unknown;
+  }
+
+  // --- Wielojęzyczność regulaminu ---
   const blocks = document.querySelectorAll(".lang-block");
   const flags = document.querySelectorAll(".lang-flag");
 
@@ -694,7 +1213,6 @@
     document.getElementById("lang-" + lang).classList.remove("hidden");
   }
 
-  // auto-detection języka
   const userLang = navigator.language.slice(0,2);
   if (["pl","en","de","nl"].includes(userLang)) {
     showLang(userLang);
@@ -702,7 +1220,6 @@
     showLang("pl");
   }
 
-  // klik flagi
   flags.forEach(flag => {
     flag.addEventListener("click", () => {
       const lang = flag.getAttribute("data-lang");
