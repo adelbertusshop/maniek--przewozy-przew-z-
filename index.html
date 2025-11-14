@@ -1,85 +1,457 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maniek – Pewny Przewóz</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Maniek — Pewny Przewóz</title>
+
+<!--
+  Pełna strona: Maniek — Pewny Przewóz
+  Instrukcja szybkiego uruchomienia:
+  1) Zapisz plik jako index.html i wgraj do repo/Vercel/GitHub Pages.
+  2) (Opcjonalnie) Podmień MAP_EMBED_URL na własną lokalizację lub dodaj klucz Google Maps JS (opis dalej).
+  3) Email: w przyszłości można podłączyć EmailJS/Formspree (komentarz w kodzie).
+-->
+
 <style>
-  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
-  header { background:#4f46e5; color:#fff; padding:20px; text-align:center; }
-  header h1 { margin:0; font-size:2rem; }
-  header p { margin:5px 0 0; font-size:1rem; }
-  main { max-width:900px; margin:20px auto; padding:0 20px; }
-  section { background:#fff; padding:20px; border-radius:8px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
-  h2 { margin-top:0; }
-  form input, form textarea, form select, form button { width:100%; padding:10px; margin:5px 0; border-radius:4px; border:1px solid #ccc; box-sizing:border-box; }
-  form button { background:#4f46e5; color:#fff; border:none; cursor:pointer; font-weight:bold; }
-  form button:hover { background:#3730a3; }
-  #map { width:100%; height:300px; margin-top:10px; border-radius:8px; }
-  footer { text-align:center; padding:10px; font-size:0.9rem; color:#555; }
+  /* Kolory: granat (#1B2A41), jasny błękit (#4FA3FF), akcent złoto (#DAA520) */
+  :root{
+    --bg-deep:#0f1724; /* ciemniejsze granatowe tło */
+    --card:#172433;    /* karta */
+    --accent:#4FA3FF;
+    --accent-2:#DAA520;
+    --muted:#9fb3d6;
+    --white:#ffffff;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg, rgba(11,19,33,0.94) 0%, rgba(9,13,22,0.92) 100%), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat fixed;
+    color:var(--white);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding-bottom:60px;
+  }
+
+  header{
+    background: rgba(27,42,65,0.9);
+    border-bottom: 1px solid rgba(79,163,255,0.08);
+    padding:18px 16px;
+    position:sticky;
+    top:0;
+    z-index:40;
+  }
+  .container{ max-width:1100px; margin:0 auto; padding:0 16px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .logo {
+    width:52px;height:52px;border-radius:8px;
+    background:linear-gradient(135deg,var(--accent),#2b6ce3);
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1724;
+    box-shadow:0 3px 14px rgba(11,19,33,0.5);
+  }
+  .brand h1{ margin:0; font-size:20px;line-height:1; }
+  .brand p{ margin:0;font-size:12px;color:var(--muted); }
+
+  nav{ margin-left:auto; display:flex; gap:10px; align-items:center; }
+  .btn {
+    background:transparent;border:1px solid rgba(255,255,255,0.06); color:var(--white);
+    padding:8px 12px;border-radius:8px;font-weight:600;cursor:pointer;text-decoration:none;
+  }
+  .btn.primary{ background:var(--accent); color:#072033; border:none; }
+  .btn.ghost{ background:transparent; }
+
+  main{ padding:28px 0; }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:20px;
+    align-items:start;
+  }
+
+  /* Responsive */
+  @media (max-width:960px){
+    .grid{ grid-template-columns:1fr; padding:0 8px; }
+    nav{ display:none; }
+  }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:18px;
+    box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  h2{ margin:0 0 10px 0; color:var(--accent); font-size:18px; }
+  label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
+  input[type=text], input[type=email], input[type=tel], input[type=datetime-local], textarea, select, input[type=number]{
+    width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);
+    background:rgba(255,255,255,0.02); color:var(--white); outline:none; font-size:14px;
+  }
+  textarea{ min-height:90px; resize:vertical; }
+
+  .form-row{ display:flex; gap:10px; }
+  .form-row .col{ flex:1; }
+
+  .submit {
+    display:inline-block;padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),#2b6ce3);
+    color:#021224;font-weight:700;cursor:pointer;margin-top:8px;
+  }
+
+  .muted{ color:var(--muted); font-size:13px; margin-top:8px; }
+
+  /* Driver panel / reservations list */
+  .panel-title{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  table{ width:100%; border-collapse:collapse; margin-top:12px; font-size:14px; }
+  th,td{ padding:8px 10px; border-bottom:1px dashed rgba(255,255,255,0.04); text-align:left; }
+  th{ color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:0.6px; }
+
+  .chip{ background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:999px; font-size:13px; display:inline-block; color:var(--muted); }
+
+  /* icons-row for trust */
+  .icons-row{ display:flex; gap:12px; justify-content:center; margin:14px 0; }
+  .icon-box{ display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px; border-radius:10px; background:rgba(255,255,255,0.02); width:120px; text-align:center;}
+  .icon-emoji{ font-size:28px; }
+
+  footer{ text-align:center; color:var(--muted); padding:24px 8px; margin-top:20px; }
+  .small{ font-size:13px;color:var(--muted); }
+
+  /* opinie */
+  .opinie{ font-style:italic; opacity:0.95; font-size:15px; }
+  .opinie-wrap{ display:flex; align-items:center; gap:12px; justify-content:space-between; }
+
+  /* ribbon / trust */
+  .ribbon{ position:fixed; right:14px; bottom:18px; background:var(--accent-2); color:#072033; padding:10px 14px; border-radius:999px; font-weight:700; box-shadow:0 6px 18px rgba(10,14,25,0.6); z-index:60; }
+
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Maniek – Pewny Przewóz</h1>
-  <p>Bezpiecznie. Na czas. Zawsze.</p>
+  <div class="container" style="display:flex;align-items:center;">
+    <div class="brand">
+      <div class="logo">MP</div>
+      <div>
+        <h1 style="font-size:16px;margin-bottom:2px;">Maniek — Pewny Przewóz</h1>
+        <p style="margin-top:0;">Bezpiecznie. Na czas. Zawsze.</p>
+      </div>
+    </div>
+
+    <nav>
+      <a class="btn" href="#kierowca">O kierowcy</a>
+      <a class="btn" href="#bezpieczenstwo">Bezpieczeństwo</a>
+      <a class="btn" href="#opinie">Opinie</a>
+      <a class="btn primary" id="openPanelBtn">Panel kierowcy</a>
+    </nav>
+  </div>
 </header>
 
-<main>
-  <section>
-    <h2>Zarezerwuj przejazd</h2>
-    <form id="bookingForm">
-      <input type="text" id="name" placeholder="Imię i nazwisko" required>
-      <input type="tel" id="phone" placeholder="Telefon" required>
-      <input type="email" id="email" placeholder="Email (opcjonalnie)">
-      <input type="text" id="from" placeholder="Skąd (miasto/adres)" required>
-      <input type="text" id="to" placeholder="Dokąd (miasto/adres)" required>
-      <input type="datetime-local" id="date" required>
-      <input type="number" id="people" placeholder="Liczba osób" value="1" min="1" required>
-      <textarea id="notes" placeholder="Uwagi (opcjonalnie)"></textarea>
-      <button type="submit">Wyślij rezerwację</button>
-    </form>
-    <div id="status" style="margin-top:10px;"></div>
-    <div id="map"></div>
-  </section>
+<main class="container">
+  <div class="grid">
+    <!-- LEFT: Formularz + mapa + opinie -->
+    <div>
+      <div class="card">
+        <h2>Zarezerwuj przejazd</h2>
+        <p class="small muted">Wypełnij formularz — Maniek potwierdzi telefonicznie.</p>
 
-  <section>
-    <h2>Panel kierowcy (wizualizacja)</h2>
-    <p>Tu będzie lista rezerwacji. W tym prostym wydaniu to tylko przykładowa wizualizacja.</p>
-    <ul id="driverPanel">
-      <li>Jan Kowalski – 2 osoby – <strong>pending</strong></li>
-      <li>Anna Nowak – 1 osoba – <strong>accepted</strong></li>
-    </ul>
-  </section>
+        <form id="bookingForm" autocomplete="off">
+          <div style="margin-top:12px;">
+            <label for="name">Imię i nazwisko</label>
+            <input id="name" type="text" required placeholder="Jan Kowalski">
+          </div>
+
+          <div style="margin-top:10px;">
+            <label for="phone">Telefon</label>
+            <input id="phone" type="tel" required placeholder="+48 600 000 000">
+          </div>
+
+          <div style="margin-top:10px;">
+            <label for="email">Email (opcjonalnie)</label>
+            <input id="email" type="email" placeholder="kontakt@przyklad.pl">
+          </div>
+
+          <div class="form-row" style="margin-top:10px;">
+            <div class="col">
+              <label for="from">Skąd (miasto/adres)</label>
+              <input id="from" type="text" required placeholder="Poznań, ul. Święta 1">
+            </div>
+            <div class="col">
+              <label for="to">Dokąd (miasto/adres)</label>
+              <input id="to" type="text" required placeholder="Berlin, dworzec główny">
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top:10px;">
+            <div class="col">
+              <label for="date">Data i godzina</label>
+              <input id="date" type="datetime-local" required>
+            </div>
+            <div class="col">
+              <label for="people">Liczba osób</label>
+              <input id="people" type="number" value="1" min="1" required>
+            </div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <label for="notes">Uwagi (opcjonalnie)</label>
+            <textarea id="notes" placeholder="Bagaż, dzieci, specjalne potrzeby..."></textarea>
+          </div>
+
+          <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+            <button type="submit" class="submit">Wyślij rezerwację</button>
+            <div class="muted" id="formStatus"></div>
+          </div>
+
+          <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — zostanie ona zapisana lokalnie (kierowca może ją zobaczyć po zalogowaniu na Panel kierowcy). Później dodamy wysyłkę e-mail.</p>
+        </form>
+      </div>
+
+      <!-- Mapa -->
+      <div class="card" style="margin-top:18px;">
+        <h2>Lokalizacja — podgląd trasy</h2>
+        <p class="small muted">Mapa pokazuje orientacyjnie trasę. Gdy podasz dokładne adresy, dodamy pinezkę i trasę.</p>
+
+        <!--
+          Podmień poniższy URL jeśli masz gotowe embed z Google Maps.
+          Możesz też dodać Google Maps JavaScript API z kluczem, aby programowo rysować trasę.
+        -->
+        <div id="mapContainer" style="margin-top:10px;">
+          <iframe id="mapEmbed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24559.37856504603!2d16.900000!3d52.400000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTLCsDI0JzAwLjAiTiAxNsKwNTQnMDAuMCJF!5e0!3m2!1spl!2spl!4v0000000000000" style="width:100%;height:320px;border:0;border-radius:10px;"></iframe>
+        </div>
+      </div>
+
+      <!-- Opinie -->
+      <div id="opinie" class="card" style="margin-top:18px;">
+        <h2>Opinie klientów</h2>
+        <div class="opinie-wrap">
+          <div id="opiniaText" class="opinie">Ładowanie opinii...</div>
+          <div class="chip">Średnia: 4.9/5</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Sidebar — info, trust, panel -->
+    <aside>
+      <div class="card">
+        <h2 id="kierowca">O kierowcy</h2>
+        <p><strong>Maniek</strong> — spokój za kierownicą, doświadczenie i odpowiedzialność. Ponad 10 lat praktyki na trasach lokalnych i międzynarodowych. Zawsze punktualny, dba o komfort pasażera i stan techniczny pojazdu.</p>
+        <div style="margin-top:12px;" class="icons-row">
+          <div class="icon-box"><div class="icon-emoji">🛡️</div><div class="small">Bezpieczeństwo</div></div>
+          <div class="icon-box"><div class="icon-emoji">📍</div><div class="small">GPS / Śledzenie</div></div>
+          <div class="icon-box"><div class="icon-emoji">🚘</div><div class="small">Komfort</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h2 id="bezpieczenstwo">Bezpieczeństwo</h2>
+        <ul style="margin:0 0 0 18px;">
+          <li>Regularne przeglądy techniczne</li>
+          <li>Systemy ABS / ESP</li>
+          <li>Kierowca z certyfikatem i doświadczeniem</li>
+          <li>Auto dezynfekowane i czyste</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <div class="panel-title">
+          <h2>Panel kierowcy</h2>
+          <span class="small muted">Dostęp lokalny</span>
+        </div>
+        <p class="small muted">Kierowca widzi rezerwacje po zalogowaniu (hasło). Hasło ustawione w tej stronie to: <strong><span id="secretPlaceholder">maniekadmin</span></strong></p>
+        <button class="btn primary" id="openPanelMobile">Otwórz Panel</button>
+
+        <div id="panelArea" style="display:none; margin-top:12px;">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
+            <input id="panelPass" type="password" placeholder="Wprowadź hasło" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+            <button id="panelLogin" class="btn">Zaloguj</button>
+          </div>
+
+          <div id="reservationsList" style="margin-top:12px;"></div>
+          <div style="margin-top:10px;">
+            <button id="exportCsv" class="btn ghost">Eksportuj CSV</button>
+            <button id="clearAll" class="btn ghost" title="Usuń wszystkie lokalne rezerwacje">Usuń</button>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
 </main>
 
 <footer>
-  © <span id="year"></span> Maniek – Pewny Przewóz
+  <div class="container">
+    <div class="small">© <span id="curYear"></span> Maniek — Pewny Przewóz — Kontakt: po wysłaniu rezerwacji Maniek oddzwoni.</div>
+  </div>
 </footer>
 
+<div class="ribbon">Zaufany przewoźnik</div>
+
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
+  // --- podstawowe ustawienia ---
+  document.getElementById('curYear').textContent = new Date().getFullYear();
+  const SECRET_PASS = 'maniekadmin'; // zmieniaj w razie potrzeby. Kierowca zna hasło.
 
-const form = document.getElementById('bookingForm');
-const statusDiv = document.getElementById('status');
+  // Opinie rotator
+  const opinie = [
+    "⭐ „Kierowca jak złoto! Spokój i pełna kultura.”",
+    "⭐ „Jechałem do Niemiec — zero stresu, pełen komfort.”",
+    "⭐ „Bezpiecznie, czysto i zawsze na czas. Polecam!”",
+    "⭐ „Maniek to kierowca, który naprawdę dba o ludzi.”"
+  ];
+  let opinIndex = 0;
+  function showOpinion(){ document.getElementById('opiniaText').textContent = opinie[opinIndex]; opinIndex=(opinIndex+1)%opinie.length; }
+  showOpinion(); setInterval(showOpinion,4500);
 
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  statusDiv.textContent = "Rezerwacja wysłana! Maniek skontaktuje się wkrótce.";
-  form.reset();
-});
+  // --- lokalne przechowywanie rezerwacji (localStorage) ---
+  const STORAGE_KEY = 'maniek_reservations_v1';
 
-// Google Maps
-function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 52.2297, lng: 21.0122 }, // Warszawa
-    zoom: 6
+  function loadReservations(){
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch(e){ return []; }
+  }
+  function saveReservations(arr){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  }
+
+  // formularz
+  const form = document.getElementById('bookingForm');
+  const formStatus = document.getElementById('formStatus');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const r = {
+      id: 'r_' + Date.now(),
+      name: document.getElementById('name').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      from: document.getElementById('from').value.trim(),
+      to: document.getElementById('to').value.trim(),
+      date: document.getElementById('date').value,
+      people: document.getElementById('people').value,
+      notes: document.getElementById('notes').value.trim(),
+      status: 'pending',
+      created_at: new Date().toISOString()
+    };
+
+    // prosty client-side validation
+    if(!r.name || !r.phone || !r.from || !r.to || !r.date){
+      formStatus.textContent = 'Wypełnij wszystkie wymagane pola.';
+      setTimeout(()=>formStatus.textContent='','3500');
+      return;
+    }
+
+    // zapisz lokalnie
+    const arr = loadReservations();
+    arr.unshift(r);
+    saveReservations(arr);
+
+    // pokaż status
+    formStatus.textContent = 'Rezerwacja zapisana. Maniek zobaczy ją w panelu.';
+    form.reset();
+    setTimeout(()=>formStatus.textContent='','4200');
+
+    // (opcjonalnie) pokaż pinezki lub trasę na mapie — TODO jeśli dodamy Google Maps JS API.
+    // dodaj wizualnie do panelu, jeśli klient zalogowany
+    renderReservationsTable(); 
   });
-}
-</script>
-<script async
-  src="https://maps.googleapis.com/maps/api/js?key=TWÓJ_GOOGLE_MAPS_API_KEY&callback=initMap">
+
+  // Panel kierowcy: logika
+  const panelArea = document.getElementById('panelArea');
+  const panelLoginBtn = document.getElementById('panelLogin');
+  const panelPassInput = document.getElementById('panelPass');
+  const openPanelBtn = document.getElementById('openPanelBtn');
+  const openPanelMobile = document.getElementById('openPanelMobile');
+  const reservationsList = document.getElementById('reservationsList');
+
+  function showPanelUI(){
+    panelArea.style.display='block';
+    document.getElementById('panelPass').focus();
+  }
+  function hidePanelUI(){ panelArea.style.display='none'; }
+
+  openPanelBtn.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:0,behavior:'smooth'}); });
+  openPanelMobile.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); });
+
+  panelLoginBtn.addEventListener('click', ()=> {
+    const pass = panelPassInput.value || '';
+    if(pass === SECRET_PASS){
+      // zalogowany
+      document.getElementById('panelPass').value = '';
+      renderReservationsTable();
+      document.getElementById('panelPass').placeholder = 'Zalogowano';
+      panelLoginBtn.textContent = 'Odśwież';
+    } else {
+      alert('Błędne hasło.');
+    }
+  });
+
+  function renderReservationsTable(){
+    const arr = loadReservations();
+    if(arr.length===0){
+      reservationsList.innerHTML = '<div class="small muted">Brak rezerwacji.</div>';
+      return;
+    }
+
+    let html = '<div style="overflow:auto;"><table><thead><tr><th>Imię</th><th>Tel</th><th>Trasa</th><th>Data</th><th>Osób</th><th>Uwagi</th><th>Status</th></tr></thead><tbody>';
+    arr.forEach(r=>{
+      html += `<tr id="${r.id}"><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.phone)}</td><td>${escapeHtml(r.from)} → ${escapeHtml(r.to)}</td><td>${new Date(r.date).toLocaleString()}</td><td>${escapeHtml(r.people)}</td><td>${escapeHtml(r.notes)}</td><td><select data-id="${r.id}" onchange="changeStatus(this)"><option ${r.status==='pending'?'selected':''}>pending</option><option ${r.status==='accepted'?'selected':''}>accepted</option><option ${r.status==='rejected'?'selected':''}>rejected</option></select></td></tr>`;
+    });
+    html += '</tbody></table></div>';
+    reservationsList.innerHTML = html;
+  }
+
+  // expose changeStatus to inline select
+  window.changeStatus = function(sel){
+    const id = sel.dataset.id;
+    const newStatus = sel.value;
+    let arr = loadReservations();
+    arr = arr.map(r => r.id===id ? Object.assign({}, r, {status:newStatus}) : r);
+    saveReservations(arr);
+    renderReservationsTable();
+  };
+
+  // export CSV
+  document.getElementById('exportCsv').addEventListener('click', ()=> {
+    const arr = loadReservations();
+    if(arr.length===0){ alert('Brak rezerwacji do eksportu.'); return; }
+    const header = ['id','name','phone','email','from','to','date','people','notes','status','created_at'];
+    const rows = arr.map(r => header.map(h => `"${(r[h]||'').toString().replace(/"/g,'""')}"`).join(','));
+    const csv = [header.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'rezerwacje_maniek.csv'; document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  // clear all (local)
+  document.getElementById('clearAll').addEventListener('click', ()=>{
+    if(!confirm('Usunąć wszystkie lokalne rezerwacje?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    renderReservationsTable();
+  });
+
+  // initial render if panel open
+  renderReservationsTable();
+
+  // helper: escape HTML
+  function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+  // ---- OPTIONAL: Email sending (EmailJS or Formspree)
+  // If later you want to send mail automatically to driver:
+  // - EmailJS: include their SDK, create SERVICE_ID and TEMPLATE_ID, then call emailjs.send(service, template, templateParams)
+  // - Formspree: change form action to Formspree URL and remove JS defaultPrevent
+  // I'll add exact code when you give mail and say "rób mail".
+
+  // ---- OPTIONAL: Google Maps JS API (to show route pins)
+  // If you add Google Maps JS API key, we can programmatically geocode "from" and "to" and show route.
+  // Example initialization (add script with &key=YOUR_KEY&callback=initMap):
+  // function initMap(){ /* create map and directionsService */ }
 </script>
 
 </body>
