@@ -100,25 +100,9 @@
     text-decoration:none;
     font-size:12px;
     white-space:nowrap;
-    transition: all 0.3s ease;
   }
   
-  .btn:hover {
-    background: rgba(255,255,255,0.05);
-  }
-  
-  .btn.primary{ 
-    background:var(--accent); 
-    color:#072033; 
-    border:none; 
-  }
-  
-  .btn.primary:hover {
-    background: #3a8de6;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(79,163,255,0.3);
-  }
-  
+  .btn.primary{ background:var(--accent); color:#072033; border:none; }
   .btn.ghost{ background:transparent; }
 
   main{ 
@@ -171,12 +155,6 @@
     box-shadow: 0 6px 20px rgba(2,6,23,0.6);
     border:1px solid rgba(255,255,255,0.03);
     width:100%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(2,6,23,0.8);
   }
 
   h2{ 
@@ -202,11 +180,6 @@
     outline:none; 
     font-size:14px;
     min-height:44px;
-    transition: border 0.3s ease;
-  }
-  
-  input:focus, textarea:focus, select:focus {
-    border-color: var(--accent);
   }
   
   textarea{ 
@@ -244,12 +217,6 @@
     font-size:14px;
     min-height:44px;
     width:100%;
-    transition: all 0.3s ease;
-  }
-
-  .submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(79,163,255,0.4);
   }
 
   @media (min-width: 480px) {
@@ -285,12 +252,6 @@
     background:rgba(255,255,255,0.02); 
     text-align:center;
     min-height:80px;
-    transition: transform 0.3s ease, background 0.3s ease;
-  }
-  
-  .icon-box:hover {
-    transform: translateY(-5px);
-    background: rgba(255,255,255,0.05);
   }
   
   .icon-emoji{ font-size:24px; }
@@ -320,13 +281,6 @@
     box-shadow:0 6px 18px rgba(10,14,25,0.6); 
     z-index:60;
     font-size:12px;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
   }
 
   .hidden { display: none !important; }
@@ -450,83 +404,33 @@
     }
   }
 
-  /* POPRAWIONY CZATBOT - RESPONSYWNY */
-  .chatbot-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-  }
-
-  .chatbot-toggle {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), #2b6ce3);
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1001;
-    transition: all 0.3s ease;
-  }
-
-  .chatbot-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(0,0,0,0.4);
-  }
-
+  /* ====== CZATBOT - POPRAWIONY ====== */
   .chatbot-window {
     position: fixed;
     bottom: 80px;
-    right: 20px;
-    width: 350px;
-    height: 500px;
+    left: 20px;
+    width: 320px;
+    max-width: calc(100vw - 40px);
+    height: 420px;
     background: var(--card);
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
     border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
     display: none;
     flex-direction: column;
-    z-index: 1002;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    z-index: 9999;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   }
 
   .chatbot-header {
     background: rgba(27,42,65,0.95);
-    padding: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    padding: 12px 15px;
+    font-weight: bold;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 15px 15px 0 0;
-  }
-
-  .chatbot-title {
-    font-weight: bold;
-    color: var(--accent);
-  }
-
-  .chatbot-close {
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 20px;
-    transition: color 0.3s ease;
-  }
-
-  .chatbot-close:hover {
-    color: var(--white);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
 
   .chatbot-messages {
@@ -538,159 +442,132 @@
     gap: 10px;
   }
 
-  .message {
-    max-width: 80%;
-    padding: 10px 15px;
-    border-radius: 15px;
-    line-height: 1.4;
-    font-size: 14px;
-    word-wrap: break-word;
-    animation: messageAppear 0.3s ease;
-  }
-
-  @keyframes messageAppear {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
   .message.user {
     align-self: flex-end;
     background: var(--accent);
     color: #072033;
+    padding: 8px 12px;
+    border-radius: 15px;
     border-bottom-right-radius: 5px;
+    max-width: 80%;
   }
 
   .message.bot {
     align-self: flex-start;
     background: rgba(255,255,255,0.05);
     color: var(--white);
+    padding: 8px 12px;
+    border-radius: 15px;
     border-bottom-left-radius: 5px;
+    max-width: 80%;
   }
 
   .chatbot-input {
     display: flex;
-    padding: 15px;
     border-top: 1px solid rgba(255,255,255,0.1);
-    gap: 10px;
+    padding: 10px;
+    gap: 8px;
   }
 
   .chatbot-input input {
     flex: 1;
-    padding: 12px 15px;
-    border-radius: 25px;
+    padding: 10px 12px;
     border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
     background: rgba(255,255,255,0.05);
     color: var(--white);
     outline: none;
     font-size: 14px;
   }
 
-  .chatbot-send {
+  .chatbot-input button {
     background: var(--accent);
-    border: none;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
     color: #072033;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-  }
-
-  .chatbot-send:hover {
-    background: #3a8de6;
-    transform: scale(1.05);
+    font-weight: bold;
   }
 
   .typing-indicator {
+    padding: 8px 12px;
     display: none;
-    align-self: flex-start;
-    background: rgba(255,255,255,0.05);
-    padding: 10px 15px;
-    border-radius: 15px;
-    border-bottom-left-radius: 5px;
     color: var(--muted);
     font-style: italic;
-  }
-
-  .quick-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-  }
-
-  .quick-action {
+    align-self: flex-start;
     background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--muted);
-    padding: 6px 12px;
     border-radius: 15px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    border-bottom-left-radius: 5px;
   }
 
-  .quick-action:hover {
+  .chatbot-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
     background: var(--accent);
     color: #072033;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    z-index: 9998;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
 
   /* RESPONSYWNOŚĆ CZATBOTA */
   @media (max-width: 480px) {
-    .chatbot-container {
-      bottom: 10px;
-      right: 10px;
-      left: 10px;
-    }
-    
-    .chatbot-toggle {
-      width: 50px;
-      height: 50px;
-      font-size: 20px;
-      right: 10px;
-      bottom: 10px;
-    }
-    
     .chatbot-window {
       width: calc(100vw - 20px);
-      right: 10px;
       left: 10px;
+      right: 10px;
       bottom: 70px;
       height: 60vh;
       min-height: 400px;
-      max-height: 500px;
+    }
+    
+    .chatbot-toggle {
+      bottom: 15px;
+      left: 15px;
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
     }
     
     .message {
       max-width: 85%;
       font-size: 14px;
     }
-    
-    .quick-actions {
-      gap: 5px;
-    }
-    
-    .quick-action {
-      font-size: 11px;
-      padding: 5px 10px;
-    }
   }
 
-  /* POPRAWIONA MAPA */
-  #mapContainer {
-    height: 320px;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-    background: var(--card);
-  }
-
-  #osmMap {
+  /* ====== MAPA - POPRAWIONA ====== */
+  #map {
     width: 100%;
-    height: 100%;
+    height: 350px;
+    border-radius: 10px;
+    margin-top: 15px;
+    z-index: 1;
+  }
+
+  #searchBox {
+    margin-top: 10px;
+    padding: 12px;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    outline: none;
+    font-size: 14px;
+  }
+
+  #searchBox::placeholder {
+    color: var(--muted);
   }
 
   .leaflet-container {
@@ -703,22 +580,14 @@
     gap: 10px;
     margin-bottom: 10px;
   }
-  
-  .address-search input {
-    flex: 1;
-  }
-  
-  .map-controls {
-    margin-bottom: 10px;
-  }
 
   @media (max-width: 480px) {
-    .address-search {
-      flex-direction: column;
+    #map {
+      height: 300px;
     }
     
-    #mapContainer {
-      height: 280px;
+    .address-search {
+      flex-direction: column;
     }
   }
 
@@ -731,29 +600,6 @@
     text-align: center;
     font-weight: bold;
     font-size: 18px;
-    animation: fadeIn 0.5s ease;
-  }
-
-  .form-error {
-    color: #ff6b6b;
-    font-size: 12px;
-    margin-top: 4px;
-    display: none;
-  }
-
-  .success-message {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
-    padding: 12px;
-    border-radius: 8px;
-    margin: 10px 0;
-    text-align: center;
-    animation: fadeIn 0.5s ease;
-  }
-
-  .loading {
-    opacity: 0.7;
-    pointer-events: none;
   }
 </style>
 </head>
@@ -789,31 +635,26 @@
           <div style="margin-top:12px;">
             <label for="name">Imię i nazwisko</label>
             <input id="name" type="text" required placeholder="Jan Kowalski">
-            <div class="form-error" id="nameError">Proszę podać imię i nazwisko</div>
           </div>
 
           <div style="margin-top:10px;">
             <label for="phone">Telefon</label>
             <input id="phone" type="tel" required placeholder="+48 600 000 000">
-            <div class="form-error" id="phoneError">Proszę podać poprawny numer telefonu</div>
           </div>
 
           <div style="margin-top:10px;">
             <label for="email">Email (opcjonalnie)</label>
             <input id="email" type="email" placeholder="kontakt@przyklad.pl">
-            <div class="form-error" id="emailError">Proszę podać poprawny adres email</div>
           </div>
 
           <div class="form-row" style="margin-top:10px;">
             <div class="col">
               <label for="from">Skąd (miasto/adres)</label>
               <input id="from" type="text" required placeholder="Poznań, ul. Święta 1">
-              <div class="form-error" id="fromError">Proszę podać miejsce odbioru</div>
             </div>
             <div class="col">
               <label for="to">Dokąd (miasto/adres)</label>
               <input id="to" type="text" required placeholder="Berlin, dworzec główny">
-              <div class="form-error" id="toError">Proszę podać miejsce docelowe</div>
             </div>
           </div>
 
@@ -821,12 +662,10 @@
             <div class="col">
               <label for="date">Data i godzina</label>
               <input id="date" type="datetime-local" required>
-              <div class="form-error" id="dateError">Proszę wybrać datę i godzinę</div>
             </div>
             <div class="col">
               <label for="people">Liczba osób</label>
-              <input id="people" type="number" value="1" min="1" max="8" required>
-              <div class="form-error" id="peopleError">Proszę podać liczbę osób (1-8)</div>
+              <input id="people" type="number" value="1" min="1" required>
             </div>
           </div>
 
@@ -847,19 +686,10 @@
       <!-- Mapa OpenStreetMap -->
       <div class="card" style="margin-top:18px;">
         <h2>Lokalizacja — podgląd trasy</h2>
-        <p class="small muted">Wpisz adres, aby zobaczyć go na mapie.</p>
+        <p class="small muted">Wpisz ulicę i miasto, aby zobaczyć je na mapie.</p>
         
-        <div class="map-controls">
-          <div class="address-search">
-            <input type="text" id="addressInput" placeholder="Wpisz adres do wyszukania...">
-            <button class="btn primary" id="searchAddress">Szukaj</button>
-          </div>
-          <button class="btn ghost" id="clearMap">Wyczyść mapę</button>
-        </div>
-
-        <div id="mapContainer">
-          <div id="osmMap"></div>
-        </div>
+        <input type="text" id="searchBox" placeholder="Wpisz ulicę i miasto, np. 'Długa Warszawa'">
+        <div id="map"></div>
       </div>
 
       <!-- Opinie -->
@@ -869,6 +699,30 @@
           <div id="opiniaText" class="opinie">Ładowanie opinii...</div>
           <div class="chip">Średnia: 4.9/5</div>
         </div>
+      </div>
+
+      <!-- Regulamin przewozu -->
+      <div class="card" style="margin-top:18px; background: rgba(255,255,255,0.02) !important;">
+        <h2>Regulamin przewozu osób</h2>
+        <p><b>1. Postanowienia ogólne</b><br>
+        Usługa przewozu wykonywana jest zgodnie z ustawą Prawo o Ruchu Drogowym i Kodeksem Cywilnym.</p>
+
+        <p><b>2. Bezpieczeństwo</b><br>
+        - Pasy bezpieczeństwa obowiązkowe.<br>
+        - Zakaz przewozu osób pod wpływem alkoholu/narkotyków.<br>
+        - Kierowca ma prawo odmówić przewozu w przypadku agresji lub zagrożenia.</p>
+
+        <p><b>3. Bagaż</b><br>
+        Limit bagażu: 20 kg + podręczny. Przewóz rzeczy nietypowych po wcześniejszym zgłoszeniu.</p>
+
+        <p><b>4. Odpowiedzialność</b><br>
+        Firma odpowiada za pasażera od momentu wejścia do pojazdu.</p>
+
+        <p><b>5. Rezerwacje</b><br>
+        Rezerwacje potwierdzane są telefonicznie. Odwołanie do 24h bez kosztów.</p>
+
+        <p><b>6. Reklamacje</b><br>
+        Reklamacje prosimy kierować na adres: kontakt@maniek.pl</p>
       </div>
     </div>
 
@@ -922,31 +776,21 @@
   </div>
 </main>
 
-<!-- CZATBOT -->
-<div class="chatbot-container">
-  <button class="chatbot-toggle">💬</button>
-  <div class="chatbot-window">
+<!-- === CZATBOT === -->
+<div class="chatbot-window">
     <div class="chatbot-header">
-      <div class="chatbot-title">Asystent Maniek</div>
-      <button class="chatbot-close">×</button>
+        Maniek Bot
+        <span class="chatbot-close" style="cursor:pointer;">✖</span>
     </div>
-    <div class="chatbot-messages">
-      <div class="message bot">
-        Cześć! Jestem asystent Maniek. Jak mogę Ci pomóc? 😊
-      </div>
-      <div class="quick-actions">
-        <div class="quick-action" data-question="Ile kosztuje przejazd do Berlina?">Cena do Berlina</div>
-        <div class="quick-action" data-question="Jakie są wolne terminy?">Wolne terminy</div>
-        <div class="quick-action" data-question="Jakie są zasady bezpieczeństwa?">Bezpieczeństwo</div>
-      </div>
-    </div>
-    <div class="typing-indicator">Asystent pisze...</div>
+    <div class="chatbot-messages"></div>
+    <div class="typing-indicator">Maniek pisze...</div>
+
     <div class="chatbot-input">
-      <input type="text" placeholder="Zadaj pytanie..." id="chatbotInput">
-      <button class="chatbot-send">➤</button>
+        <input id="chatbotInput" placeholder="Napisz wiadomość...">
+        <button class="chatbot-send">→</button>
     </div>
-  </div>
 </div>
+<button class="chatbot-toggle">💬</button>
 
 <footer>
   <div class="container">
@@ -958,7 +802,6 @@
 
 <script>
   // --- Inicjalizacja EmailJS ---
-  // Uwaga: Zastąp poniższe wartości swoimi danymi z EmailJS
   emailjs.init("Twój_User_ID");
 
   // --- podstawowe ustawienia ---
@@ -994,166 +837,137 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
   }
 
-  // --- OPENSTREETMAP - DZIAŁAJĄCA ---
-  let map;
-  let currentMarkers = [];
+  /* ======================= MAPA ======================= */
+  let map = L.map('map').setView([52.23, 21.01], 7);
 
-  function initMap() {
-    if (!document.getElementById('osmMap')) {
-      console.log('Kontener mapy nie gotowy');
-      return;
-    }
-    
-    map = L.map('osmMap').setView([52.2297, 21.0122], 6);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 19
-    }).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
 
-    // Przelicz rozmiar po załadowaniu
-    setTimeout(() => {
-      if (map) map.invalidateSize();
-    }, 100);
-    
-    console.log('Mapa załadowana');
-  }
+  let searchMarker = null;
 
-  function searchOnOSMMap(address) {
-    if (!address.trim()) {
-      alert('Wpisz adres do wyszukania');
-      return;
-    }
-    
-    const searchBtn = document.getElementById('searchAddress');
-    const originalText = searchBtn.textContent;
-    searchBtn.textContent = 'Szukam...';
-    searchBtn.disabled = true;
-    
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.length > 0) {
-          const lat = parseFloat(data[0].lat);
-          const lon = parseFloat(data[0].lon);
-          
-          // Usuń poprzednie markery
-          clearMap();
-          
-          // Dodaj nowy marker
-          const marker = L.marker([lat, lon]).addTo(map)
-            .bindPopup(`<b>${address}</b>`)
-            .openPopup();
-          
-          currentMarkers.push(marker);
-          
-          // Przesuń mapę
-          map.setView([lat, lon], 13);
-          map.invalidateSize();
-        } else {
-          alert('Nie znaleziono adresu');
-        }
-      })
-      .catch(error => {
-        console.error('Błąd wyszukiwania:', error);
-        alert('Błąd podczas wyszukiwania');
-      })
-      .finally(() => {
-        searchBtn.textContent = originalText;
-        searchBtn.disabled = false;
-      });
-  }
+  /* WYSZUKIWANIE ADRESU */
+  document.getElementById("searchBox").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+          let query = e.target.value;
 
-  function clearMap() {
-    currentMarkers.forEach(marker => map.removeLayer(marker));
-    currentMarkers = [];
-    map.setView([52.2297, 21.0122], 6);
-    map.invalidateSize();
-  }
+          fetch("https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(query))
+          .then(r => r.json())
+          .then(data => {
+              if (data.length === 0) return alert("Nie znaleziono takiego adresu.");
 
-  // Inicjuj mapę
-  document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(initMap, 500);
-  });
+              let place = data[0];
 
-  // Event listeners dla mapy
-  document.getElementById('searchAddress').addEventListener('click', function() {
-    const address = document.getElementById('addressInput').value.trim();
-    searchOnOSMMap(address);
-  });
+              if (searchMarker) map.removeLayer(searchMarker);
 
-  document.getElementById('addressInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      const address = e.target.value.trim();
-      searchOnOSMMap(address);
-    }
-  });
-
-  document.getElementById('clearMap').addEventListener('click', clearMap);
-
-  // --- Walidacja formularza ---
-  function validateForm() {
-    let isValid = true;
-    
-    // Reset errors
-    document.querySelectorAll('.form-error').forEach(el => {
-      el.style.display = 'none';
-    });
-    
-    // Name validation
-    const name = document.getElementById('name').value.trim();
-    if (!name) {
-      document.getElementById('nameError').style.display = 'block';
-      isValid = false;
-    }
-    
-    // Phone validation
-    const phone = document.getElementById('phone').value.trim();
-    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{9,}$/;
-    if (!phone || !phoneRegex.test(phone)) {
-      document.getElementById('phoneError').style.display = 'block';
-      isValid = false;
-    }
-    
-    // Email validation (optional)
-    const email = document.getElementById('email').value.trim();
-    if (email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        document.getElementById('emailError').style.display = 'block';
-        isValid = false;
+              searchMarker = L.marker([place.lat, place.lon]).addTo(map)
+                  .bindPopup(`<b>${query}</b>`)
+                  .openPopup();
+              map.setView([place.lat, place.lon], 15);
+          });
       }
-    }
-    
-    // From validation
-    const from = document.getElementById('from').value.trim();
-    if (!from) {
-      document.getElementById('fromError').style.display = 'block';
-      isValid = false;
-    }
-    
-    // To validation
-    const to = document.getElementById('to').value.trim();
-    if (!to) {
-      document.getElementById('toError').style.display = 'block';
-      isValid = false;
-    }
-    
-    // Date validation
-    const date = document.getElementById('date').value;
-    if (!date) {
-      document.getElementById('dateError').style.display = 'block';
-      isValid = false;
-    }
-    
-    // People validation
-    const people = document.getElementById('people').value;
-    if (!people || people < 1 || people > 8) {
-      document.getElementById('peopleError').style.display = 'block';
-      isValid = false;
-    }
-    
-    return isValid;
+  });
+
+  /* ======================= CZATBOT ======================= */
+  const toggle = document.querySelector('.chatbot-toggle');
+  const win = document.querySelector('.chatbot-window');
+  const closeBtn = document.querySelector('.chatbot-close');
+  const sendBtn = document.querySelector('.chatbot-send');
+  const input = document.getElementById('chatbotInput');
+  const messages = document.querySelector('.chatbot-messages');
+  const typing = document.querySelector('.typing-indicator');
+
+  toggle.onclick = () => { win.style.display = "flex"; toggle.style.display = "none"; };
+  closeBtn.onclick = () => { win.style.display = "none"; toggle.style.display = "block"; };
+
+  sendBtn.onclick = sendMessage;
+  input.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
+
+  function sendMessage() {
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      addMsg(msg, "user");
+      input.value = "";
+      typing.style.display = "block";
+
+      setTimeout(() => {
+          typing.style.display = "none";
+          addMsg(botResponse(msg), "bot");
+      }, 700);
+  }
+
+  function addMsg(text, who) {
+      let div = document.createElement("div");
+      div.className = "message " + who;
+      div.innerHTML = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+  }
+
+  /* ======================= BAZA WIEDZY ======================= */
+  const bot = {
+      driver: {
+          name: "Mariusz Krawczyk",
+          desc: "Kierowca z 12-letnim doświadczeniem w transporcie krajowym i międzynarodowym. Specjalista w trasach PL-DE-NL-BE. Certyfikat kierowcy zawodowego, szkolenie BHP, kurs pierwszej pomocy. Zero punktów karnych. Styl jazdy: płynny, bezpieczny, zgodny z przepisami."
+      },
+
+      safety: [
+          "Pełne ubezpieczenie OC/AC + NNW pasażera.",
+          "Regularne przeglądy techniczne co 30 dni.",
+          "Pasy bezpieczeństwa obowiązkowe dla wszystkich.",
+          "Monitoring GPS i stały kontakt telefoniczny.",
+          "Brak alkoholu i środków odurzających – zasada zero tolerancji.",
+          "Możliwość postoju co 2 godziny.",
+          "Foteliki dla dzieci na życzenie."
+      ],
+
+      transportFAQ: {
+          "faktura": "Tak, wystawiamy faktury VAT.",
+          "bagaż": "Standardowo 20 kg + mały podręczny.",
+          "pies": "Małe zwierzęta za dopłatą 40–60 zł.",
+          "rower": "Tak, można przewieźć – +50 zł.",
+          "postój": "Postoje co 2h lub na życzenie.",
+          "czas": "Czas przejazdu zależy od warunków drogowych.",
+          "trasa": "Obsługujemy PL → DE / NL / BE."
+      },
+
+      hits: [
+          "Hit sezonu: EXPRESS Berlin 3h!",
+          "Hit: Voucher -30% dla stałych klientów!",
+          "Trend 2025: przewozy nocne taniej o 20%!"
+      ]
+  };
+
+  function botResponse(msg) {
+      msg = msg.toLowerCase();
+
+      if (msg.includes("kierowc")) {
+          return `<b>${bot.driver.name}</b><br>${bot.driver.desc}`;
+      }
+
+      if (msg.includes("bezpiecze") || msg.includes("zasad")) {
+          return bot.safety.map(s => "• " + s).join("<br>");
+      }
+
+      for (let [k, v] of Object.entries(bot.transportFAQ)) {
+          if (msg.includes(k)) return v;
+      }
+
+      if (msg.includes("hit") || msg.includes("trend") || msg.includes("polec")) {
+          return bot.hits[Math.floor(Math.random() * bot.hits.length)];
+      }
+
+      if (msg.includes("trasa")) {
+          return `Podaj mi ulicę i miasto, a pokażę Ci to na mapie. Jeśli chcesz rezerwację – napiszę, co dalej.`;
+      }
+
+      if (msg.includes("rezerwac")) {
+          return `Rezerwacja przebiega przez telefon lub formularz. Podaj trasę, a wycenię.`;
+      }
+
+      return "Nie mam tego w pamięci, ale mogę to sprawdzić. Zapytaj o trasę, kierowcę, bezpieczeństwo lub hit sezonu.";
   }
 
   // --- Reszta funkcjonalności ---
@@ -1162,14 +976,6 @@
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    
-    if (!validateForm()) {
-      formStatus.textContent = 'Proszę poprawić błędy w formularzu.';
-      formStatus.style.color = '#ff6b6b';
-      setTimeout(()=>formStatus.textContent='','3500');
-      return;
-    }
-    
     const r = {
       id: 'r_' + Date.now(),
       name: document.getElementById('name').value.trim(),
@@ -1184,11 +990,16 @@
       created_at: new Date().toISOString()
     };
 
+    if(!r.name || !r.phone || !r.from || !r.to || !r.date){
+      formStatus.textContent = 'Wypełnij wszystkie wymagane pola.';
+      setTimeout(()=>formStatus.textContent='','3500');
+      return;
+    }
+
     const arr = loadReservations();
     arr.unshift(r);
     saveReservations(arr);
 
-    // Uwaga: Zastąp poniższe wartości swoimi danymi z EmailJS
     emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
       name: r.name,
       phone: r.phone,
@@ -1201,12 +1012,10 @@
       created_at: new Date().toLocaleString('pl-PL')
     }).then(() => {
       formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
-      formStatus.style.color = '#4CAF50';
       form.reset();
       setTimeout(()=>formStatus.textContent='','4200');
     }, (error) => {
       formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
-      formStatus.style.color = '#ff9800';
       form.reset();
       setTimeout(()=>formStatus.textContent='','4200');
     });
@@ -1307,131 +1116,6 @@
     return String(s).replace(/[&<>"']/g, function(m){ 
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; 
     }); 
-  }
-
-  // CZATBOT
-  const chatbotToggle = document.querySelector('.chatbot-toggle');
-  const chatbotWindow = document.querySelector('.chatbot-window');
-  const chatbotClose = document.querySelector('.chatbot-close');
-  const chatbotInput = document.getElementById('chatbotInput');
-  const chatbotSend = document.querySelector('.chatbot-send');
-  const chatbotMessages = document.querySelector('.chatbot-messages');
-  const typingIndicator = document.querySelector('.typing-indicator');
-  const quickActions = document.querySelectorAll('.quick-action');
-
-  const knowledgeBase = {
-    prices: {
-      'berlin': '350-450 PLN',
-      'warszawa': '250-350 PLN', 
-      'kraków': '200-300 PLN',
-      'wrocław': '180-280 PLN',
-      'gdańsk': '300-400 PLN'
-    },
-    safety: {
-      'bezpieczeństwo': 'Nasze standardy bezpieczeństwa: regularne przeglądy techniczne, systemy ABS/ESP, obowiązkowe pasy bezpieczeństwa, zakaz spożywania alkoholu, dezynfekcja pojazdu po każdym kursie.',
-      'przeglądy': 'Pojazd przechodzi comiesięczne przeglądy techniczne i jest ubezpieczony OC/AC/NNW.',
-      'kierowca': 'Maniek ma ponad 10 lat doświadczenia, certyfikaty bezpiecznej jazdy i czysty rekord kierowcy.'
-    },
-    info: {
-      'max passengers': 'Maksymalnie 7 pasażerów + kierowca',
-      'payment': 'Płatność gotówką lub przelewem, 50% zaliczki przy rezerwacji',
-      'luggage': 'Dopuszczamy bagaż do 20kg na osobę'
-    },
-    responses: {
-      'greeting': 'Cześć! Jestem asystent Maniek. Mogę pomóc z rezerwacjami, cenami, trasami i bezpieczeństwem. 😊',
-      'help': 'Mogę pomóc Ci z: rezerwacjami, cenami przejazdów, dostępnymi terminami, zasadami bezpieczeństwa i innymi pytaniami.',
-      'unknown': 'Przepraszam, nie znam odpowiedzi na to pytanie. Proszę skontaktuj się bezpośrednio z Maniekiem pod numerem +48 600 000 000.',
-      'booking': 'Aby zarezerwować przejazd, użyj formularza na stronie lub zadzwoń do Manieka bezpośrednio.',
-      'contact': 'Kontakt: Maniek +48 600 000 000, email: maniek@pewnyprzewoz.pl'
-    }
-  };
-
-  chatbotToggle.addEventListener('click', () => {
-    chatbotWindow.style.display = 'flex';
-    chatbotToggle.style.display = 'none';
-  });
-
-  chatbotClose.addEventListener('click', () => {
-    chatbotWindow.style.display = 'none';
-    chatbotToggle.style.display = 'flex';
-  });
-
-  quickActions.forEach(action => {
-    action.addEventListener('click', () => {
-      const question = action.getAttribute('data-question');
-      chatbotInput.value = question;
-      sendMessage();
-    });
-  });
-
-  function sendMessage() {
-    const message = chatbotInput.value.trim();
-    if (!message) return;
-
-    addMessage(message, 'user');
-    chatbotInput.value = '';
-
-    typingIndicator.style.display = 'block';
-    
-    setTimeout(() => {
-      typingIndicator.style.display = 'none';
-      const response = generateResponse(message);
-      addMessage(response, 'bot');
-    }, 1000 + Math.random() * 1000);
-  }
-
-  chatbotSend.addEventListener('click', sendMessage);
-  chatbotInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') sendMessage();
-  });
-
-  function addMessage(text, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
-    messageDiv.textContent = text;
-    chatbotMessages.appendChild(messageDiv);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-  }
-
-  function generateResponse(message) {
-    const lowerMessage = message.toLowerCase();
-    
-    if (lowerMessage.includes('cześć') || lowerMessage.includes('hej') || lowerMessage.includes('witam')) {
-      return knowledgeBase.responses.greeting;
-    }
-    
-    for (const [city, price] of Object.entries(knowledgeBase.prices)) {
-      if (lowerMessage.includes(city)) {
-        return `Przejazd do ${city.charAt(0).toUpperCase() + city.slice(1)} kosztuje ${price}. Cena zależy od dokładnej lokalizacji i liczby pasażerów.`;
-      }
-    }
-    
-    for (const [key, info] of Object.entries(knowledgeBase.safety)) {
-      if (lowerMessage.includes(key)) {
-        return info;
-      }
-    }
-    
-    for (const [key, info] of Object.entries(knowledgeBase.info)) {
-      if (lowerMessage.includes(key)) {
-        return info;
-      }
-    }
-    
-    if (lowerMessage.includes('termin') || lowerMessage.includes('wolny')) {
-      const reservations = loadReservations();
-      return `Aktualnie mam ${reservations.length} rezerwacji. Proszę sprawdzić konkretną datę przez formularz rezerwacji lub zadzwoń bezpośrednio.`;
-    }
-    
-    if (lowerMessage.includes('rezerwacja')) {
-      return knowledgeBase.responses.booking;
-    }
-    
-    if (lowerMessage.includes('kontakt') || lowerMessage.includes('telefon')) {
-      return knowledgeBase.responses.contact;
-    }
-    
-    return knowledgeBase.responses.unknown;
   }
 </script>
 
