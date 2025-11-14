@@ -702,25 +702,24 @@
           <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — zostanie ona zapisana lokalnie (kierowca może ją zobaczyć po zalogowaniu na Panel kierowcy).</p>
         </form>
       </div>
-
-      <!-- Mapa z wyszukiwaniem adresów -->
-      <div class="card" style="margin-top:18px;">
-        <h2>Lokalizacja — podgląd trasy</h2>
-        <p class="small muted">Wpisz adres, aby zobaczyć go na mapie. Możesz też wyszukać trasę między dwoma punktami.</p>
-        
-        <div class="map-controls">
-          <div class="address-search">
+      <!-- Mapa OpenStreetMap -->
+<div class="card" style="margin-top:18px;">
+    <h2>Lokalizacja — podgląd trasy</h2>
+    <p class="small muted">Wpisz adres, aby zobaczyć go na mapie.</p>
+    
+    <div class="map-controls">
+        <div class="address-search">
             <input type="text" id="addressInput" placeholder="Wpisz adres do wyszukania...">
             <button class="btn primary" id="searchAddress">Szukaj</button>
-          </div>
-          <button class="btn ghost" id="showRoute">Pokaż trasę</button>
         </div>
+        <button class="btn ghost" id="clearMarkers">Wyczyść mapę</button>
+    </div>
 
-        <div id="mapContainer" style="margin-top:10px;">
-          <iframe id="mapEmbed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24559.37856504603!2d16.900000!3d52.400000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTLCsDI0JzAwLjAiTiAxNsKwNTQnMDAuMCJF!5e0!3m2!1spl!2spl!4v0000000000000" style="width:100%;height:320px;border:0;border-radius:10px;"></iframe>
-        </div>
-      </div>
-
+    <!-- Tymczasowe rozwiązanie z OpenStreetMap -->
+    <div id="mapContainer" style="margin-top:10px; height:320px; border-radius:10px; overflow:hidden;">
+        <div id="osmMap" style="width:100%; height:100%;"></div>
+    </div>
+</div>
       <!-- Opinie -->
       <div id="opinie" class="card" style="margin-top:18px;">
         <h2>Opinie klientów</h2>
@@ -931,109 +930,103 @@
   const SECRET_PASS = 'Maniek2024!Secure';
   
   // Opinie rotator
-  const opinie = [
+const opinie = [
     "⭐ „Kierowca jak złoto! Spokój i pełna kultura.”",
     "⭐ „Jechałem do Niemiec — zero stresu, pełen komfort.”",
     "⭐ „Bezpiecznie, czysto i zawsze na czas. Polecam!”",
     "⭐ „Maniek to kierowca, który naprawdę dba o ludzi.”"
-  ];
-  let opinIndex = 0;
-  function showOpinion(){ document.getElementById('opiniaText').textContent = opinie[opinIndex]; opinIndex=(opinIndex+1)%opinie.length; }
-  showOpinion(); setInterval(showOpinion,4500);
+];
+let opinIndex = 0;
+function showOpinion(){ document.getElementById('opiniaText').textContent = opinie[opinIndex]; opinIndex=(opinIndex+1)%opinie.length; }
+showOpinion(); setInterval(showOpinion,4500);
 
-  // --- lokalne przechowywanie rezerwacji ---
-  const STORAGE_KEY = 'maniek_reservations_v1';
+// --- lokalne przechowywanie rezerwacji ---
+const STORAGE_KEY = 'maniek_reservations_v1';
 
-  function loadReservations(){
+function loadReservations(){
     try {
-      const data = localStorage.getItem(STORAGE_KEY);
-      return data ? JSON.parse(data) : [];
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
     } catch(e){ return []; }
-  }
-  
-  function saveReservations(arr){
+}
+
+function saveReservations(arr){
     localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-  }
+}
 
-  // --- Ulepszona mapa Google z wyszukiwaniem adresów ---
-  function updateMapRoute(from, to) {
-    if (!from || !to) return;
-    const mapUrl = `https://www.google.com/maps/embed/v1/directions?key=TWÓJ_KLUCZ_API&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&language=pl`;
-    document.getElementById('mapEmbed').src = mapUrl;
-  }
+// --- OPENSTREETMAP - CAŁKOWICIE DARMOWA MAPA ---
+let map;
 
-  // Wyszukiwanie pojedynczego adresu
-  function searchAddressOnMap(address) {
+function initMap() {
+    map = L.map('osmMap').setView([52.2297, 21.0122], 10); // Warszawa
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+}
+
+function searchOnOSMMap(address) {
     if (!address) return;
-    const mapUrl = `https://www.google.com/maps/embed/v1/place?key=TWÓJ_KLUCZ_API&q=${encodeURIComponent(address)}&language=pl`;
-    document.getElementById('mapEmbed').src = mapUrl;
-  }
+    
+    // Proste wyszukiwanie przez Nominatim (darmowe)
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+                map.setView([lat, lon], 13);
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup(address)
+                    .openPopup();
+            }
+        });
+}
 
-  // Obsługa wyszukiwania adresów
-  document.getElementById('searchAddress').addEventListener('click', function() {
+// Zainicjuj mapę po załadowaniu strony
+setTimeout(initMap, 1000);
+
+// Obsługa wyszukiwania adresów
+document.getElementById('searchAddress').addEventListener('click', function() {
     const address = document.getElementById('addressInput').value.trim();
     if (address) {
-      searchAddressOnMap(address);
+        searchOnOSMMap(address);
     }
-  });
+});
 
-  document.getElementById('addressInput').addEventListener('keypress', function(e) {
+document.getElementById('addressInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-      const address = this.value.trim();
-      if (address) {
-        searchAddressOnMap(address);
-      }
+        const address = this.value.trim();
+        if (address) {
+            searchOnOSMMap(address);
+        }
     }
-  });
+});
 
-  // Pokaż trasę między adresami z formularza
-  document.getElementById('showRoute').addEventListener('click', function() {
-    const from = document.getElementById('from').value.trim();
-    const to = document.getElementById('to').value.trim();
-    if (from && to) {
-      updateMapRoute(from, to);
-    } else {
-      alert('Proszę wypełnić pola "Skąd" i "Dokąd" w formularzu rezerwacji.');
-    }
-  });
+// --- Formularz z EmailJS ---
+const form = document.getElementById('bookingForm');
+const formStatus = document.getElementById('formStatus');
 
-  // Automatyczne aktualizowanie trasy przy zmianie adresów w formularzu
-  document.getElementById('from').addEventListener('blur', function() {
-    const from = this.value;
-    const to = document.getElementById('to').value;
-    if (from && to) updateMapRoute(from, to);
-  });
-
-  document.getElementById('to').addEventListener('blur', function() {
-    const to = this.value;
-    const from = document.getElementById('from').value;
-    if (from && to) updateMapRoute(from, to);
-  });
-
-  // --- Formularz z EmailJS ---
-  const form = document.getElementById('bookingForm');
-  const formStatus = document.getElementById('formStatus');
-
-  form.addEventListener('submit', function(e){
+form.addEventListener('submit', function(e){
     e.preventDefault();
     const r = {
-      id: 'r_' + Date.now(),
-      name: document.getElementById('name').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      from: document.getElementById('from').value.trim(),
-      to: document.getElementById('to').value.trim(),
-      date: document.getElementById('date').value,
-      people: document.getElementById('people').value,
-      notes: document.getElementById('notes').value.trim(),
-      status: 'pending',
-      created_at: new Date().toISOString()
+        id: 'r_' + Date.now(),
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        from: document.getElementById('from').value.trim(),
+        to: document.getElementById('to').value.trim(),
+        date: document.getElementById('date').value,
+        people: document.getElementById('people').value,
+        notes: document.getElementById('notes').value.trim(),
+        status: 'pending',
+        created_at: new Date().toISOString()
     };
 
     if(!r.name || !r.phone || !r.from || !r.to || !r.date){
-      formStatus.textContent = 'Wypełnij wszystkie wymagane pola.';
-      setTimeout(()=>formStatus.textContent='','3500');
-      return;
+        formStatus.textContent = 'Wypełnij wszystkie wymagane pola.';
+        setTimeout(()=>formStatus.textContent='','3500');
+        return;
     }
 
     const arr = loadReservations();
@@ -1041,86 +1034,86 @@
     saveReservations(arr);
 
     emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
-      name: r.name,
-      phone: r.phone,
-      email: r.email || 'Nie podano',
-      from: r.from,
-      to: r.to,
-      date: new Date(r.date).toLocaleString('pl-PL'),
-      people: r.people,
-      notes: r.notes || 'Brak uwag',
-      created_at: new Date().toLocaleString('pl-PL')
+        name: r.name,
+        phone: r.phone,
+        email: r.email || 'Nie podano',
+        from: r.from,
+        to: r.to,
+        date: new Date(r.date).toLocaleString('pl-PL'),
+        people: r.people,
+        notes: r.notes || 'Brak uwag',
+        created_at: new Date().toLocaleString('pl-PL')
     }).then(() => {
-      formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
-      form.reset();
-      setTimeout(()=>formStatus.textContent='','4200');
+        formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
+        form.reset();
+        setTimeout(()=>formStatus.textContent='','4200');
     }, (error) => {
-      formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
-      form.reset();
-      setTimeout(()=>formStatus.textContent='','4200');
+        formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
+        form.reset();
+        setTimeout(()=>formStatus.textContent='','4200');
     });
 
     renderReservationsTable(); 
-  });
+});
 
-  // --- Panel kierowcy ---
-  const panelArea = document.getElementById('panelArea');
-  const panelLoginBtn = document.getElementById('panelLogin');
-  const panelPassInput = document.getElementById('panelPass');
-  const openPanelBtn = document.getElementById('openPanelBtn');
-  const openPanelMobile = document.getElementById('openPanelMobile');
-  const reservationsList = document.getElementById('reservationsList');
-  const welcomeMessage = document.getElementById('welcomeMessage');
+// --- Panel kierowcy ---
+const panelArea = document.getElementById('panelArea');
+const panelLoginBtn = document.getElementById('panelLogin');
+const panelPassInput = document.getElementById('panelPass');
+const openPanelBtn = document.getElementById('openPanelBtn');
+const openPanelMobile = document.getElementById('openPanelMobile');
+const reservationsList = document.getElementById('reservationsList');
+const welcomeMessage = document.getElementById('welcomeMessage');
 
-  let isLoggedIn = false;
+let isLoggedIn = false;
 
-  function showPanelUI(){
+function showPanelUI(){
     panelArea.style.display='block';
     document.getElementById('panelPass').focus();
-  }
+}
 
-  openPanelBtn.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:0,behavior:'smooth'}); });
-  openPanelMobile.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); });
+openPanelBtn.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:0,behavior:'smooth'}); });
+openPanelMobile.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); });
 
-  panelLoginBtn.addEventListener('click', ()=> {
+panelLoginBtn.addEventListener('click', ()=> {
     const pass = panelPassInput.value || '';
     if(pass === SECRET_PASS){
-      isLoggedIn = true;
-      document.getElementById('panelPass').value = '';
-      renderReservationsTable();
-      document.getElementById('panelPass').placeholder = 'Zalogowano';
-      panelLoginBtn.textContent = 'Odśwież';
-      welcomeMessage.classList.remove('hidden');
+        isLoggedIn = true;
+        document.getElementById('panelPass').value = '';
+        renderReservationsTable();
+        document.getElementById('panelPass').placeholder = 'Zalogowano';
+        panelLoginBtn.textContent = 'Odśwież';
+        welcomeMessage.classList.remove('hidden');
     } else {
-      alert('Błędne hasło.');
+        alert('Błędne hasło.');
     }
-  });
+});
 
-  function renderReservationsTable(){
+function renderReservationsTable(){
     const arr = loadReservations();
     if(arr.length===0){
-      reservationsList.innerHTML = '<div class="small muted">Brak rezerwacji.</div>';
-      return;
+        reservationsList.innerHTML = '<div class="small muted">Brak rezerwacji.</div>';
+        return;
     }
 
     let html = '<div style="overflow:auto;"><table><thead><tr><th>Imię</th><th>Tel</th><th>Trasa</th><th>Data</th><th>Osób</th><th>Uwagi</th><th>Status</th></tr></thead><tbody>';
     arr.forEach(r=>{
-      html += `<tr id="${r.id}"><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.phone)}</td><td>${escapeHtml(r.from)} → ${escapeHtml(r.to)}</td><td>${new Date(r.date).toLocaleString()}</td><td>${escapeHtml(r.people)}</td><td>${escapeHtml(r.notes)}</td><td><select data-id="${r.id}" onchange="changeStatus(this)"><option ${r.status==='pending'?'selected':''}>pending</option><option ${r.status==='accepted'?'selected':''}>accepted</option><option ${r.status==='rejected'?'selected':''}>rejected</option></select></td></tr>`;
+        html += `<tr id="${r.id}"><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.phone)}</td><td>${escapeHtml(r.from)} → ${escapeHtml(r.to)}</td><td>${new Date(r.date).toLocaleString()}</td><td>${escapeHtml(r.people)}</td><td>${escapeHtml(r.notes)}</td><td><select data-id="${r.id}" onchange="changeStatus(this)"><option ${r.status==='pending'?'selected':''}>pending</option><option ${r.status==='accepted'?'selected':''}>accepted</option><option ${r.status==='rejected'?'selected':''}>rejected</option></select></td></tr>`;
     });
     html += '</tbody></table></div>';
     reservationsList.innerHTML = html;
-  }
+}
 
-  window.changeStatus = function(sel){
+window.changeStatus = function(sel){
     const id = sel.dataset.id;
     const newStatus = sel.value;
     let arr = loadReservations();
     arr = arr.map(r => r.id===id ? Object.assign({}, r, {status:newStatus}) : r);
     saveReservations(arr);
     renderReservationsTable();
-  };
+};
 
-  document.getElementById('exportCsv').addEventListener('click', ()=> {
+document.getElementById('exportCsv').addEventListener('click', ()=> {
     const arr = loadReservations();
     if(arr.length===0){ alert('Brak rezerwacji do eksportu.'); return; }
     const header = ['id','name','phone','email','from','to','date','people','notes','status','created_at'];
@@ -1131,94 +1124,94 @@
     const a = document.createElement('a');
     a.href = url; a.download = 'rezerwacje_maniek.csv'; document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
-  });
+});
 
-  document.getElementById('clearAll').addEventListener('click', ()=>{
+document.getElementById('clearAll').addEventListener('click', ()=>{
     if(!confirm('Usunąć wszystkie lokalne rezerwacje?')) return;
     localStorage.removeItem(STORAGE_KEY);
     renderReservationsTable();
-  });
+});
 
-  renderReservationsTable();
+renderReservationsTable();
 
-  function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
-  // --- CZATBOT ---
-  const chatbotToggle = document.querySelector('.chatbot-toggle');
-  const chatbotWindow = document.querySelector('.chatbot-window');
-  const chatbotClose = document.querySelector('.chatbot-close');
-  const chatbotInput = document.getElementById('chatbotInput');
-  const chatbotSend = document.querySelector('.chatbot-send');
-  const chatbotMessages = document.querySelector('.chatbot-messages');
-  const typingIndicator = document.querySelector('.typing-indicator');
-  const quickActions = document.querySelectorAll('.quick-action');
+// --- CZATBOT ---
+const chatbotToggle = document.querySelector('.chatbot-toggle');
+const chatbotWindow = document.querySelector('.chatbot-window');
+const chatbotClose = document.querySelector('.chatbot-close');
+const chatbotInput = document.getElementById('chatbotInput');
+const chatbotSend = document.querySelector('.chatbot-send');
+const chatbotMessages = document.querySelector('.chatbot-messages');
+const typingIndicator = document.querySelector('.typing-indicator');
+const quickActions = document.querySelectorAll('.quick-action');
 
-  // Rozszerzona baza wiedzy czatbota o bezpieczeństwo
-  const knowledgeBase = {
+// Rozszerzona baza wiedzy czatbota o bezpieczeństwo
+const knowledgeBase = {
     // Cennik i trasy
     prices: {
-      'berlin': '350-450 PLN',
-      'warszawa': '250-350 PLN', 
-      'kraków': '200-300 PLN',
-      'wrocław': '180-280 PLN',
-      'gdańsk': '300-400 PLN'
+        'berlin': '350-450 PLN',
+        'warszawa': '250-350 PLN', 
+        'kraków': '200-300 PLN',
+        'wrocław': '180-280 PLN',
+        'gdańsk': '300-400 PLN'
     },
     
     // Rozszerzone informacje o bezpieczeństwie
     safety: {
-      'bezpieczeństwo': 'Nasze standardy bezpieczeństwa: regularne przeglądy techniczne, systemy ABS/ESP, obowiązkowe pasy bezpieczeństwa, zakaz spożywania alkoholu, dezynfekcja pojazdu po każdym kursie.',
-      'przeglądy': 'Pojazd przechodzi comiesięczne przeglądy techniczne i jest ubezpieczony OC/AC/NNW.',
-      'kierowca': 'Maniek ma ponad 10 lat doświadczenia, certyfikaty bezpiecznej jazdy i czysty rekord kierowcy.',
-      'pasy': 'Pasy bezpieczeństwa są obowiązkowe dla wszystkich pasażerów przez cały czas trwania podróży.',
-      'alkohol': 'W pojeździe obowiązuje całkowity zakaz spożywania alkoholu i środków odurzających.',
-      'bagaż': 'Dopuszczamy bagaż do 20kg na osobę. Wartościowe przedmioty prosimy zabrać ze sobą.',
-      'ubezpieczenie': 'Pojazd ma pełne ubezpieczenie OC/AC oraz dodatkowe NNW dla pasażerów.',
-      'awaria': 'W przypadku awarii zapewniamy pomoc drogową i zastępczy środek transportu.',
-      'covid': 'Pojazd jest regularnie dezynfekowany, maseczki dostępne na życzenie.'
+        'bezpieczeństwo': 'Nasze standardy bezpieczeństwa: regularne przeglądy techniczne, systemy ABS/ESP, obowiązkowe pasy bezpieczeństwa, zakaz spożywania alkoholu, dezynfekcja pojazdu po każdym kursie.',
+        'przeglądy': 'Pojazd przechodzi comiesięczne przeglądy techniczne i jest ubezpieczony OC/AC/NNW.',
+        'kierowca': 'Maniek ma ponad 10 lat doświadczenia, certyfikaty bezpiecznej jazdy i czysty rekord kierowcy.',
+        'pasy': 'Pasy bezpieczeństwa są obowiązkowe dla wszystkich pasażerów przez cały czas trwania podróży.',
+        'alkohol': 'W pojeździe obowiązuje całkowity zakaz spożywania alkoholu i środków odurzających.',
+        'bagaż': 'Dopuszczamy bagaż do 20kg na osobę. Wartościowe przedmioty prosimy zabrać ze sobą.',
+        'ubezpieczenie': 'Pojazd ma pełne ubezpieczenie OC/AC oraz dodatkowe NNW dla pasażerów.',
+        'awaria': 'W przypadku awarii zapewniamy pomoc drogową i zastępczy środek transportu.',
+        'covid': 'Pojazd jest regularnie dezynfekowany, maseczki dostępne na życzenie.'
     },
     
     // Informacje ogólne
     info: {
-      'max passengers': 'Maksymalnie 7 pasażerów + kierowca',
-      'payment': 'Płatność gotówką lub przelewem, 50% zaliczki przy rezerwacji',
-      'luggage': 'Dopuszczamy bagaż do 20kg na osobę',
-      'animals': 'Zwierzęta małe w transporterkach za dopłatą 50 PLN',
-      'cancellation': 'Bezpłatne odwołanie do 24h przed przejazdem',
-      'child seats': 'Dostępne foteliki dziecięce za dopłatą 30 PLN'
+        'max passengers': 'Maksymalnie 7 pasażerów + kierowca',
+        'payment': 'Płatność gotówką lub przelewem, 50% zaliczki przy rezerwacji',
+        'luggage': 'Dopuszczamy bagaż do 20kg na osobę',
+        'animals': 'Zwierzęta małe w transporterkach za dopłatą 50 PLN',
+        'cancellation': 'Bezpłatne odwołanie do 24h przed przejazdem',
+        'child seats': 'Dostępne foteliki dziecięce za dopłatą 30 PLN'
     },
     
     // Standardowe odpowiedzi
     responses: {
-      'greeting': 'Cześć! Jestem asystent Maniek. Mogę pomóc z rezerwacjami, cenami, trasami i bezpieczeństwem. 😊',
-      'help': 'Mogę pomóc Ci z: rezerwacjami, cenami przejazdów, dostępnymi terminami, zasadami bezpieczeństwa i innymi pytaniami.',
-      'unknown': 'Przepraszam, nie znam odpowiedzi na to pytanie. Proszę skontaktuj się bezpośrednio z Maniekiem pod numerem +48 600 000 000.',
-      'booking': 'Aby zarezerwować przejazd, użyj formularza na stronie lub zadzwoń do Manieka bezpośrednio.',
-      'contact': 'Kontakt: Maniek +48 600 000 000, email: maniek@pewnyprzewoz.pl'
+        'greeting': 'Cześć! Jestem asystent Maniek. Mogę pomóc z rezerwacjami, cenami, trasami i bezpieczeństwem. 😊',
+        'help': 'Mogę pomóc Ci z: rezerwacjami, cenami przejazdów, dostępnymi terminami, zasadami bezpieczeństwa i innymi pytaniami.',
+        'unknown': 'Przepraszam, nie znam odpowiedzi na to pytanie. Proszę skontaktuj się bezpośrednio z Maniekiem pod numerem +48 600 000 000.',
+        'booking': 'Aby zarezerwować przejazd, użyj formularza na stronie lub zadzwoń do Manieka bezpośrednio.',
+        'contact': 'Kontakt: Maniek +48 600 000 000, email: maniek@pewnyprzewoz.pl'
     }
-  };
+};
 
-  // Otwieranie/zamykanie czatbota
-  chatbotToggle.addEventListener('click', () => {
+// Otwieranie/zamykanie czatbota
+chatbotToggle.addEventListener('click', () => {
     chatbotWindow.style.display = 'flex';
     chatbotToggle.style.display = 'none';
-  });
+});
 
-  chatbotClose.addEventListener('click', () => {
+chatbotClose.addEventListener('click', () => {
     chatbotWindow.style.display = 'none';
     chatbotToggle.style.display = 'flex';
-  });
+});
 
-  // Szybkie akcje
-  quickActions.forEach(action => {
+// Szybkie akcje
+quickActions.forEach(action => {
     action.addEventListener('click', () => {
-      const question = action.getAttribute('data-question');
-      chatbotInput.value = question;
-      sendMessage();
+        const question = action.getAttribute('data-question');
+        chatbotInput.value = question;
+        sendMessage();
     });
-  });
+});
 
-  // Wysyłanie wiadomości
-  function sendMessage() {
+// Wysyłanie wiadomości
+function sendMessage() {
     const message = chatbotInput.value.trim();
     if (!message) return;
 
@@ -1229,105 +1222,103 @@
     typingIndicator.style.display = 'block';
     
     setTimeout(() => {
-      typingIndicator.style.display = 'none';
-      const response = generateResponse(message);
-      addMessage(response, 'bot');
+        typingIndicator.style.display = 'none';
+        const response = generateResponse(message);
+        addMessage(response, 'bot');
     }, 1000 + Math.random() * 1000);
-  }
+}
 
-  chatbotSend.addEventListener('click', sendMessage);
-  chatbotInput.addEventListener('keypress', (e) => {
+chatbotSend.addEventListener('click', sendMessage);
+chatbotInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') sendMessage();
-  });
+});
 
-  // Dodawanie wiadomości do czatu
-  function addMessage(text, sender) {
+// Dodawanie wiadomości do czatu
+function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
     messageDiv.textContent = text;
     chatbotMessages.appendChild(messageDiv);
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-  }
+}
 
-  // Generowanie odpowiedzi
-  function generateResponse(message) {
+// Generowanie odpowiedzi
+function generateResponse(message) {
     const lowerMessage = message.toLowerCase();
     
     // Powitanie
     if (lowerMessage.includes('cześć') || lowerMessage.includes('hej') || lowerMessage.includes('witam') || lowerMessage.includes('dzień dobry')) {
-      return knowledgeBase.responses.greeting;
+        return knowledgeBase.responses.greeting;
     }
     
     // Ceny
     for (const [city, price] of Object.entries(knowledgeBase.prices)) {
-      if (lowerMessage.includes(city)) {
-        return `Przejazd do ${city.charAt(0).toUpperCase() + city.slice(1)} kosztuje ${price}. Cena zależy od dokładnej lokalizacji i liczby pasażerów.`;
-      }
+        if (lowerMessage.includes(city)) {
+            return `Przejazd do ${city.charAt(0).toUpperCase() + city.slice(1)} kosztuje ${price}. Cena zależy od dokładnej lokalizacji i liczby pasażerów.`;
+        }
     }
     
     // Bezpieczeństwo - rozszerzone odpowiedzi
     for (const [key, info] of Object.entries(knowledgeBase.safety)) {
-      if (lowerMessage.includes(key)) {
-        return info;
-      }
+        if (lowerMessage.includes(key)) {
+            return info;
+        }
     }
     
     // Informacje ogólne
     for (const [key, info] of Object.entries(knowledgeBase.info)) {
-      if (lowerMessage.includes(key)) {
-        return info;
-      }
+        if (lowerMessage.includes(key)) {
+            return info;
+        }
     }
     
     // Specyficzne pytania
     if (lowerMessage.includes('termin') || lowerMessage.includes('wolny') || lowerMessage.includes('dostęp')) {
-      const reservations = loadReservations();
-      const today = new Date();
-      const busyDates = reservations.map(r => new Date(r.date).toDateString());
-      return `Aktualnie mam ${reservations.length} rezerwacji. Proszę sprawdzić konkretną datę przez formularz rezerwacji lub zadzwoń bezpośrednio.`;
+        const reservations = loadReservations();
+        const today = new Date();
+        const busyDates = reservations.map(r => new Date(r.date).toDateString());
+        return `Aktualnie mam ${reservations.length} rezerwacji. Proszę sprawdzić konkretną datę przez formularz rezerwacji lub zadzwoń bezpośrednio.`;
     }
     
     if (lowerMessage.includes('rezerwacja') || lowerMessage.includes('zamówienie')) {
-      return knowledgeBase.responses.booking;
+        return knowledgeBase.responses.booking;
     }
     
     if (lowerMessage.includes('kontakt') || lowerMessage.includes('telefon') || lowerMessage.includes('numer')) {
-      return knowledgeBase.responses.contact;
+        return knowledgeBase.responses.contact;
     }
     
     if (lowerMessage.includes('pomoc') || lowerMessage.includes('co umiesz')) {
-      return knowledgeBase.responses.help;
+        return knowledgeBase.responses.help;
     }
     
     // Domyślna odpowiedź
     return knowledgeBase.responses.unknown;
-  }
+}
 
-  // --- Wielojęzyczność regulaminu ---
-  const blocks = document.querySelectorAll(".lang-block");
-  const flags = document.querySelectorAll(".lang-flag");
+// --- Wielojęzyczność regulaminu ---
+const blocks = document.querySelectorAll(".lang-block");
+const flags = document.querySelectorAll(".lang-flag");
 
-  function showLang(lang) {
+function showLang(lang) {
     blocks.forEach(b => b.classList.add("hidden"));
     document.getElementById("lang-" + lang).classList.remove("hidden");
-  }
+}
 
-  const userLang = navigator.language.slice(0,2);
-  if (["pl","en","de","nl"].includes(userLang)) {
+const userLang = navigator.language.slice(0,2);
+if (["pl","en","de","nl"].includes(userLang)) {
     showLang(userLang);
-  } else {
+} else {
     showLang("pl");
-  }
+}
 
-  flags.forEach(flag => {
+flags.forEach(flag => {
     flag.addEventListener("click", () => {
-      const lang = flag.getAttribute("data-lang");
-      showLang(lang);
+        const lang = flag.getAttribute("data-lang");
+        showLang(lang);
     });
-  });
-
+});
 </script>
 
 </body>
-</html>
-
+</html> 
