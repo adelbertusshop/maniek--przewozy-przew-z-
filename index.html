@@ -100,9 +100,25 @@
     text-decoration:none;
     font-size:12px;
     white-space:nowrap;
+    transition: all 0.3s ease;
   }
   
-  .btn.primary{ background:var(--accent); color:#072033; border:none; }
+  .btn:hover {
+    background: rgba(255,255,255,0.05);
+  }
+  
+  .btn.primary{ 
+    background:var(--accent); 
+    color:#072033; 
+    border:none; 
+  }
+  
+  .btn.primary:hover {
+    background: #3a8de6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79,163,255,0.3);
+  }
+  
   .btn.ghost{ background:transparent; }
 
   main{ 
@@ -155,6 +171,12 @@
     box-shadow: 0 6px 20px rgba(2,6,23,0.6);
     border:1px solid rgba(255,255,255,0.03);
     width:100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.8);
   }
 
   h2{ 
@@ -180,6 +202,11 @@
     outline:none; 
     font-size:14px;
     min-height:44px;
+    transition: border 0.3s ease;
+  }
+  
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
   }
   
   textarea{ 
@@ -217,6 +244,12 @@
     font-size:14px;
     min-height:44px;
     width:100%;
+    transition: all 0.3s ease;
+  }
+
+  .submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(79,163,255,0.4);
   }
 
   @media (min-width: 480px) {
@@ -252,6 +285,12 @@
     background:rgba(255,255,255,0.02); 
     text-align:center;
     min-height:80px;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+  
+  .icon-box:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.05);
   }
   
   .icon-emoji{ font-size:24px; }
@@ -281,6 +320,13 @@
     box-shadow:0 6px 18px rgba(10,14,25,0.6); 
     z-index:60;
     font-size:12px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
   }
 
   .hidden { display: none !important; }
@@ -426,6 +472,12 @@
     align-items: center;
     justify-content: center;
     z-index: 1001;
+    transition: all 0.3s ease;
+  }
+
+  .chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.4);
   }
 
   .chatbot-window {
@@ -441,6 +493,12 @@
     display: none;
     flex-direction: column;
     z-index: 1002;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .chatbot-header {
@@ -464,6 +522,11 @@
     color: var(--muted);
     cursor: pointer;
     font-size: 20px;
+    transition: color 0.3s ease;
+  }
+
+  .chatbot-close:hover {
+    color: var(--white);
   }
 
   .chatbot-messages {
@@ -482,6 +545,12 @@
     line-height: 1.4;
     font-size: 14px;
     word-wrap: break-word;
+    animation: messageAppear 0.3s ease;
+  }
+
+  @keyframes messageAppear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .message.user {
@@ -527,6 +596,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .chatbot-send:hover {
+    background: #3a8de6;
+    transform: scale(1.05);
   }
 
   .typing-indicator {
@@ -656,6 +731,29 @@
     text-align: center;
     font-weight: bold;
     font-size: 18px;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .form-error {
+    color: #ff6b6b;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+  }
+
+  .success-message {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 10px 0;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .loading {
+    opacity: 0.7;
+    pointer-events: none;
   }
 </style>
 </head>
@@ -691,26 +789,31 @@
           <div style="margin-top:12px;">
             <label for="name">Imię i nazwisko</label>
             <input id="name" type="text" required placeholder="Jan Kowalski">
+            <div class="form-error" id="nameError">Proszę podać imię i nazwisko</div>
           </div>
 
           <div style="margin-top:10px;">
             <label for="phone">Telefon</label>
             <input id="phone" type="tel" required placeholder="+48 600 000 000">
+            <div class="form-error" id="phoneError">Proszę podać poprawny numer telefonu</div>
           </div>
 
           <div style="margin-top:10px;">
             <label for="email">Email (opcjonalnie)</label>
             <input id="email" type="email" placeholder="kontakt@przyklad.pl">
+            <div class="form-error" id="emailError">Proszę podać poprawny adres email</div>
           </div>
 
           <div class="form-row" style="margin-top:10px;">
             <div class="col">
               <label for="from">Skąd (miasto/adres)</label>
               <input id="from" type="text" required placeholder="Poznań, ul. Święta 1">
+              <div class="form-error" id="fromError">Proszę podać miejsce odbioru</div>
             </div>
             <div class="col">
               <label for="to">Dokąd (miasto/adres)</label>
               <input id="to" type="text" required placeholder="Berlin, dworzec główny">
+              <div class="form-error" id="toError">Proszę podać miejsce docelowe</div>
             </div>
           </div>
 
@@ -718,10 +821,12 @@
             <div class="col">
               <label for="date">Data i godzina</label>
               <input id="date" type="datetime-local" required>
+              <div class="form-error" id="dateError">Proszę wybrać datę i godzinę</div>
             </div>
             <div class="col">
               <label for="people">Liczba osób</label>
-              <input id="people" type="number" value="1" min="1" required>
+              <input id="people" type="number" value="1" min="1" max="8" required>
+              <div class="form-error" id="peopleError">Proszę podać liczbę osób (1-8)</div>
             </div>
           </div>
 
@@ -853,6 +958,7 @@
 
 <script>
   // --- Inicjalizacja EmailJS ---
+  // Uwaga: Zastąp poniższe wartości swoimi danymi z EmailJS
   emailjs.init("Twój_User_ID");
 
   // --- podstawowe ustawienia ---
@@ -985,12 +1091,85 @@
 
   document.getElementById('clearMap').addEventListener('click', clearMap);
 
+  // --- Walidacja formularza ---
+  function validateForm() {
+    let isValid = true;
+    
+    // Reset errors
+    document.querySelectorAll('.form-error').forEach(el => {
+      el.style.display = 'none';
+    });
+    
+    // Name validation
+    const name = document.getElementById('name').value.trim();
+    if (!name) {
+      document.getElementById('nameError').style.display = 'block';
+      isValid = false;
+    }
+    
+    // Phone validation
+    const phone = document.getElementById('phone').value.trim();
+    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{9,}$/;
+    if (!phone || !phoneRegex.test(phone)) {
+      document.getElementById('phoneError').style.display = 'block';
+      isValid = false;
+    }
+    
+    // Email validation (optional)
+    const email = document.getElementById('email').value.trim();
+    if (email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+      }
+    }
+    
+    // From validation
+    const from = document.getElementById('from').value.trim();
+    if (!from) {
+      document.getElementById('fromError').style.display = 'block';
+      isValid = false;
+    }
+    
+    // To validation
+    const to = document.getElementById('to').value.trim();
+    if (!to) {
+      document.getElementById('toError').style.display = 'block';
+      isValid = false;
+    }
+    
+    // Date validation
+    const date = document.getElementById('date').value;
+    if (!date) {
+      document.getElementById('dateError').style.display = 'block';
+      isValid = false;
+    }
+    
+    // People validation
+    const people = document.getElementById('people').value;
+    if (!people || people < 1 || people > 8) {
+      document.getElementById('peopleError').style.display = 'block';
+      isValid = false;
+    }
+    
+    return isValid;
+  }
+
   // --- Reszta funkcjonalności ---
   const form = document.getElementById('bookingForm');
   const formStatus = document.getElementById('formStatus');
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    
+    if (!validateForm()) {
+      formStatus.textContent = 'Proszę poprawić błędy w formularzu.';
+      formStatus.style.color = '#ff6b6b';
+      setTimeout(()=>formStatus.textContent='','3500');
+      return;
+    }
+    
     const r = {
       id: 'r_' + Date.now(),
       name: document.getElementById('name').value.trim(),
@@ -1005,16 +1184,11 @@
       created_at: new Date().toISOString()
     };
 
-    if(!r.name || !r.phone || !r.from || !r.to || !r.date){
-      formStatus.textContent = 'Wypełnij wszystkie wymagane pola.';
-      setTimeout(()=>formStatus.textContent='','3500');
-      return;
-    }
-
     const arr = loadReservations();
     arr.unshift(r);
     saveReservations(arr);
 
+    // Uwaga: Zastąp poniższe wartości swoimi danymi z EmailJS
     emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
       name: r.name,
       phone: r.phone,
@@ -1027,10 +1201,12 @@
       created_at: new Date().toLocaleString('pl-PL')
     }).then(() => {
       formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
+      formStatus.style.color = '#4CAF50';
       form.reset();
       setTimeout(()=>formStatus.textContent='','4200');
     }, (error) => {
       formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
+      formStatus.style.color = '#ff9800';
       form.reset();
       setTimeout(()=>formStatus.textContent='','4200');
     });
