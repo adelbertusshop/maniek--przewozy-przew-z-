@@ -5,13 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Maniek — Pewny Przewóz</title>
 
-<!--
-  Pełna strona: Maniek — Pewny Przewóz
-  Instrukcja szybkiego uruchomienia:
-  1) Zapisz plik jako index.html i wgraj do repo/Vercel/GitHub Pages.
-  2) (Opcjonalnie) Podmień MAP_EMBED_URL na własną lokalizację lub dodaj klucz Google Maps JS (opis dalej).
-  3) Email: w przyszłości można podłączyć EmailJS/Formspree (komentarz w kodzie).
--->
+<!-- Dodany EmailJS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <style>
   /* Kolory: granat (#1B2A41), jasny błękit (#4FA3FF), akcent złoto (#DAA520) */
@@ -315,10 +310,6 @@
         <h2>Lokalizacja — podgląd trasy</h2>
         <p class="small muted">Mapa pokazuje orientacyjnie trasę. Gdy podasz dokładne adresy, dodamy pinezkę i trasę.</p>
 
-        <!--
-          Podmień poniższy URL jeśli masz gotowe embed z Google Maps.
-          Możesz też dodać Google Maps JavaScript API z kluczem, aby programowo rysować trasę.
-        -->
         <div id="mapContainer" style="margin-top:10px;">
           <iframe id="mapEmbed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24559.37856504603!2d16.900000!3d52.400000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTLCsDI0JzAwLjAiTiAxNsKwNTQnMDAuMCJF!5e0!3m2!1spl!2spl!4v0000000000000" style="width:100%;height:320px;border:0;border-radius:10px;"></iframe>
         </div>
@@ -361,7 +352,7 @@
           <h2>Panel kierowcy</h2>
           <span class="small muted">Dostęp lokalny</span>
         </div>
-        <p class="small muted">Kierowca widzi rezerwacje po zalogowaniu (hasło). Hasło ustawione w tej stronie to: <strong><span id="secretPlaceholder">maniekadmin</span></strong></p>
+        <p class="small muted">Kierowca widzi rezerwacje po zalogowaniu (hasło). Hasło ustawione w tej stronie to: <strong><span id="secretPlaceholder">Maniek2024!Secure</span></strong></p>
         <button class="btn primary" id="openPanelMobile">Otwórz Panel</button>
 
         <div id="panelArea" style="display:none; margin-top:12px;">
@@ -496,9 +487,15 @@
 <div class="ribbon">Zaufany przewoźnik</div>
 
 <script>
+  // --- Inicjalizacja EmailJS ---
+  // UWAGA: Zastąp "Twój_User_ID" swoim prawdziwym User ID z konta EmailJS
+  emailjs.init("Twój_User_ID");
+
   // --- podstawowe ustawienia ---
   document.getElementById('curYear').textContent = new Date().getFullYear();
-  const SECRET_PASS = 'maniekadmin'; // zmieniaj w razie potrzeby. Kierowca zna hasło.
+  
+  // BEZPIECZEŃSTWO: Zmienione hasło na trudniejsze
+  const SECRET_PASS = 'Maniek2024!Secure';
 
   // Opinie rotator
   const opinie = [
@@ -524,7 +521,30 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
   }
 
-  // formularz
+  // --- Ulepszona mapa Google ---
+  function updateMapRoute(from, to) {
+    if (!from || !to) return;
+    
+    // Prosta wersja - możesz rozbudować z Google Maps API
+    // UWAGA: Aby to działało, potrzebujesz klucza Google Maps API
+    const mapUrl = `https://www.google.com/maps/embed/v1/directions?key=TWÓJ_KLUCZ_API&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&language=pl`;
+    document.getElementById('mapEmbed').src = mapUrl;
+  }
+
+  // Event listeners do pól "from" i "to" dla mapy
+  document.getElementById('from').addEventListener('blur', function() {
+    const from = this.value;
+    const to = document.getElementById('to').value;
+    if (from && to) updateMapRoute(from, to);
+  });
+
+  document.getElementById('to').addEventListener('blur', function() {
+    const to = this.value;
+    const from = document.getElementById('from').value;
+    if (from && to) updateMapRoute(from, to);
+  });
+
+  // --- Ulepszony formularz z EmailJS ---
   const form = document.getElementById('bookingForm');
   const formStatus = document.getElementById('formStatus');
 
@@ -556,13 +576,30 @@
     arr.unshift(r);
     saveReservations(arr);
 
-    // pokaż status
-    formStatus.textContent = 'Rezerwacja zapisana. Maniek zobaczy ją w panelu.';
-    form.reset();
-    setTimeout(()=>formStatus.textContent='','4200');
+    // WYŚLIJ EMAIL przez EmailJS
+    // UWAGA: Zastąp "Twój_Service_ID" i "Twój_Template_ID" swoimi ID z EmailJS
+    emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
+      name: r.name,
+      phone: r.phone,
+      email: r.email || 'Nie podano',
+      from: r.from,
+      to: r.to,
+      date: new Date(r.date).toLocaleString('pl-PL'),
+      people: r.people,
+      notes: r.notes || 'Brak uwag',
+      created_at: new Date().toLocaleString('pl-PL')
+    }).then(() => {
+      formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
+      form.reset();
+      setTimeout(()=>formStatus.textContent='','4200');
+    }, (error) => {
+      formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
+      form.reset();
+      setTimeout(()=>formStatus.textContent='','4200');
+      console.error('EmailJS error:', error);
+    });
 
-    // (opcjonalnie) pokaż pinezki lub trasę na mapie — TODO jeśli dodamy Google Maps JS API.
-    // dodaj wizualnie do panelu, jeśli klient zalogowany
+    // (opcjonalnie) pokaż pinezki lub trasę na mapie
     renderReservationsTable(); 
   });
 
@@ -673,16 +710,6 @@
     });
   });
 
-  // ---- OPTIONAL: Email sending (EmailJS or Formspree)
-  // If later you want to send mail automatically to driver:
-  // - EmailJS: include their SDK, create SERVICE_ID and TEMPLATE_ID, then call emailjs.send(service, template, templateParams)
-  // - Formspree: change form action to Formspree URL and remove JS defaultPrevent
-  // I'll add exact code when you give mail and say "rób mail".
-
-  // ---- OPTIONAL: Google Maps JS API (to show route pins)
-  // If you add Google Maps JS API key, we can programmatically geocode "from" and "to" and show route.
-  // Example initialization (add script with &key=YOUR_KEY&callback=initMap):
-  // function initMap(){ /* create map and directionsService */ }
 </script>
 
 </body>
