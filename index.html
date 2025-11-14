@@ -126,6 +126,107 @@
   /* ribbon / trust */
   .ribbon{ position:fixed; right:14px; bottom:18px; background:var(--accent-2); color:#072033; padding:10px 14px; border-radius:999px; font-weight:700; box-shadow:0 6px 18px rgba(10,14,25,0.6); z-index:60; }
 
+  /* NOWE STYLE DODANE DLA REGULAMINU I PARTNERÓW */
+  .hidden { display: none !important; }
+  
+  #rules {
+    background: var(--card) !important;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 40px;
+  }
+  
+  #rules .max-w-5xl {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  
+  #rules h2, #rules h3 {
+    color: var(--accent);
+  }
+  
+  #rules p {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  
+  .lang-flag {
+    border-radius: 3px;
+    transition: transform 0.2s;
+  }
+  
+  .lang-flag:hover {
+    transform: scale(1.1);
+  }
+  
+  #partners {
+    background: rgba(11,19,33,0.95) !important;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  
+  #partners .max-w-6xl {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  
+  #partners h2 {
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  #partners p {
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .gap-10 {
+    gap: 2.5rem;
+  }
+  
+  .place-items-center {
+    place-items: center;
+  }
+  
+  .bg-gray-50 {
+    background: rgba(255,255,255,0.03);
+  }
+  
+  .rounded-lg {
+    border-radius: 12px;
+  }
+  
+  .shadow {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  
+  .hover\:shadow-lg:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  }
+  
+  .transition {
+    transition: all 0.3s ease;
+  }
+  
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .p-4 {
+    padding: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .md\:grid-cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 </style>
 </head>
 <body>
@@ -280,6 +381,111 @@
     </aside>
   </div>
 </main>
+
+<!-- SEKCJA REGULAMINU + FLAGI JĘZYKÓW + AUTO DETECTION -->
+<section id="rules" class="w-full bg-gray-100 py-12 px-4">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- PRZEŁĄCZNIK Z FLAGAMI -->
+    <div class="flex justify-end gap-3 mb-6">
+      <img src="https://flagcdn.com/w40/pl.png" data-lang="pl" class="lang-flag w-8 h-6 cursor-pointer hover:opacity-70" />
+      <img src="https://flagcdn.com/w40/gb.png" data-lang="en" class="lang-flag w-8 h-6 cursor-pointer hover:opacity-70" />
+      <img src="https://flagcdn.com/w40/de.png" data-lang="de" class="lang-flag w-8 h-6 cursor-pointer hover:opacity-70" />
+      <img src="https://flagcdn.com/w40/nl.png" data-lang="nl" class="lang-flag w-8 h-6 cursor-pointer hover:opacity-70" />
+    </div>
+
+    <!-- POLSKI -->
+    <div id="lang-pl" class="lang-block">
+      <h2 class="text-3xl font-bold mb-4">Regulamin Strony</h2>
+      <p class="mb-3">1. Strona służy do prezentacji oferty oraz umożliwia kontakt i rezerwację przejazdów.</p>
+      <p class="mb-3">2. Wysyłając formularz, użytkownik akceptuje zasady strony.</p>
+      <p class="mb-3">3. Rezerwacja nie jest gwarancją miejsca — potwierdza ją kierowca.</p>
+      <p class="mb-3">4. Dane przetwarzane są zgodnie z RODO wyłącznie w celu kontaktu.</p>
+
+      <h3 class="text-2xl font-semibold mt-8 mb-2">Regulamin Bezpieczeństwa Podróży</h3>
+      <p class="mb-3">– Pas bezpieczeństwa obowiązkowy przez całą podróż.</p>
+      <p class="mb-3">– W pojeździe obowiązuje zakaz spożywania alkoholu i środków odurzających.</p>
+      <p class="mb-3">– Kierowca może odmówić przewozu pasażera stwarzającego zagrożenie.</p>
+      <p class="mb-3">– Firma nie odpowiada za rzeczy pozostawione w pojeździe.</p>
+    </div>
+
+    <!-- ENGLISH -->
+    <div id="lang-en" class="lang-block hidden">
+      <h2 class="text-3xl font-bold mb-4">Website Terms</h2>
+      <p class="mb-3">1. The website presents transport services and allows contact and booking.</p>
+      <p class="mb-3">2. Submitting a form means accepting the terms.</p>
+      <p class="mb-3">3. A booking request is not a confirmed seat — the driver must confirm.</p>
+      <p class="mb-3">4. Data is processed only for contact (GDPR compliant).</p>
+
+      <h3 class="text-2xl font-semibold mt-8 mb-2">Travel Safety Rules</h3>
+      <p class="mb-3">– Seatbelts must remain fastened throughout the journey.</p>
+      <p class="mb-3">– Alcohol and drugs are prohibited inside the vehicle.</p>
+      <p class="mb-3">– The driver may refuse transport for safety reasons.</p>
+      <p class="mb-3">– The company is not responsible for items left in the vehicle.</p>
+    </div>
+
+    <!-- DEUTSCH -->
+    <div id="lang-de" class="lang-block hidden">
+      <h2 class="text-3xl font-bold mb-4">Website-Bestimmungen</h2>
+      <p class="mb-3">1. Die Website dient zur Darstellung der Transportdienste und der Kontaktaufnahme.</p>
+      <p class="mb-3">2. Mit Absenden eines Formulars akzeptiert der Nutzer alle Bedingungen.</p>
+      <p class="mb-3">3. Eine Anfrage garantiert keinen Platz — bestätigt wird vom Fahrer.</p>
+      <p class="mb-3">4. Daten werden ausschließlich DSGVO-konform verarbeitet.</p>
+
+      <h3 class="text-2xl font-semibold mt-8 mb-2">Reisesicherheitsregeln</h3>
+      <p class="mb-3">– Sicherheitsgurte müssen während der gesamten Fahrt angelegt sein.</p>
+      <p class="mb-3">– Alkohol und Drogen sind verboten.</p>
+      <p class="mb-3">– Der Fahrer darf die Beförderung verweigern, wenn Sicherheit gefährdet ist.</p>
+      <p class="mb-3">– Keine Haftung für verlorene Gegenstände.</p>
+    </div>
+
+    <!-- NEDERLANDS -->
+    <div id="lang-nl" class="lang-block hidden">
+      <h2 class="text-3xl font-bold mb-4">Websitevoorwaarden</h2>
+      <p class="mb-3">1. De website dient om diensten te presenteren en contact te leggen.</p>
+      <p class="mb-3">2. Door het formulier te verzenden accepteert de gebruiker de voorwaarden.</p>
+      <p class="mb-3">3. Een aanvraag is geen garantie — officiële bevestiging volgt door chauffeur.</p>
+      <p class="mb-3">4. Gegevens worden uitsluitend verwerkt volgens AVG.</p>
+
+      <h3 class="text-2xl font-semibold mt-8 mb-2">Reisveiligheidsregels</h3>
+      <p class="mb-3">– Veiligheidsgordels verplicht tijdens de volledige rit.</p>
+      <p class="mb-3">– Alcohol en drugs zijn verboden.</p>
+      <p class="mb-3">– Chauffeur mag vervoer weigeren bij onveilige situaties.</p>
+      <p class="mb-3">– Geen verantwoordelijkheid voor verloren spullen.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SEKCJA PARTNERÓW / REKLAMY -->
+<section id="partners" class="w-full bg-white py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-8">Nasi Partnerzy</h2>
+
+    <p class="text-center text-gray-600 mb-10">
+      Współpracujemy z firmami, które gwarantują najwyższą jakość, bezpieczeństwo i profesjonalizm.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 place-items-center">
+      <!-- MIEJSCA NA LOGA PARTNERÓW -->
+      <div class="p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition cursor-pointer">
+        <img src="https://dummyimage.com/140x60/cccccc/000000&text=Partner+1" class="w-full" />
+      </div>
+
+      <div class="p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition cursor-pointer">
+        <img src="https://dummyimage.com/140x60/cccccc/000000&text=Partner+2" class="w-full" />
+      </div>
+
+      <div class="p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition cursor-pointer">
+        <img src="https://dummyimage.com/140x60/cccccc/000000&text=Reklama+1" class="w-full" />
+      </div>
+
+      <div class="p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition cursor-pointer">
+        <img src="https://dummyimage.com/140x60/cccccc/000000&text=Reklama+2" class="w-full" />
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="container">
@@ -441,6 +647,31 @@
 
   // helper: escape HTML
   function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+  // ---- NOWY KOD DLA REGULAMINU I JĘZYKÓW ----
+  const blocks = document.querySelectorAll(".lang-block");
+  const flags = document.querySelectorAll(".lang-flag");
+
+  function showLang(lang) {
+    blocks.forEach(b => b.classList.add("hidden"));
+    document.getElementById("lang-" + lang).classList.remove("hidden");
+  }
+
+  // auto-detection języka
+  const userLang = navigator.language.slice(0,2);
+  if (["pl","en","de","nl"].includes(userLang)) {
+    showLang(userLang);
+  } else {
+    showLang("pl");
+  }
+
+  // klik flagi
+  flags.forEach(flag => {
+    flag.addEventListener("click", () => {
+      const lang = flag.getAttribute("data-lang");
+      showLang(lang);
+    });
+  });
 
   // ---- OPTIONAL: Email sending (EmailJS or Formspree)
   // If later you want to send mail automatically to driver:
