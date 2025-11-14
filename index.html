@@ -2,603 +2,158 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Maniek — Pewny Przewóz</title>
 
-<!-- Dodany EmailJS -->
+<!-- EMAILJS (opcjonalnie) -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <style>
-  /* Kolory: granat (#1B2A41), jasny błękit (#4FA3FF), akcent złoto (#DAA520) */
   :root{
-    --bg-deep:#0f1724;
-    --card:#172433;
+    --navy:#0f2b4c;
     --accent:#4FA3FF;
-    --accent-2:#DAA520;
+    --gold:#d4af37;
     --muted:#9fb3d6;
+    --card:#172433;
     --white:#ffffff;
+    --glass: rgba(255,255,255,0.03);
   }
 
-  *{box-sizing:border-box; margin:0; padding:0;}
+  *{box-sizing:border-box}
   body{
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
     background: linear-gradient(180deg, rgba(11,19,33,0.94) 0%, rgba(9,13,22,0.92) 100%), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat fixed;
     color:var(--white);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
-    padding-bottom:60px;
-    min-height:100vh;
+    padding-bottom:80px;
   }
 
-  /* Poprawki responsywności */
   header{
-    background: rgba(27,42,65,0.95);
+    background: rgba(15,43,76,0.92);
     border-bottom: 1px solid rgba(79,163,255,0.08);
-    padding:12px 16px;
+    padding:18px 16px;
     position:sticky;
     top:0;
-    z-index:100;
-    backdrop-filter: blur(10px);
+    z-index:40;
   }
-  
-  .container{ 
-    max-width:1100px; 
-    margin:0 auto; 
-    padding:0 16px; 
-    width:100%;
-  }
-  
-  .brand{ 
-    display:flex; 
-    align-items:center; 
-    gap:10px; 
-    flex-wrap:wrap;
-  }
-  
-  .logo {
-    width:44px;
-    height:44px;
-    border-radius:8px;
+  .container{ max-width:1100px; margin:0 auto; padding:0 16px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .logo { width:56px;height:56px;border-radius:10px;
     background:linear-gradient(135deg,var(--accent),#2b6ce3);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    color:#0b1724;
-    box-shadow:0 3px 14px rgba(11,19,33,0.5);
-    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#072033;
+    box-shadow:0 4px 20px rgba(0,0,0,0.6);
   }
-  
-  .brand h1{ 
-    margin:0; 
-    font-size:clamp(14px, 4vw, 16px);
-    line-height:1.2;
-  }
-  
-  .brand p{ 
-    margin:0;
-    font-size:clamp(10px, 3vw, 12px);
-    color:var(--muted);
-    width:100%;
-  }
+  .brand h1{ margin:0; font-size:18px;line-height:1; color:var(--white) }
+  .brand p{ margin:0;font-size:12px;color:var(--muted); }
 
-  nav{ 
-    margin-left:auto; 
-    display:flex; 
-    gap:8px; 
-    align-items:center;
-    flex-wrap:wrap;
-  }
-  
+  nav{ margin-left:auto; display:flex; gap:10px; align-items:center; }
   .btn {
-    background:transparent;
-    border:1px solid rgba(255,255,255,0.06); 
-    color:var(--white);
-    padding:6px 10px;
-    border-radius:6px;
-    font-weight:600;
-    cursor:pointer;
-    text-decoration:none;
-    font-size:12px;
-    white-space:nowrap;
+    background:transparent;border:1px solid rgba(255,255,255,0.06); color:var(--white);
+    padding:8px 12px;border-radius:8px;font-weight:600;cursor:pointer;text-decoration:none;
   }
-  
   .btn.primary{ background:var(--accent); color:#072033; border:none; }
   .btn.ghost{ background:transparent; }
 
-  main{ 
-    padding:20px 0;
-    min-height:calc(100vh - 200px);
-  }
+  main{ padding:28px 0; }
 
   .grid{
     display:grid;
-    grid-template-columns: 1fr;
-    gap:16px;
+    grid-template-columns: 1fr 360px;
+    gap:20px;
     align-items:start;
   }
 
-  /* Poprawki responsywności dla większych ekranów */
-  @media (min-width: 768px) {
-    .grid{ 
-      grid-template-columns: 1fr 360px;
-      gap:20px;
-    }
-    
-    .brand p{
-      width:auto;
-    }
-    
-    .btn {
-      padding:8px 12px;
-      font-size:14px;
-    }
-    
-    header {
-      padding:16px;
-    }
-  }
-
-  /* Ukrywanie nav na małych ekranach */
-  @media (max-width: 480px) {
-    nav{ 
-      display:none; 
-    }
-    
-    .brand {
-      justify-content:center;
-      text-align:center;
-    }
+  @media (max-width:960px){
+    .grid{ grid-template-columns:1fr; padding:0 8px; }
+    nav{ display:none; }
   }
 
   .card{
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
     border-radius:12px;
-    padding:16px;
+    padding:18px;
     box-shadow: 0 6px 20px rgba(2,6,23,0.6);
     border:1px solid rgba(255,255,255,0.03);
-    width:100%;
   }
 
-  h2{ 
-    margin:0 0 10px 0; 
-    color:var(--accent); 
-    font-size:clamp(16px, 4vw, 18px);
-  }
-  
-  label{ 
-    display:block; 
-    font-size:13px; 
-    color:var(--muted); 
-    margin-bottom:6px; 
-  }
-  
+  h2{ margin:0 0 10px 0; color:var(--accent); font-size:18px; }
+  label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
   input[type=text], input[type=email], input[type=tel], input[type=datetime-local], textarea, select, input[type=number]{
-    width:100%; 
-    padding:10px 12px; 
-    border-radius:8px; 
-    border:1px solid rgba(255,255,255,0.06);
-    background:rgba(255,255,255,0.02); 
-    color:var(--white); 
-    outline:none; 
-    font-size:14px;
-    min-height:44px;
+    width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);
+    background:rgba(255,255,255,0.02); color:var(--white); outline:none; font-size:14px;
   }
-  
-  textarea{ 
-    min-height:90px; 
-    resize:vertical; 
-  }
+  textarea{ min-height:90px; resize:vertical; }
 
-  .form-row{ 
-    display:flex; 
-    flex-direction:column;
-    gap:10px; 
-  }
-  
-  .form-row .col{ 
-    flex:1; 
-    width:100%;
-  }
-
-  @media (min-width: 480px) {
-    .form-row{
-      flex-direction:row;
-    }
-  }
+  .form-row{ display:flex; gap:10px; }
+  .form-row .col{ flex:1; }
 
   .submit {
-    display:inline-block;
-    padding:12px 16px;
-    border-radius:10px;
-    border:none;
-    background:linear-gradient(90deg,var(--accent),#2b6ce3);
-    color:#021224;
-    font-weight:700;
-    cursor:pointer;
-    margin-top:8px;
-    font-size:14px;
-    min-height:44px;
-    width:100%;
-  }
-
-  @media (min-width: 480px) {
-    .submit {
-      width:auto;
-    }
+    display:inline-block;padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),#2b6ce3);
+    color:#021224;font-weight:700;cursor:pointer;margin-top:8px;
   }
 
   .muted{ color:var(--muted); font-size:13px; margin-top:8px; }
 
-  /* Driver panel / reservations list */
-  .panel-title{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
-  table{ width:100%; border-collapse:collapse; margin-top:12px; font-size:14px; overflow-x:auto; display:block; }
-  th,td{ padding:8px 10px; border-bottom:1px dashed rgba(255,255,255,0.04); text-align:left; white-space:nowrap; }
+  table{ width:100%; border-collapse:collapse; margin-top:12px; font-size:14px; color:var(--muted);}
+  th,td{ padding:8px 10px; border-bottom:1px dashed rgba(255,255,255,0.04); text-align:left; }
   th{ color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:0.6px; }
 
   .chip{ background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:999px; font-size:13px; display:inline-block; color:var(--muted); }
 
-  /* icons-row for trust */
-  .icons-row{ 
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap:10px;
-    justify-content:center;
-    margin:14px 0;
-  }
-  
-  .icon-box{ 
-    display:flex; 
-    flex-direction:column; 
-    align-items:center; 
-    gap:6px; 
-    padding:12px; 
-    border-radius:10px; 
-    background:rgba(255,255,255,0.02); 
-    text-align:center;
-    min-height:80px;
-  }
-  
-  .icon-emoji{ font-size:24px; }
+  .icons-row{ display:flex; gap:12px; justify-content:center; margin:14px 0; }
+  .icon-box{ display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px; border-radius:10px; background:rgba(255,255,255,0.02); width:120px; text-align:center;}
+  .icon-emoji{ font-size:28px; }
 
-  footer{ 
-    text-align:center; 
-    color:var(--muted); 
-    padding:20px 8px; 
-    margin-top:20px; 
-    font-size:13px;
-  }
-  
+  footer{ text-align:center; color:var(--muted); padding:24px 8px; margin-top:20px; }
   .small{ font-size:13px;color:var(--muted); }
 
-  /* opinie */
-  .opinie{ font-style:italic; opacity:0.95; font-size:15px; line-height:1.4; }
-  .opinie-wrap{ display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap; }
+  .opinie{ font-style:italic; opacity:0.95; font-size:15px; }
+  .opinie-wrap{ display:flex; align-items:center; gap:12px; justify-content:space-between; }
 
-  /* ribbon / trust */
-  .ribbon{ 
-    position:fixed; 
-    right:10px; 
-    bottom:70px; 
-    background:var(--accent-2); 
-    color:#072033; 
-    padding:8px 12px; 
-    border-radius:999px; 
-    font-weight:700; 
-    box-shadow:0 6px 18px rgba(10,14,25,0.6); 
-    z-index:60;
-    font-size:12px;
-  }
+  .ribbon{ position:fixed; right:14px; bottom:18px; background:var(--gold); color:#072033; padding:10px 14px; border-radius:999px; font-weight:700; box-shadow:0 6px 18px rgba(10,14,25,0.6); z-index:60; }
 
-  /* NOWE STYLE DODANE DLA REGULAMINU I PARTNERÓW */
-  .hidden { display: none !important; }
-  
-  #rules {
-    background: var(--card) !important;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    margin-top: 30px;
-    padding:20px 0;
-  }
-  
-  #rules .max-w-5xl {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding:0 16px;
-  }
-  
-  #rules h2, #rules h3 {
-    color: var(--accent);
-    font-size:clamp(20px, 5vw, 24px);
-  }
-  
-  #rules h3 {
-    font-size:clamp(18px, 4vw, 20px);
-  }
-  
-  #rules p {
-    color: var(--muted);
-    line-height: 1.6;
-    font-size:14px;
-    margin-bottom:12px;
-  }
-  
-  .lang-flag {
-    border-radius: 3px;
-    transition: transform 0.2s;
-    width:32px;
-    height:24px;
-    cursor:pointer;
-  }
-  
-  .lang-flag:hover {
-    transform: scale(1.1);
-  }
-  
-  #partners {
-    background: rgba(11,19,33,0.95) !important;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding:30px 0;
-  }
-  
-  #partners .max-w-6xl {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding:0 16px;
-  }
-  
-  #partners h2 {
-    color: var(--accent);
-    text-align: center;
-    margin-bottom: 20px;
-    font-size:clamp(20px, 5vw, 24px);
-  }
-  
-  #partners p {
-    color: var(--muted);
-    text-align: center;
-    margin-bottom: 25px;
-    font-size:14px;
-  }
-  
-  .grid-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-    gap:15px;
-  }
-  
-  .place-items-center {
-    place-items: center;
-  }
-  
-  .bg-gray-50 {
-    background: rgba(255,255,255,0.03);
-  }
-  
-  .rounded-lg {
-    border-radius: 12px;
-  }
-  
-  .shadow {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  }
-  
-  .hover-shadow-lg:hover {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-  }
-  
-  .transition {
-    transition: all 0.3s ease;
-  }
-  
-  .cursor-pointer {
-    cursor: pointer;
-  }
-  
-  .p-4 {
-    padding: 1rem;
-  }
-  
-  @media (min-width: 768px) {
-    .md-grid-cols-4 {
-      grid-template-columns: repeat(4, 1fr);
-      gap:25px;
-    }
-    
-    #rules {
-      padding:30px 0;
-    }
-    
-    #partners {
-      padding:40px 0;
-    }
-  }
+  /* rules + partners small helpers */
+  .lang-flag { border-radius:3px; width:28px;height:20px; cursor:pointer; }
+  .hidden { display:none !important; }
 
-  /* STYLE CZATBOTA */
-  .chatbot-container {
+  /* CHATBOT (left floating) */
+  #chatbot-widget {
     position: fixed;
+    left: 18px;
     bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    font-family: inherit;
-  }
-
-  .chatbot-toggle {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), #2b6ce3);
-    border: none;
+    width: 320px;
+    max-height: 520px;
+    background: linear-gradient(180deg, rgba(10,26,47,0.98), rgba(6,12,23,0.98));
     color: white;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-  }
-
-  .chatbot-toggle:hover {
-    transform: scale(1.1);
-  }
-
-  .chatbot-window {
-    position: absolute;
-    bottom: 70px;
-    right: 0;
-    width: 350px;
-    max-width: 90vw;
-    height: 500px;
-    max-height: 70vh;
-    background: var(--card);
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.1);
-    display: none;
-    flex-direction: column;
+    border-radius: 12px;
     overflow: hidden;
+    display:flex;
+    flex-direction:column;
+    z-index:99999;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    font-family: Inter, Arial, sans-serif;
+  }
+  #chatbot-header { background: var(--gold); color:#061420; padding:10px 12px; font-weight:700; cursor:pointer; display:flex;align-items:center;justify-content:space-between; }
+  #chatbot-messages { padding:12px; overflow:auto; flex:1; display:flex; flex-direction:column; gap:8px; }
+  .chat-msg { max-width:78%; padding:8px 10px; border-radius:10px; font-size:14px; line-height:1.3; }
+  .chat-bot { background: rgba(255,255,255,0.03); color:var(--white); align-self:flex-start; }
+  .chat-user { background: var(--gold); color:#061420; align-self:flex-end; }
+  #chatbot-input { display:flex; gap:8px; padding:10px; border-top:1px solid rgba(255,255,255,0.03); }
+  #chatbot-input input { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--white); }
+  #chatbot-input button { padding:8px 12px; border-radius:8px; border:none; background:var(--gold); color:#061420; font-weight:700; cursor:pointer; }
+
+  @media (max-width:560px){
+    #chatbot-widget { left: 10px; width: 90%; bottom: 14px; }
   }
 
-  .chatbot-header {
-    background: rgba(27,42,65,0.95);
-    padding: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .chatbot-title {
-    font-weight: bold;
-    color: var(--accent);
-  }
-
-  .chatbot-close {
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 18px;
-  }
-
-  .chatbot-messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .message {
-    max-width: 80%;
-    padding: 10px 15px;
-    border-radius: 15px;
-    line-height: 1.4;
-    font-size: 14px;
-  }
-
-  .message.user {
-    align-self: flex-end;
-    background: var(--accent);
-    color: #072033;
-    border-bottom-right-radius: 5px;
-  }
-
-  .message.bot {
-    align-self: flex-start;
-    background: rgba(255,255,255,0.05);
-    color: var(--white);
-    border-bottom-left-radius: 5px;
-  }
-
-  .chatbot-input {
-    display: flex;
-    padding: 15px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    gap: 10px;
-  }
-
-  .chatbot-input input {
-    flex: 1;
-    padding: 10px 15px;
-    border-radius: 25px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
-    color: var(--white);
-    outline: none;
-    font-size: 14px;
-  }
-
-  .chatbot-send {
-    background: var(--accent);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    color: #072033;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .typing-indicator {
-    display: none;
-    align-self: flex-start;
-    background: rgba(255,255,255,0.05);
-    padding: 10px 15px;
-    border-radius: 15px;
-    border-bottom-left-radius: 5px;
-    color: var(--muted);
-    font-style: italic;
-  }
-
-  .quick-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-  }
-
-  .quick-action {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--muted);
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .quick-action:hover {
-    background: var(--accent);
-    color: #072033;
-  }
-
-  @media (max-width: 480px) {
-    .chatbot-container {
-      bottom: 15px;
-      right: 15px;
-    }
-    
-    .chatbot-window {
-      width: 320px;
-      right: -50px;
-    }
-    
-    .chatbot-toggle {
-      width: 50px;
-      height: 50px;
-      font-size: 20px;
-    }
-  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+  <div class="container" style="display:flex;align-items:center;">
     <div class="brand">
       <div class="logo">MP</div>
       <div>
@@ -620,7 +175,7 @@
   <div class="grid">
     <!-- LEFT: Formularz + mapa + opinie -->
     <div>
-      <div class="card">
+      <div class="card" id="bookingCard">
         <h2>Zarezerwuj przejazd</h2>
         <p class="small muted">Wypełnij formularz — Maniek potwierdzi telefonicznie.</p>
 
@@ -667,22 +222,29 @@
             <textarea id="notes" placeholder="Bagaż, dzieci, specjalne potrzeby..."></textarea>
           </div>
 
-          <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
             <button type="submit" class="submit">Wyślij rezerwację</button>
             <div class="muted" id="formStatus"></div>
           </div>
 
-          <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — zostanie ona zapisana lokalnie (kierowca może ją zobaczyć po zalogowaniu na Panel kierowcy).</p>
+          <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — jest ona zapisywana lokalnie (kierowca widzi po zalogowaniu). Możesz też wysłać e-mail (EmailJS) jeśli skonfigurujesz.</p>
         </form>
       </div>
 
       <!-- Mapa -->
       <div class="card" style="margin-top:18px;">
         <h2>Lokalizacja — podgląd trasy</h2>
-        <p class="small muted">Mapa pokazuje orientacyjnie trasę. Gdy podasz dokładne adresy, dodamy pinezkę i trasę.</p>
+        <p class="small muted">Mapa pokazuje trasę/pozycję kierowcy. Wklej swój klucz Google Maps w polu JS poniżej, by włączyć pełną funkcjonalność (Directions, marker kierowcy).</p>
 
-        <div id="mapContainer" style="margin-top:10px;">
-          <iframe id="mapEmbed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24559.37856504603!2d16.900000!3d52.400000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTLCsDI0JzAwLjAiTiAxNsKwNTQnMDAuMCJF!5e0!3m2!1spl!2spl!4v0000000000000" style="width:100%;height:320px;border:0;border-radius:10px;"></iframe>
+        <div id="mapsWrap" style="margin-top:10px;">
+          <!-- Fallback iframe embed map (will be replaced by JS map if key provided) -->
+          <iframe id="mapEmbed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24559.37856504603!2d16.900000!3d52.400000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1" style="width:100%;height:360px;border:0;border-radius:10px;"></iframe>
+          <div style="margin-top:8px; display:flex; gap:8px;">
+            <input id="driverLat" type="text" placeholder="lat kierowcy (np. 52.2297)" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);" />
+            <input id="driverLng" type="text" placeholder="lng kierowcy (np. 21.0122)" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);" />
+            <button id="showDriverBtn" class="btn">Pokaż kierowcę</button>
+          </div>
+          <div class="muted" style="margin-top:8px;font-size:13px;">Uwaga: aby rzeczywiście śledzić kierowcę w czasie rzeczywistym potrzebny jest backend lub połączenie z urządzeniem GPS — to mock w wersji MVP.</div>
         </div>
       </div>
 
@@ -698,8 +260,8 @@
 
     <!-- RIGHT: Sidebar — info, trust, panel -->
     <aside>
-      <div class="card">
-        <h2 id="kierowca">O kierowcy</h2>
+      <div class="card" id="kierowca">
+        <h2>O kierowcy</h2>
         <p><strong>Maniek</strong> — spokój za kierownicą, doświadczenie i odpowiedzialność. Ponad 10 lat praktyki na trasach lokalnych i międzynarodowych. Zawsze punktualny, dba o komfort pasażera i stan techniczny pojazdu.</p>
         <div style="margin-top:12px;" class="icons-row">
           <div class="icon-box"><div class="icon-emoji">🛡️</div><div class="small">Bezpieczeństwo</div></div>
@@ -708,8 +270,8 @@
         </div>
       </div>
 
-      <div class="card" style="margin-top:14px;">
-        <h2 id="bezpieczenstwo">Bezpieczeństwo</h2>
+      <div class="card" id="bezpieczenstwo" style="margin-top:14px;">
+        <h2>Bezpieczeństwo</h2>
         <ul style="margin:0 0 0 18px;">
           <li>Regularne przeglądy techniczne</li>
           <li>Systemy ABS / ESP</li>
@@ -723,17 +285,17 @@
           <h2>Panel kierowcy</h2>
           <span class="small muted">Dostęp lokalny</span>
         </div>
-        <p class="small muted">Kierowca widzi rezerwacje po zalogowaniu (hasło). Hasło ustawione w tej stronie to: <strong><span id="secretPlaceholder">Maniek2024!Secure</span></strong></p>
+        <p class="small muted">Kierowca widzi rezerwacje po zalogowaniu (hasło). Hasło domyślne: <strong><span id="secretPlaceholder">Maniek2024!Secure</span></strong></p>
         <button class="btn primary" id="openPanelMobile">Otwórz Panel</button>
 
         <div id="panelArea" style="display:none; margin-top:12px;">
-          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">
-            <input id="panelPass" type="password" placeholder="Wprowadź hasło" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06); min-width:150px;">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
+            <input id="panelPass" type="password" placeholder="Wprowadź hasło" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);">
             <button id="panelLogin" class="btn">Zaloguj</button>
           </div>
 
           <div id="reservationsList" style="margin-top:12px;"></div>
-          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+          <div style="margin-top:10px;">
             <button id="exportCsv" class="btn ghost">Eksportuj CSV</button>
             <button id="clearAll" class="btn ghost" title="Usuń wszystkie lokalne rezerwacje">Usuń</button>
           </div>
@@ -744,137 +306,89 @@
   </div>
 </main>
 
-<!-- SEKCJA REGULAMINU + FLAGI JĘZYKÓW + AUTO DETECTION -->
-<section id="rules" class="w-full bg-gray-100 py-12 px-4">
-  <div class="max-w-5xl mx-auto">
+<!-- RULES + LANG SWITCH -->
+<section id="rules" class="card" style="margin:28px auto; max-width:1100px;">
+  <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;">
+    <img src="https://flagcdn.com/w40/pl.png" data-lang="pl" class="lang-flag" />
+    <img src="https://flagcdn.com/w40/gb.png" data-lang="en" class="lang-flag" />
+    <img src="https://flagcdn.com/w40/de.png" data-lang="de" class="lang-flag" />
+    <img src="https://flagcdn.com/w40/nl.png" data-lang="nl" class="lang-flag" />
+  </div>
 
-    <!-- PRZEŁĄCZNIK Z FLAGAMI -->
-    <div class="flex justify-end gap-3 mb-6">
-      <img src="https://flagcdn.com/w40/pl.png" data-lang="pl" class="lang-flag w-8 h-6 cursor-pointer hover:opacity-70" />
-      <img src="https://flagcdn.com/w40/gb.png" data-lang="en" class="lang-flag w-8 h-6 cursor-pointer hover:opacity-70" />
-      <img src="https://flagcdn.com/w40/de.png" data-lang="de" class="lang-flag w-8 h-6 cursor-pointer hover:opacity-70" />
-      <img src="https://flagcdn.com/w40/nl.png" data-lang="nl" class="lang-flag w-8 h-6 cursor-pointer hover:opacity-70" />
-    </div>
+  <div id="lang-pl" class="lang-block">
+    <h2>Regulamin Strony</h2>
+    <p>1. Strona służy do prezentacji oferty oraz umożliwia kontakt i rezerwację przejazdów.</p>
+    <p>2. Wysyłając formularz, użytkownik akceptuje zasady strony.</p>
+    <p>3. Rezerwacja nie jest gwarancją miejsca — potwierdza ją kierowca.</p>
+    <p>4. Dane przetwarzane są zgodnie z RODO wyłącznie w celu kontaktu.</p>
 
-    <!-- POLSKI -->
-    <div id="lang-pl" class="lang-block">
-      <h2 class="text-3xl font-bold mb-4">Regulamin Strony</h2>
-      <p class="mb-3">1. Strona służy do prezentacji oferty oraz umożliwia kontakt i rezerwację przejazdów.</p>
-      <p class="mb-3">2. Wysyłając formularz, użytkownik akceptuje zasady strony.</p>
-      <p class="mb-3">3. Rezerwacja nie jest gwarancją miejsca — potwierdza ją kierowca.</p>
-      <p class="mb-3">4. Dane przetwarzane są zgodnie z RODO wyłącznie w celu kontaktu.</p>
+    <h3 style="margin-top:14px;">Regulamin Bezpieczeństwa Podróży</h3>
+    <p>– Pas bezpieczeństwa obowiązkowy przez całą podróż.</p>
+    <p>– W pojeździe obowiązuje zakaz spożywania alkoholu i środków odurzających.</p>
+    <p>– Kierowca może odmówić przewozu pasażera stwarzającego zagrożenie.</p>
+    <p>– Firma nie odpowiada za rzeczy pozostawione w pojeździe.</p>
+  </div>
 
-      <h3 class="text-2xl font-semibold mt-8 mb-2">Regulamin Bezpieczeństwa Podróży</h3>
-      <p class="mb-3">– Pas bezpieczeństwa obowiązkowy przez całą podróż.</p>
-      <p class="mb-3">– W pojeździe obowiązuje zakaz spożywania alkoholu i środków odurzających.</p>
-      <p class="mb-3">– Kierowca może odmówić przewozu pasażera stwarzającego zagrożenie.</p>
-      <p class="mb-3">– Firma nie odpowiada za rzeczy pozostawione w pojeździe.</p>
-    </div>
+  <div id="lang-en" class="lang-block hidden">
+    <h2>Website Terms</h2>
+    <p>1. The website presents transport services and allows contact and booking.</p>
+    <p>2. Submitting a form means accepting the terms.</p>
+    <p>3. A booking request is not a confirmed seat — the driver must confirm.</p>
+    <p>4. Data is processed only for contact (GDPR compliant).</p>
+    <h3 style="margin-top:14px;">Travel Safety Rules</h3>
+    <p>– Seatbelts must remain fastened throughout the journey.</p>
+    <p>– Alcohol and drugs are prohibited inside the vehicle.</p>
+    <p>– The driver may refuse transport for safety reasons.</p>
+    <p>– The company is not responsible for items left in the vehicle.</p>
+  </div>
 
-    <!-- ENGLISH -->
-    <div id="lang-en" class="lang-block hidden">
-      <h2 class="text-3xl font-bold mb-4">Website Terms</h2>
-      <p class="mb-3">1. The website presents transport services and allows contact and booking.</p>
-      <p class="mb-3">2. Submitting a form means accepting the terms.</p>
-      <p class="mb-3">3. A booking request is not a confirmed seat — the driver must confirm.</p>
-      <p class="mb-3">4. Data is processed only for contact (GDPR compliant).</p>
+  <div id="lang-de" class="lang-block hidden">
+    <h2>Website-Bestimmungen</h2>
+    <p>1. Die Website dient zur Darstellung der Transportdienste und ermöglicht Kontaktaufnahme.</p>
+    <p>2. Mit Absenden eines Formulars akzeptiert der Nutzer die Bedingungen.</p>
+    <p>3. Eine Anfrage garantiert keinen Platz — bestätigt wird durch den Fahrer.</p>
+    <p>4. Daten werden nur für Kontakt und Buchung gemäß DSGVO verarbeitet.</p>
+    <h3 style="margin-top:14px;">Reisesicherheitsregeln</h3>
+    <p>– Sicherheitsgurte müssen während der gesamten Fahrt angelegt sein.</p>
+    <p>– Alkohol und Drogen sind im Fahrzeug verboten.</p>
+    <p>– Der Fahrer darf die Beförderung verweigern, wenn die Sicherheit gefährdet ist.</p>
+    <p>– Keine Haftung für verlorene Gegenstände.</p>
+  </div>
 
-      <h3 class="text-2xl font-semibold mt-8 mb-2">Travel Safety Rules</h3>
-      <p class="mb-3">– Seatbelts must remain fastened throughout the journey.</p>
-      <p class="mb-3">– Alcohol and drugs are prohibited inside the vehicle.</p>
-      <p class="mb-3">– The driver may refuse transport for safety reasons.</p>
-      <p class="mb-3">– The company is not responsible for items left in the vehicle.</p>
-    </div>
-
-    <!-- DEUTSCH -->
-    <div id="lang-de" class="lang-block hidden">
-      <h2 class="text-3xl font-bold mb-4">Website-Bestimmungen</h2>
-      <p class="mb-3">1. Die Website dient zur Darstellung der Transportdienste und der Kontaktaufnahme.</p>
-      <p class="mb-3">2. Mit Absenden eines Formulars akzeptiert der Nutzer alle Bedingungen.</p>
-      <p class="mb-3">3. Eine Anfrage garantiert keinen Platz — bestätigt wird vom Fahrer.</p>
-      <p class="mb-3">4. Daten werden ausschließlich DSGVO-konform verarbeitet.</p>
-
-      <h3 class="text-2xl font-semibold mt-8 mb-2">Reisesicherheitsregeln</h3>
-      <p class="mb-3">– Sicherheitsgurte müssen während der gesamten Fahrt angelegt sein.</p>
-      <p class="mb-3">– Alkohol und Drogen sind verboten.</p>
-      <p class="mb-3">– Der Fahrer darf die Beförderung verweigern, wenn Sicherheit gefährdet ist.</p>
-      <p class="mb-3">– Keine Haftung für verlorene Gegenstände.</p>
-    </div>
-
-    <!-- NEDERLANDS -->
-    <div id="lang-nl" class="lang-block hidden">
-      <h2 class="text-3xl font-bold mb-4">Websitevoorwaarden</h2>
-      <p class="mb-3">1. De website dient om diensten te presenteren en contact te leggen.</p>
-      <p class="mb-3">2. Door het formulier te verzenden accepteert de gebruiker de voorwaarden.</p>
-      <p class="mb-3">3. Een aanvraag is geen garantie — officiële bevestiging volgt door chauffeur.</p>
-      <p class="mb-3">4. Gegevens worden uitsluitend verwerkt volgens AVG.</p>
-
-      <h3 class="text-2xl font-semibold mt-8 mb-2">Reisveiligheidsregels</h3>
-      <p class="mb-3">– Veiligheidsgordels verplicht tijdens de volledige rit.</p>
-      <p class="mb-3">– Alcohol en drugs zijn verboden.</p>
-      <p class="mb-3">– Chauffeur mag vervoer weigeren bij onveilige situaties.</p>
-      <p class="mb-3">– Geen verantwoordelijkheid voor verloren spullen.</p>
-    </div>
+  <div id="lang-nl" class="lang-block hidden">
+    <h2>Websitevoorwaarden</h2>
+    <p>1. De website dient voor presentatie van diensten en contact.</p>
+    <p>2. Door het formulier te verzenden accepteert de gebruiker de voorwaarden.</p>
+    <p>3. Een aanvraag is geen garantie — bevestiging volgt door de chauffeur.</p>
+    <p>4. Gegevens worden verwerkt volgens de AVG.</p>
+    <h3 style="margin-top:14px;">Reisveiligheidsregels</h3>
+    <p>– Veiligheidsgordels verplicht tijdens de hele rit.</p>
+    <p>– Alcohol en drugs zijn verboden in het voertuig.</p>
+    <p>– Chauffeur mag vervoer weigeren bij onveilige situaties.</p>
+    <p>– Geen aansprakelijkheid voor verloren spullen.</p>
   </div>
 </section>
 
+<!-- PARTNERS -->
+<section id="partners" class="card" style="margin:24px auto; max-width:1100px;">
+  <h2 style="text-align:center;">Nasi Partnerzy</h2>
+  <p style="text-align:center;color:var(--muted);margin-bottom:18px;">Współpracujemy z firmami, które gwarantują najwyższą jakość, bezpieczeństwo i profesjonalizm.</p>
 
-<!-- SEKCJA PARTNERÓW / REKLAMY -->
-<section id="partners" class="w-full bg-white py-16 px-6">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold text-center mb-8">Nasi Partnerzy</h2>
-
-    <p class="text-center text-gray-600 mb-10">
-      Współpracujemy z firmami, które gwarantują najwyższą jakość, bezpieczeństwo i profesjonalizm.
-    </p>
-
-    <div class="grid grid-cols-2 md-grid-cols-4 gap-10 place-items-center">
-      <!-- MIEJSCA NA LOGA PARTNERÓW -->
-      <div class="p-4 bg-gray-50 rounded-lg shadow hover-shadow-lg transition cursor-pointer">
-        <img src="https://dummyimage.com/140x60/cccccc/000000&text=Partner+1" class="w-full" />
-      </div>
-
-      <div class="p-4 bg-gray-50 rounded-lg shadow hover-shadow-lg transition cursor-pointer">
-        <img src="https://dummyimage.com/140x60/cccccc/000000&text=Partner+2" class="w-full" />
-      </div>
-
-      <div class="p-4 bg-gray-50 rounded-lg shadow hover-shadow-lg transition cursor-pointer">
-        <img src="https://dummyimage.com/140x60/cccccc/000000&text=Reklama+1" class="w-full" />
-      </div>
-
-      <div class="p-4 bg-gray-50 rounded-lg shadow hover-shadow-lg transition cursor-pointer">
-        <img src="https://dummyimage.com/140x60/cccccc/000000&text=Reklama+2" class="w-full" />
-      </div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+    <div class="card" style="background:var(--glass)">
+      <img src="https://dummyimage.com/300x80/cccccc/000000&text=Partner+1" style="width:100%;border-radius:8px;" />
+    </div>
+    <div class="card" style="background:var(--glass)">
+      <img src="https://dummyimage.com/300x80/cccccc/000000&text=Partner+2" style="width:100%;border-radius:8px;" />
+    </div>
+    <div class="card" style="background:var(--glass)">
+      <img src="https://dummyimage.com/300x80/cccccc/000000&text=Reklama+1" style="width:100%;border-radius:8px;" />
+    </div>
+    <div class="card" style="background:var(--glass)">
+      <img src="https://dummyimage.com/300x80/cccccc/000000&text=Reklama+2" style="width:100%;border-radius:8px;" />
     </div>
   </div>
 </section>
-
-<!-- CZATBOT -->
-<div class="chatbot-container">
-  <button class="chatbot-toggle">💬</button>
-  <div class="chatbot-window">
-    <div class="chatbot-header">
-      <div class="chatbot-title">Asystent Maniek</div>
-      <button class="chatbot-close">×</button>
-    </div>
-    <div class="chatbot-messages">
-      <div class="message bot">
-        Cześć! Jestem asystent Maniek. Jak mogę Ci pomóc? 😊
-      </div>
-      <div class="quick-actions">
-        <div class="quick-action" data-question="Ile kosztuje przejazd do Berlina?">Cena do Berlina</div>
-        <div class="quick-action" data-question="Jakie są wolne terminy?">Wolne terminy</div>
-        <div class="quick-action" data-question="Jakie są zasady bezpieczeństwa?">Bezpieczeństwo</div>
-        <div class="quick-action" data-question="Maksymalna liczba pasażerów?">Liczba pasażerów</div>
-      </div>
-    </div>
-    <div class="typing-indicator">Asystent pisze...</div>
-    <div class="chatbot-input">
-      <input type="text" placeholder="Zadaj pytanie..." id="chatbotInput">
-      <button class="chatbot-send">➤</button>
-    </div>
-  </div>
-</div>
 
 <footer>
   <div class="container">
@@ -884,349 +398,449 @@
 
 <div class="ribbon">Zaufany przewoźnik</div>
 
+<!-- CHATBOT WIDGET (MVP) -->
+<div id="chatbot-widget" aria-hidden="false">
+  <div id="chatbot-header">
+    <span>ManiekBot — pomagam w rezerwacjach</span>
+    <button id="chatbot-close" style="background:transparent;border:none;font-weight:700;cursor:pointer;">✕</button>
+  </div>
+  <div id="chatbot-messages" role="log" aria-live="polite"></div>
+  <div id="chatbot-input">
+    <input id="chatbot-input-field" placeholder="Napisz: 'Berlin → Monachium' albo 'Wycena'..." />
+    <button id="chatbot-send-btn">Wyślij</button>
+  </div>
+</div>
+
 <script>
-  // --- Inicjalizacja EmailJS ---
-  emailjs.init("Twój_User_ID");
+/* ===================== CONFIG - WPIŚC TU SWOJE KODY (opcjonalne) =====================
+   - GOOGLE_MAPS_API_KEY: jeśli wkleisz, uruchomi się JS Maps (Directions, Distance Matrix).
+   - EMAILJS_USER_ID, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID: jeśli wkleisz, formularz wyśle e-mail.
+   - Jeśli nie chcesz, zostaw puste i wszystko działa w trybie lokalnym (MVP).
+============================================================================== */
+const CONFIG = {
+  GOOGLE_MAPS_API_KEY: '', // <-- Wklej swój Google Maps JS API key tutaj (opcjonalne)
+  EMAILJS_USER_ID: '',     // <-- Wklej EmailJS user id (opcjonalne)
+  EMAILJS_SERVICE_ID: '',  // <-- EmailJS Service ID
+  EMAILJS_TEMPLATE_ID: ''  // <-- EmailJS Template ID
+};
+/* ========================================================================== */
 
-  // --- podstawowe ustawienia ---
-  document.getElementById('curYear').textContent = new Date().getFullYear();
-  const SECRET_PASS = 'Maniek2024!Secure';
-// Opinie rotator
-  const opinie = [
-    "⭐ „Kierowca jak złoto! Spokój i pełna kultura.”",
-    "⭐ „Jechałem do Niemiec — zero stresu, pełen komfort.”",
-    "⭐ „Bezpiecznie, czysto i zawsze na czas. Polecam!”",
-    "⭐ „Maniek to kierowca, który naprawdę dba o ludzi.”"
-  ];
-  let opinIndex = 0;
-  function showOpinion(){ document.getElementById('opiniaText').textContent = opinie[opinIndex]; opinIndex=(opinIndex+1)%opinie.length; }
-  showOpinion(); setInterval(showOpinion,4500);
+document.getElementById('curYear').textContent = new Date().getFullYear();
 
-  // --- lokalne przechowywanie rezerwacji ---
-  const STORAGE_KEY = 'maniek_reservations_v1';
+/* ===================== OPINIE ROTATOR ===================== */
+const opinie = [
+  "⭐ „Kierowca jak złoto! Spokój i pełna kultura.”",
+  "⭐ „Jechałem do Niemiec — zero stresu, pełen komfort.”",
+  "⭐ „Bezpiecznie, czysto i zawsze na czas. Polecam!”",
+  "⭐ „Maniek to kierowca, który naprawdę dba o ludzi.”"
+];
+let opinIndex = 0;
+function showOpinion(){ document.getElementById('opiniaText').textContent = opinie[opinIndex]; opinIndex=(opinIndex+1)%opinie.length; }
+showOpinion(); setInterval(showOpinion,4500);
 
-  function loadReservations(){
-    try {
-      const data = localStorage.getItem(STORAGE_KEY);
-      return data ? JSON.parse(data) : [];
-    } catch(e){ return []; }
+/* ===================== LOCAL RESERVATIONS (localStorage) ===================== */
+const STORAGE_KEY = 'maniek_reservations_v1';
+function loadReservations(){ try{ const d = localStorage.getItem(STORAGE_KEY); return d?JSON.parse(d):[] }catch(e){return[]}}
+function saveReservations(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)) }
+
+/* handle booking form */
+const form = document.getElementById('bookingForm');
+const formStatus = document.getElementById('formStatus');
+
+if(CONFIG.EMAILJS_USER_ID) {
+  try{ emailjs.init(CONFIG.EMAILJS_USER_ID); } catch(e){ console.warn('EmailJS init failed', e); }
+}
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  const r = {
+    id: 'r_' + Date.now(),
+    name: document.getElementById('name').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    from: document.getElementById('from').value.trim(),
+    to: document.getElementById('to').value.trim(),
+    date: document.getElementById('date').value,
+    people: document.getElementById('people').value,
+    notes: document.getElementById('notes').value.trim(),
+    status: 'pending',
+    created_at: new Date().toISOString()
+  };
+
+  if(!r.name || !r.phone || !r.from || !r.to || !r.date){
+    formStatus.textContent = 'Wypełnij wszystkie wymagane pola.';
+    setTimeout(()=>formStatus.textContent='',3500);
+    return;
   }
-  
-  function saveReservations(arr){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-  }
 
-  // --- Ulepszona mapa Google ---
-  function updateMapRoute(from, to) {
-    if (!from || !to) return;
-    const mapUrl = `https://www.google.com/maps/embed/v1/directions?key=TWÓJ_KLUCZ_API&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&language=pl`;
-    document.getElementById('mapEmbed').src = mapUrl;
-  }
+  const arr = loadReservations();
+  arr.unshift(r);
+  saveReservations(arr);
 
-  document.getElementById('from').addEventListener('blur', function() {
-    const from = this.value;
-    const to = document.getElementById('to').value;
-    if (from && to) updateMapRoute(from, to);
-  });
-
-  document.getElementById('to').addEventListener('blur', function() {
-    const to = this.value;
-    const from = document.getElementById('from').value;
-    if (from && to) updateMapRoute(from, to);
-  });
-
-  // --- Formularz z EmailJS ---
-  const form = document.getElementById('bookingForm');
-  const formStatus = document.getElementById('formStatus');
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const r = {
-      id: 'r_' + Date.now(),
-      name: document.getElementById('name').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      from: document.getElementById('from').value.trim(),
-      to: document.getElementById('to').value.trim(),
-      date: document.getElementById('date').value,
-      people: document.getElementById('people').value,
-      notes: document.getElementById('notes').value.trim(),
-      status: 'pending',
-      created_at: new Date().toISOString()
-    };
-
-    if(!r.name || !r.phone || !r.from || !r.to || !r.date){
-      formStatus.textContent = 'Wypełnij wszystkie wymagane pola.';
-      setTimeout(()=>formStatus.textContent='','3500');
-      return;
-    }
-
-    const arr = loadReservations();
-    arr.unshift(r);
-    saveReservations(arr);
-
-    emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
-      name: r.name,
-      phone: r.phone,
-      email: r.email || 'Nie podano',
-      from: r.from,
-      to: r.to,
-      date: new Date(r.date).toLocaleString('pl-PL'),
-      people: r.people,
-      notes: r.notes || 'Brak uwag',
-      created_at: new Date().toLocaleString('pl-PL')
-    }).then(() => {
+  // EMAIL via EmailJS if configured
+  if(CONFIG.EMAILJS_SERVICE_ID && CONFIG.EMAILJS_TEMPLATE_ID && CONFIG.EMAILJS_USER_ID) {
+    emailjs.send(CONFIG.EMAILJS_SERVICE_ID, CONFIG.EMAILJS_TEMPLATE_ID, {
+      name: r.name, phone: r.phone, email: r.email||'Nie podano', from: r.from, to: r.to,
+      date: new Date(r.date).toLocaleString(), people: r.people, notes: r.notes||'Brak uwag'
+    }).then(()=> {
       formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
       form.reset();
-      setTimeout(()=>formStatus.textContent='','4200');
-    }, (error) => {
-      formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
-      form.reset();
-      setTimeout(()=>formStatus.textContent='','4200');
-    });
-
-    renderReservationsTable(); 
-  });
-
-  // --- Panel kierowcy ---
-  const panelArea = document.getElementById('panelArea');
-  const panelLoginBtn = document.getElementById('panelLogin');
-  const panelPassInput = document.getElementById('panelPass');
-  const openPanelBtn = document.getElementById('openPanelBtn');
-  const openPanelMobile = document.getElementById('openPanelMobile');
-  const reservationsList = document.getElementById('reservationsList');
-
-  function showPanelUI(){
-    panelArea.style.display='block';
-    document.getElementById('panelPass').focus();
-  }
-
-  openPanelBtn.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:0,behavior:'smooth'}); });
-  openPanelMobile.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); });
-
-  panelLoginBtn.addEventListener('click', ()=> {
-    const pass = panelPassInput.value || '';
-    if(pass === 'Krawczyk 25'){
-      document.getElementById('panelPass').value = '';
+      setTimeout(()=>formStatus.textContent='',4200);
       renderReservationsTable();
-      document.getElementById('panelPass').placeholder = 'Zalogowano';
-      panelLoginBtn.textContent = 'Odśwież';
-    } else {
-      alert('Błędne hasło.');
-    }
-  });
-
-  function renderReservationsTable(){
-    const arr = loadReservations();
-    if(arr.length===0){
-      reservationsList.innerHTML = '<div class="small muted">Brak rezerwacji.</div>';
-      return;
-    }
-
-    let html = '<div style="overflow:auto;"><table><thead><tr><th>Imię</th><th>Tel</th><th>Trasa</th><th>Data</th><th>Osób</th><th>Uwagi</th><th>Status</th></tr></thead><tbody>';
-    arr.forEach(r=>{
-      html += `<tr id="${r.id}"><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.phone)}</td><td>${escapeHtml(r.from)} → ${escapeHtml(r.to)}</td><td>${new Date(r.date).toLocaleString()}</td><td>${escapeHtml(r.people)}</td><td>${escapeHtml(r.notes)}</td><td><select data-id="${r.id}" onchange="changeStatus(this)"><option ${r.status==='pending'?'selected':''}>pending</option><option ${r.status==='accepted'?'selected':''}>accepted</option><option ${r.status==='rejected'?'selected':''}>rejected</option></select></td></tr>`;
+    }, err => {
+      console.error('EmailJS error', err);
+      formStatus.textContent = 'Rezerwacja zapisana, ale błąd wysyłki e-mail.';
+      form.reset();
+      setTimeout(()=>formStatus.textContent='',4200);
+      renderReservationsTable();
     });
-    html += '</tbody></table></div>';
-    reservationsList.innerHTML = html;
-  }
-
-  window.changeStatus = function(sel){
-    const id = sel.dataset.id;
-    const newStatus = sel.value;
-    let arr = loadReservations();
-    arr = arr.map(r => r.id===id ? Object.assign({}, r, {status:newStatus}) : r);
-    saveReservations(arr);
-    renderReservationsTable();
-  };
-
-  document.getElementById('exportCsv').addEventListener('click', ()=> {
-    const arr = loadReservations();
-    if(arr.length===0){ alert('Brak rezerwacji do eksportu.'); return; }
-    const header = ['id','name','phone','email','from','to','date','people','notes','status','created_at'];
-    const rows = arr.map(r => header.map(h => `"${(r[h]||'').toString().replace(/"/g,'""')}"`).join(','));
-    const csv = [header.join(','), ...rows].join('\n');
-    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'rezerwacje_maniek.csv'; document.body.appendChild(a); a.click(); a.remove();
-    URL.revokeObjectURL(url);
-  });
-
-  document.getElementById('clearAll').addEventListener('click', ()=>{
-    if(!confirm('Usunąć wszystkie lokalne rezerwacje?')) return;
-    localStorage.removeItem(STORAGE_KEY);
-    renderReservationsTable();
-  });
-
-  renderReservationsTable();
-
-  function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
-
-  // --- CZATBOT ---
-  const chatbotToggle = document.querySelector('.chatbot-toggle');
-  const chatbotWindow = document.querySelector('.chatbot-window');
-  const chatbotClose = document.querySelector('.chatbot-close');
-  const chatbotInput = document.getElementById('chatbotInput');
-  const chatbotSend = document.querySelector('.chatbot-send');
-  const chatbotMessages = document.querySelector('.chatbot-messages');
-  const typingIndicator = document.querySelector('.typing-indicator');
-  const quickActions = document.querySelectorAll('.quick-action');
-
-  // Baza wiedzy czatbota
-  const knowledgeBase = {
-    // Cennik i trasy
-    prices: {
-      'berlin': '350-450 PLN',
-      'warszawa': '250-350 PLN', 
-      'kraków': '200-300 PLN',
-      'wrocław': '180-280 PLN',
-      'gdańsk': '300-400 PLN'
-    },
-    
-    // Informacje ogólne
-    info: {
-      'max passengers': 'Maksymalnie 7 pasażerów + kierowca',
-      'safety': 'Pasy bezpieczeństwa obowiązkowe, zakaz alkoholu, regularne przeglądy techniczne',
-      'payment': 'Płatność gotówką lub przelewem, 50% zaliczki przy rezerwacji',
-      'luggage': 'Dopuszczamy bagaż do 20kg na osobę',
-      'animals': 'Zwierzęta małe w transporterkach za dopłatą 50 PLN',
-      'cancellation': 'Bezpłatne odwołanie do 24h przed przejazdem'
-    },
-    
-    // Standardowe odpowiedzi
-    responses: {
-      'greeting': 'Cześć! Jestem asystent Maniek. Mogę pomóc z rezerwacjami, cenami, trasami i bezpieczeństwem. 😊',
-      'help': 'Mogę pomóc Ci z: rezerwacjami, cenami przejazdów, dostępnymi terminami, zasadami bezpieczeństwa i innymi pytaniami.',
-      'unknown': 'Przepraszam, nie znam odpowiedzi na to pytanie. Proszę skontaktuj się bezpośrednio z Maniekiem pod numerem +48 600 000 000.',
-      'booking': 'Aby zarezerwować przejazd, użyj formularza na stronie lub zadzwoń do Manieka bezpośrednio.',
-      'contact': 'Kontakt: Maniek +48 600 000 000, email: maniek@pewnyprzewoz.pl'
-    }
-  };
-
-  // Otwieranie/zamykanie czatbota
-  chatbotToggle.addEventListener('click', () => {
-    chatbotWindow.style.display = 'flex';
-    chatbotToggle.style.display = 'none';
-  });
-
-  chatbotClose.addEventListener('click', () => {
-    chatbotWindow.style.display = 'none';
-    chatbotToggle.style.display = 'flex';
-  });
-
-  // Szybkie akcje
-  quickActions.forEach(action => {
-    action.addEventListener('click', () => {
-      const question = action.getAttribute('data-question');
-      chatbotInput.value = question;
-      sendMessage();
-    });
-  });
-
-  // Wysyłanie wiadomości
-  function sendMessage() {
-    const message = chatbotInput.value.trim();
-    if (!message) return;
-
-    addMessage(message, 'user');
-    chatbotInput.value = '';
-
-    // Symulacja pisania
-    typingIndicator.style.display = 'block';
-    
-    setTimeout(() => {
-      typingIndicator.style.display = 'none';
-      const response = generateResponse(message);
-      addMessage(response, 'bot');
-    }, 1000 + Math.random() * 1000);
-  }
-
-  chatbotSend.addEventListener('click', sendMessage);
-  chatbotInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') sendMessage();
-  });
-
-  // Dodawanie wiadomości do czatu
-  function addMessage(text, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
-    messageDiv.textContent = text;
-    chatbotMessages.appendChild(messageDiv);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-  }
-
-  // Generowanie odpowiedzi
-  function generateResponse(message) {
-    const lowerMessage = message.toLowerCase();
-    
-    // Powitanie
-    if (lowerMessage.includes('cześć') || lowerMessage.includes('hej') || lowerMessage.includes('witam')) {
-      return knowledgeBase.responses.greeting;
-    }
-    
-    // Ceny
-    for (const [city, price] of Object.entries(knowledgeBase.prices)) {
-      if (lowerMessage.includes(city)) {
-        return `Przejazd do ${city.charAt(0).toUpperCase() + city.slice(1)} kosztuje ${price}. Cena zależy od dokładnej lokalizacji i liczby pasażerów.`;
-      }
-    }
-    
-    // Informacje ogólne
-    for (const [key, info] of Object.entries(knowledgeBase.info)) {
-      if (lowerMessage.includes(key)) {
-        return info;
-      }
-    }
-    
-    // Specyficzne pytania
-    if (lowerMessage.includes('termin') || lowerMessage.includes('wolny') || lowerMessage.includes('dostęp')) {
-      const reservations = loadReservations();
-      const today = new Date();
-      const busyDates = reservations.map(r => new Date(r.date).toDateString());
-      return `Aktualnie mam ${reservations.length} rezerwacji. Proszę sprawdzić konkretną datę przez formularz rezerwacji lub zadzwoń bezpośrednio.`;
-    }
-    
-    if (lowerMessage.includes('rezerwacja') || lowerMessage.includes('zamówienie')) {
-      return knowledgeBase.responses.booking;
-    }
-    
-    if (lowerMessage.includes('kontakt') || lowerMessage.includes('telefon') || lowerMessage.includes('numer')) {
-      return knowledgeBase.responses.contact;
-    }
-    
-    if (lowerMessage.includes('pomoc') || lowerMessage.includes('co umiesz')) {
-      return knowledgeBase.responses.help;
-    }
-    
-    // Domyślna odpowiedź
-    return knowledgeBase.responses.unknown;
-  }
-
-  // --- Wielojęzyczność regulaminu ---
-  const blocks = document.querySelectorAll(".lang-block");
-  const flags = document.querySelectorAll(".lang-flag");
-
-  function showLang(lang) {
-    blocks.forEach(b => b.classList.add("hidden"));
-    document.getElementById("lang-" + lang).classList.remove("hidden");
-  }
-
-  const userLang = navigator.language.slice(0,2);
-  if (["pl","en","de","nl"].includes(userLang)) {
-    showLang(userLang);
   } else {
-    showLang("pl");
+    formStatus.textContent = 'Rezerwacja zapisana (lokalnie).';
+    form.reset();
+    setTimeout(()=>formStatus.textContent='',2500);
+    renderReservationsTable();
+  }
+});
+
+/* Panel kierowcy */
+const panelArea = document.getElementById('panelArea');
+const panelLoginBtn = document.getElementById('panelLogin');
+const panelPassInput = document.getElementById('panelPass');
+const openPanelBtn = document.getElementById('openPanelBtn');
+const openPanelMobile = document.getElementById('openPanelMobile');
+const reservationsList = document.getElementById('reservationsList');
+
+function showPanelUI(){ panelArea.style.display='block'; panelPassInput.focus(); }
+function hidePanelUI(){ panelArea.style.display='none'; }
+
+openPanelBtn.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:0,behavior:'smooth'}); });
+openPanelMobile.addEventListener('click', ()=>{ showPanelUI(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); });
+
+panelLoginBtn.addEventListener('click', ()=> {
+  const pass = panelPassInput.value || '';
+  if(pass === document.getElementById('secretPlaceholder').textContent){
+    panelPassInput.value = '';
+    renderReservationsTable();
+    panelPassInput.placeholder = 'Zalogowano';
+    panelLoginBtn.textContent = 'Odśwież';
+  } else {
+    alert('Błędne hasło.');
+  }
+});
+
+function renderReservationsTable(){
+  const arr = loadReservations();
+  if(arr.length===0){
+    reservationsList.innerHTML = '<div class="small muted">Brak rezerwacji.</div>';
+    return;
+  }
+  let html = '<div style="overflow:auto;"><table><thead><tr><th>Imię</th><th>Tel</th><th>Trasa</th><th>Data</th><th>Osób</th><th>Uwagi</th><th>Status</th></tr></thead><tbody>';
+  arr.forEach(r=>{
+    html += `<tr id="${r.id}"><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.phone)}</td><td>${escapeHtml(r.from)} → ${escapeHtml(r.to)}</td><td>${new Date(r.date).toLocaleString()}</td><td>${escapeHtml(r.people)}</td><td>${escapeHtml(r.notes)}</td><td><select data-id="${r.id}" onchange="changeStatus(this)"><option ${r.status==='pending'?'selected':''}>pending</option><option ${r.status==='accepted'?'selected':''}>accepted</option><option ${r.status==='rejected'?'selected':''}>rejected</option></select></td></tr>`;
+  });
+  html += '</tbody></table></div>';
+  reservationsList.innerHTML = html;
+}
+window.changeStatus = function(sel){
+  const id = sel.dataset.id;
+  const newStatus = sel.value;
+  let arr = loadReservations();
+  arr = arr.map(r => r.id===id ? Object.assign({}, r, {status:newStatus}) : r);
+  saveReservations(arr);
+  renderReservationsTable();
+};
+
+document.getElementById('exportCsv').addEventListener('click', ()=> {
+  const arr = loadReservations();
+  if(arr.length===0){ alert('Brak rezerwacji do eksportu.'); return; }
+  const header = ['id','name','phone','email','from','to','date','people','notes','status','created_at'];
+  const rows = arr.map(r => header.map(h => `"${(r[h]||'').toString().replace(/"/g,'""')}"`).join(','));
+  const csv = [header.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'rezerwacje_maniek.csv'; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+});
+document.getElementById('clearAll').addEventListener('click', ()=>{
+  if(!confirm('Usunąć wszystkie lokalne rezerwacje?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  renderReservationsTable();
+});
+
+renderReservationsTable();
+
+function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+/* ===================== MAPS (MVP) ===================== */
+/* Behavior:
+   - If CONFIG.GOOGLE_MAPS_API_KEY is provided, JS will load Google Maps and enable:
+       * Map with DirectionsService between 'from' and 'to'
+       * Driver marker updated using inputs (driverLat/driverLng)
+       * Distance & duration lookup via DistanceMatrix
+   - Otherwise we fallback to iframe embed updated by updateMapRoute(from,to)
+*/
+function updateMapRoute(from, to){
+  if(!from || !to) return;
+  if(CONFIG.GOOGLE_MAPS_API_KEY && window.google && window.directionsService){
+    // Use DirectionsService (if initialized)
+    calculateAndDisplayRoute(from,to);
+    return;
+  }
+  // fallback -> change iframe src using Embed Directions API (requires key if you want route mode)
+  const mapUrl = `https://www.google.com/maps/embed/v1/directions?key=${CONFIG.GOOGLE_MAPS_API_KEY || ''}&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&language=pl`;
+  document.getElementById('mapEmbed').src = mapUrl;
+}
+
+/* monitor blur events on from/to to update embed or JS map */
+document.getElementById('from').addEventListener('blur', ()=> {
+  const from = document.getElementById('from').value;
+  const to = document.getElementById('to').value;
+  if(from && to) updateMapRoute(from,to);
+});
+document.getElementById('to').addEventListener('blur', ()=> {
+  const from = document.getElementById('from').value;
+  const to = document.getElementById('to').value;
+  if(from && to) updateMapRoute(from,to);
+});
+
+/* Driver marker mock */
+document.getElementById('showDriverBtn').addEventListener('click', ()=> {
+  const lat = parseFloat(document.getElementById('driverLat').value);
+  const lng = parseFloat(document.getElementById('driverLng').value);
+  if(CONFIG.GOOGLE_MAPS_API_KEY && window.google && window.driverMarker){
+    const pos = {lat:lat, lng:lng};
+    window.driverMarker.setPosition(pos);
+    window.mainMap.setCenter(pos);
+    alert('Pinezka kierowcy ustawiona na mapie (JS).');
+  } else {
+    if(isFinite(lat) && isFinite(lng)){
+      const embed = document.getElementById('mapEmbed');
+      embed.src = `https://www.google.com/maps/embed/v1/view?key=${CONFIG.GOOGLE_MAPS_API_KEY||''}&center=${lat},${lng}&zoom=12&maptype=roadmap`;
+      alert('Pinezka (embed) ustawiona — w trybie fallback.');
+    } else {
+      alert('Wprowadź poprawne współrzędne kierowcy.');
+    }
+  }
+});
+
+/* If user provided GOOGLE_MAPS_API_KEY, dynamically load JS API and init map functions */
+if(CONFIG.GOOGLE_MAPS_API_KEY){
+  const s = document.createElement('script');
+  s.src = `https://maps.googleapis.com/maps/api/js?key=${CONFIG.GOOGLE_MAPS_API_KEY}&libraries=places`;
+  s.defer = true;
+  s.onload = () => initGoogleMaps();
+  document.head.appendChild(s);
+}
+
+/* Google Maps functions (if key available) */
+function initGoogleMaps(){
+  // create map
+  const mapDiv = document.createElement('div');
+  mapDiv.id = 'jsMap';
+  mapDiv.style.width = '100%';
+  mapDiv.style.height = '360px';
+  mapDiv.style.borderRadius = '10px';
+  const parent = document.getElementById('mapsWrap');
+  const iframe = document.getElementById('mapEmbed');
+  iframe.style.display = 'none';
+  parent.prepend(mapDiv);
+
+  window.mainMap = new google.maps.Map(mapDiv, { zoom:10, center:{lat:52.2297,lng:21.0122} });
+  window.directionsService = new google.maps.DirectionsService();
+  window.directionsRenderer = new google.maps.DirectionsRenderer({ map: window.mainMap, suppressMarkers:false });
+  window.distanceService = new google.maps.DistanceMatrixService();
+
+  // driver marker
+  window.driverMarker = new google.maps.Marker({ position:{lat:52.2297,lng:21.0122}, map:window.mainMap, title:'Maniek - pozycja' });
+
+  window.calculateAndDisplayRoute = function(origin, destination){
+    directionsService.route({ origin, destination, travelMode: google.maps.TravelMode.DRIVING }, (res, status) => {
+      if(status === 'OK'){
+        directionsRenderer.setDirections(res);
+        // distance & duration from legs
+        const leg = res.routes[0].legs[0];
+        const distKm = (leg.distance.value / 1000).toFixed(1);
+        const dur = leg.duration.text;
+        alert(`Trasa: ${distKm} km, czas: ${dur}`);
+      } else {
+        console.warn('Directions error', status);
+        alert('Błąd pobierania trasy: ' + status);
+      }
+    });
+  };
+}
+
+/* ===================== SIMPLE CHATBOT (client-side MVP) ===================== */
+/* This chatbot is intentionally client-side so you can use it without backend.
+   It uses:
+   - FAQ matching,
+   - route recognition "A -> B" (calls Maps JS if available or uses iframe fallback),
+   - can start a reservation flow and generate mailto: or call EmailJS if configured.
+*/
+const botMessages = document.getElementById('chatbot-messages');
+const botInput = document.getElementById('chatbot-input-field');
+const botSend = document.getElementById('chatbot-send-btn');
+const botClose = document.getElementById('chatbot-close');
+
+const chatbotKnowledge = {
+  welcome: "Witaj! Jestem ManiekBot. Mogę podać szacunk trasy, sprawdzić dostępność (po podłączeniu systemu) i pomóc wysłać zapytanie o rezerwację. Napisz np. 'Berlin → Monachium', 'Wycena', 'Wolny termin 15.11.2025' lub 'Rezerwacja'.",
+  faqs:[
+    {q:"rezerwacja|jak zamówić", a:"Aby zarezerwować: podaj trasę, datę i telefon. Mogę zapisać rezerwację lokalnie lub wygenerować e-mail."},
+    {q:"cena|koszt|ile kosztuje", a:"Ceny liczymy na podstawie trasy. Napisz trasę, np. 'Berlin → Monachium' — obliczę przybliżoną odległość i czas."},
+    {q:"kontakt|telefon|mail", a:"Kontakt: pistrakiewicz@gmail.com, tel: +49 694 526 240 / +49 1516 3675 548."},
+    {q:"termin|wolny|dostępność", a:"Sprawdzanie dostępności wymaga podpięcia systemu rezerwacji. Na MVP możesz wysłać zapytanie — kierowca oddzwoni."}
+  ]
+};
+
+let chatState = 0; // 0 = idle, 1..n = reservation collection
+let chatData = {};
+
+function botAdd(msg, who='bot'){
+  const d = document.createElement('div');
+  d.className = 'chat-msg ' + (who==='bot' ? 'chat-bot' : 'chat-user');
+  d.innerHTML = msg;
+  botMessages.appendChild(d);
+  botMessages.scrollTop = botMessages.scrollHeight;
+}
+
+function botStart(){
+  botMessages.innerHTML = '';
+  botAdd(chatbotKnowledge.welcome);
+}
+botStart();
+
+function processBotInput(text){
+  if(!text || !text.trim()) return;
+  botAdd(escapeHtml(text), 'user');
+
+  const lower = text.toLowerCase();
+
+  // If in reservation collection
+  if(chatState > 0){
+    handleChatReservation(text);
+    return;
   }
 
-  flags.forEach(flag => {
-    flag.addEventListener("click", () => {
-      const lang = flag.getAttribute("data-lang");
-      showLang(lang);
-    });
-  });
+  // check FAQ
+  const faq = chatbotKnowledge.faqs.find(f => f.q.split('|').some(k => lower.includes(k)));
+  if(faq){
+    botAdd(faq.a);
+    return;
+  }
+
+  // route detection a -> b (supports ->, → or -> or " to ")
+  let match = text.match(/(.+?)(?:->|→|->| to | do | - )(.+)/i);
+  if(!match) match = text.match(/(.+)\s+[-→]\s+(.+)/);
+  if(match){
+    const from = match[1].trim();
+    const to = match[2].trim();
+    botAdd(`Sprawdzam trasę z <strong>${escapeHtml(from)}</strong> do <strong>${escapeHtml(to)}</strong>...`);
+    // If Google Maps JS available -> calculate route
+    if(window.calculateAndDisplayRoute){
+      calculateAndDisplayRoute(from, to);
+      botAdd(`Jeśli chcesz otrzymać wycenę lub zapisać rezerwację, napisz "Rezerwacja".`);
+    } else {
+      // fallback to embed + distance estimate (fake or DistanceMatrix if key+api)
+      if(CONFIG.GOOGLE_MAPS_API_KEY){
+        // DistanceMatrix requires server key (CORS) – we'll use embed as fallback and random estimate
+      }
+      const distance = Math.floor(Math.random()*700)+80;
+      const mins = Math.floor(distance/80*60);
+      botAdd(`Trasa ~ <strong>${distance} km</strong>, szacowany czas: <strong>${Math.floor(mins/60)}h ${mins%60}min</strong>. <br><a target="_blank" href="https://www.google.com/maps/dir/${encodeURIComponent(from)}/${encodeURIComponent(to)}">Pokaż trasę w Google Maps</a>`);
+      botAdd(`Jeśli chcesz wyceny lub rezerwacji, napisz "Rezerwacja".`);
+    }
+    return;
+  }
+
+  // "wycena" trigger
+  if(lower.includes('wycena') || lower.includes('cena') || lower.includes('koszt')){
+    botAdd('Aby podać wycenę, podaj trasę w formacie: <em>Miasto A → Miasto B</em> (np. Berlin → Monachium).');
+    return;
+  }
+
+  // "rezerwacja" trigger
+  if(lower.includes('rezerwacja') || lower.includes('zamów') || lower.includes('wycena')){
+    chatState = 1;
+    chatData = {};
+    botAdd('OK — zaczynam zbierać dane. Podaj proszę swoje imię i nazwisko:');
+    return;
+  }
+
+  // default
+  botAdd("Nie jestem pewien — spróbuj zapytać o trasę (np. 'Berlin → Monachium'), 'Rezerwacja' lub 'FAQ'.");
+}
+
+function handleChatReservation(input){
+  switch(chatState){
+    case 1:
+      if(input.trim().length < 3){ botAdd('Podaj poprawne imię i nazwisko.'); return; }
+      chatData.name = input.trim(); chatState = 2; botAdd('Podaj adres e-mail (albo wpisz "brak"):'); break;
+    case 2:
+      if(input.trim().toLowerCase() !== 'brak' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.trim())){ botAdd('Podaj poprawny e-mail lub wpisz "brak".'); return; }
+      chatData.email = input.trim().toLowerCase() === 'brak' ? '' : input.trim();
+      chatState = 3; botAdd('Podaj numer telefonu:'); break;
+    case 3:
+      chatData.phone = input.trim();
+      chatState = 4; botAdd('Podaj trasę (Skąd → Dokąd):'); break;
+    case 4:
+      chatData.route = input.trim();
+      chatState = 5; botAdd('Podaj datę i godzinę (np. 2025-11-15 08:00):'); break;
+    case 5:
+      chatData.datetime = input.trim();
+      chatState = 6; botAdd('Opcjonalne uwagi do przejazdu (np. bagaż, dzieci) lub wpisz "brak":'); break;
+    case 6:
+      chatData.notes = input.trim();
+      // save locally
+      const arr = loadReservations();
+      const rec = { id:'r_'+Date.now(), name:chatData.name, phone:chatData.phone, email:chatData.email, from: chatData.route.split(/->|→|to| - | to | do /i)[0]||'', to: chatData.route.split(/->|→|to| - | to | do /i)[1]||'', date: chatData.datetime, people:1, notes:chatData.notes || '', status:'pending', created_at:new Date().toISOString() };
+      arr.unshift(rec); saveReservations(arr); renderReservationsTable();
+      botAdd('Rezerwacja zapisana lokalnie. Chcesz wysłać e-mail z zapytaniem? (tak/nie)');
+      chatState = 7;
+      break;
+    case 7:
+      if(input.trim().toLowerCase().startsWith('t')){
+        // generate mailto (or use EmailJS if configured)
+        const subject = encodeURIComponent(`Wycena / Rezerwacja od ${chatData.name}`);
+        const body = encodeURIComponent(`Imię i nazwisko: ${chatData.name}\nTelefon: ${chatData.phone}\nE-mail: ${chatData.email || 'Brak'}\nTrasa: ${chatData.route}\nData: ${chatData.datetime}\nUwagi: ${chatData.notes || 'Brak'}`);
+        if(CONFIG.EMAILJS_SERVICE_ID && CONFIG.EMAILJS_TEMPLATE_ID && CONFIG.EMAILJS_USER_ID){
+          // try sending via EmailJS (not blocking)
+          emailjs.send(CONFIG.EMAILJS_SERVICE_ID, CONFIG.EMAILJS_TEMPLATE_ID, {
+            name: chatData.name, phone: chatData.phone, email: chatData.email||'Brak',
+            from_to: chatData.route, date: chatData.datetime, notes: chatData.notes||'Brak'
+          }).then(()=> botAdd('E-mail wysłany! Kierowca skontaktuje się wkrótce.'), ()=> botAdd('Błąd wysyłki e-mail. Możesz użyć mailto:'));
+        } else {
+          botAdd(`<a href="mailto:pistrakiewicz@gmail.com?subject=${subject}&body=${body}">Kliknij, by wysłać e-mail z zapytaniem</a>`);
+        }
+        // reset
+        chatState = 0; chatData = {};
+      } else {
+        botAdd('OK — rezerwacja zapisana lokalnie, kierowca oddzwoni żeby potwierdzić.');
+        chatState = 0; chatData = {};
+      }
+      break;
+  }
+}
+
+/* CHAT UI handlers */
+botSend.addEventListener('click', ()=>{ processBotInput(botInput.value); botInput.value=''; botInput.focus(); });
+botInput.addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ processBotInput(botInput.value); botInput.value=''; }});
+botClose.addEventListener('click', ()=>{ document.getElementById('chatbot-widget').style.display='none'; });
+
+/* ===================== LANGUAGE SWITCH FOR RULES ===================== */
+const blocks = document.querySelectorAll(".lang-block");
+const flags = document.querySelectorAll(".lang-flag");
+function showLang(lang){ blocks.forEach(b=>b.classList.add('hidden')); document.getElementById('lang-'+lang).classList.remove('hidden'); }
+flags.forEach(f=> f.addEventListener('click', ()=>{ const l=f.dataset.lang; showLang(l); }));
+// initial language detection
+const userLang = (navigator.language||'pl').slice(0,2);
+if(['pl','en','de','nl'].includes(userLang)) showLang(userLang); else showLang('pl');
+
+/* ===================== UTILS ===================== */
+function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 </script>
 
 </body>
 </html>
+
