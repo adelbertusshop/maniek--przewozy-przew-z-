@@ -891,8 +891,7 @@
   // --- podstawowe ustawienia ---
   document.getElementById('curYear').textContent = new Date().getFullYear();
   const SECRET_PASS = 'Maniek2024!Secure';
-
-  // Opinie rotator
+// Opinie rotator
   const opinie = [
     "⭐ „Kierowca jak złoto! Spokój i pełna kultura.”",
     "⭐ „Jechałem do Niemiec — zero stresu, pełen komfort.”",
@@ -1007,7 +1006,7 @@
 
   panelLoginBtn.addEventListener('click', ()=> {
     const pass = panelPassInput.value || '';
-    if(pass === SECRET_PASS){
+    if(pass === 'Krawczyk 25'){
       document.getElementById('panelPass').value = '';
       renderReservationsTable();
       document.getElementById('panelPass').placeholder = 'Zalogowano';
