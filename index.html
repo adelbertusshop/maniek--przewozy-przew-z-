@@ -1,11 +1,12 @@
-><!doctype html>
+<!doctype html>
 <html lang="pl">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Maniek — Pewny Przewóz | Mariusz Krawczyk</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
@@ -384,17 +385,131 @@
     margin-left: 8px;
   }
 
-  .success-message {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
-    padding: 12px;
-    border-radius: 8px;
-    margin: 10px 0;
+  #rules {
+    background: var(--card) !important;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 30px;
+    padding:20px 0;
+  }
+  
+  #rules .max-w-5xl {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding:0 16px;
+  }
+  
+  #rules h2, #rules h3 {
+    color: var(--accent);
+    font-size:clamp(20px, 5vw, 24px);
+  }
+  
+  #rules h3 {
+    font-size:clamp(18px, 4vw, 20px);
+  }
+  
+  #rules p {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size:14px;
+    margin-bottom:12px;
+  }
+  
+  .lang-flag {
+    border-radius: 3px;
+    transition: transform 0.2s;
+    width:32px;
+    height:24px;
+    cursor:pointer;
+  }
+  
+  .lang-flag:hover {
+    transform: scale(1.1);
+  }
+  
+  #partners {
+    background: rgba(11,19,33,0.95) !important;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding:30px 0;
+  }
+  
+  #partners .max-w-6xl {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding:0 16px;
+  }
+  
+  #partners h2 {
+    color: var(--accent);
     text-align: center;
-    animation: fadeIn 0.5s ease;
+    margin-bottom: 20px;
+    font-size:clamp(20px, 5vw, 24px);
+  }
+  
+  #partners p {
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 25px;
+    font-size:14px;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap:15px;
+  }
+  
+  .place-items-center {
+    place-items: center;
+  }
+  
+  .bg-gray-50 {
+    background: rgba(255,255,255,0.03);
+  }
+  
+  .rounded-lg {
+    border-radius: 12px;
+  }
+  
+  .shadow {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  
+  .hover-shadow-lg:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  }
+  
+  .transition {
+    transition: all 0.3s ease;
+  }
+  
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .p-4 {
+    padding: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .md-grid-cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+      gap:25px;
+    }
+    
+    #rules {
+      padding:30px 0;
+    }
+    
+    #partners {
+      padding:40px 0;
+    }
+    
+    .contact-links {
+      flex-direction: row;
+      justify-content: center;
+    }
   }
 
-  /* CZATBOT */
+  /* ===== NOWY SUPER CZATBOT ===== */
   .chatbot-toggle {
     position: fixed; bottom: 12px; right: 12px; z-index: 1200;
     width:60px; height:60px; border-radius:50%; background:linear-gradient(135deg,#4FA3FF,#2b6ce3);
@@ -494,7 +609,7 @@
     color:var(--accent); text-decoration:underline; cursor:pointer; 
   }
 
-  /* MAPA */
+  /* ===== NOWA MAPA ===== */
   #map { 
     width:100%; height:360px; border-radius:10px; 
     background: var(--card);
@@ -522,6 +637,21 @@
     display: none;
   }
 
+  .success-message {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 10px 0;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
   .welcome-message {
     background: linear-gradient(135deg, var(--accent), #2b6ce3);
     color: #072033;
@@ -532,13 +662,6 @@
     font-weight: bold;
     font-size: 18px;
     animation: fadeIn 0.5s ease;
-  }
-
-  @media (min-width: 768px) {
-    .contact-links {
-      flex-direction: row;
-      justify-content: center;
-    }
   }
 </style>
 </head>
@@ -568,7 +691,7 @@
     <div>
       <div class="card">
         <h2>Zarezerwuj przejazd</h2>
-        <p class="small muted">Wypełnij formularz — rezerwacja wyśle email do Mariusza!</p>
+        <p class="small muted">Wypełnij formularz — Mariusz Krawczyk potwierdzi telefonicznie.</p>
 
         <div class="contact-info">
           <h3>📞 Bezpośredni kontakt z właścicielem</h3>
@@ -582,38 +705,33 @@
           </div>
         </div>
 
-        <!-- Powiadomienie o wysłaniu -->
-        <div id="emailSuccess" class="success-message" style="display:none;">
-          ✅ Rezerwacja wysłana! Email został dostarczony do Mariusza.
-        </div>
-
         <form id="bookingForm" autocomplete="off">
           <div style="margin-top:12px;">
-            <label for="name">Imię i nazwisko *</label>
+            <label for="name">Imię i nazwisko</label>
             <input id="name" type="text" required placeholder="Jan Kowalski">
             <div class="form-error" id="nameError">Proszę podać imię i nazwisko</div>
           </div>
 
           <div style="margin-top:10px;">
-            <label for="phone">Telefon *</label>
+            <label for="phone">Telefon</label>
             <input id="phone" type="tel" required placeholder="+48 600 000 000">
             <div class="form-error" id="phoneError">Proszę podać poprawny numer telefonu</div>
           </div>
 
           <div style="margin-top:10px;">
-            <label for="email">Email *</label>
-            <input id="email" type="email" required placeholder="twoj@email.pl">
+            <label for="email">Email (opcjonalnie)</label>
+            <input id="email" type="email" placeholder="kontakt@przyklad.pl">
             <div class="form-error" id="emailError">Proszę podać poprawny adres email</div>
           </div>
 
           <div class="form-row" style="margin-top:10px;">
             <div class="col">
-              <label for="from">Skąd (miasto/adres) *</label>
+              <label for="from">Skąd (miasto/adres)</label>
               <input id="from" type="text" required placeholder="Poznań, ul. Święta 1">
               <div class="form-error" id="fromError">Proszę podać miejsce odbioru</div>
             </div>
             <div class="col">
-              <label for="to">Dokąd (miasto/adres) *</label>
+              <label for="to">Dokąd (miasto/adres)</label>
               <input id="to" type="text" required placeholder="Berlin, dworzec główny">
               <div class="form-error" id="toError">Proszę podać miejsce docelowe</div>
             </div>
@@ -621,37 +739,32 @@
 
           <div class="form-row" style="margin-top:10px;">
             <div class="col">
-              <label for="date">Data i godzina *</label>
+              <label for="date">Data i godzina</label>
               <input id="date" type="datetime-local" required>
               <div class="form-error" id="dateError">Proszę wybrać datę i godzinę</div>
             </div>
             <div class="col">
-              <label for="people">Liczba osób *</label>
+              <label for="people">Liczba osób</label>
               <input id="people" type="number" value="1" min="1" max="8" required>
               <div class="form-error" id="peopleError">Proszę podać liczbę osób (1-8)</div>
             </div>
           </div>
 
           <div style="margin-top:10px;">
-            <label for="notes">Uwagi (bagaż, dzieci, specjalne potrzeby...)</label>
-            <textarea id="notes" placeholder="Np. 2 duże walizki, fotelik dziecięcy..."></textarea>
+            <label for="notes">Uwagi (opcjonalnie)</label>
+            <textarea id="notes" placeholder="Bagaż, dzieci, specjalne potrzeby..."></textarea>
           </div>
 
           <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            <button type="submit" class="submit" id="submitBtn">
-              Wyślij rezerwację
-            </button>
+            <button type="submit" class="submit">Wyślij rezerwację</button>
             <div class="muted" id="formStatus"></div>
           </div>
 
-          <p class="muted" style="margin-top:10px;">
-            ✅ Po wysłaniu formularza rezerwacja zostanie natychmiast wysłana na email Mariusza<br>
-            📞 Mariusz skontaktuje się z Tobą w celu potwierdzenia
-          </p>
+          <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — zostanie ona zapisana lokalnie (kierowca może ją zobaczyć po zalogowaniu na Panel kierowcy).</p>
         </form>
       </div>
 
-      <!-- Mapa OpenStreetMap -->
+      <!-- NOWA MAPA OpenStreetMap -->
       <div class="card" style="margin-top:18px;">
         <h2>Lokalizacja — podgląd trasy</h2>
         <p class="small muted">Wpisz adres, aby zobaczyć go na mapie.</p>
@@ -674,7 +787,7 @@
     <aside>
       <div class="card">
         <h2 id="kierowca">O kierowcy</h2>
-        <p><strong>Mariusz "Maniek" Krawczyk</strong> — właściciel firmy z 12-letnim doświadczeniem. Specjalizacja w trasach międzynarodowych PL↔DE/NL/BE. Certyfikowany kierowca z kursem pierwszej pomocy.</p>
+        <p><strong>Mariusz "Maniek" Krawczyk</strong> — właściciel firmy z 12-letnim doświadczeniem. Specjalizacja w trasach międzynarodowych PL↔DE/NL/BE. Certyfikowany kierowca z kursem pierwszej pomocy. Spokój i kultura osobista gwarantowane.</p>
         
         <div class="contact-info" style="margin: 15px 0; padding: 12px;">
           <div style="text-align: center;">
@@ -714,7 +827,7 @@
         <button class="btn primary" id="openPanelMobile">Otwórz Panel</button>
 
         <div id="panelArea" style="display:none; margin-top:12px;">
-          <div id="welcomeMessage" class="success-message hidden">
+          <div id="welcomeMessage" class="welcome-message hidden">
             Cześć Mariusz! Witaj w panelu kierowcy.
           </div>
           <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">
@@ -733,7 +846,7 @@
   </div>
 </main>
 
-<!-- CZATBOT -->
+<!-- NOWY SUPER CZATBOT -->
 <button class="chatbot-toggle" title="Asystent Maniek">💬</button>
 
 <div class="chatbot-window" aria-hidden="true">
@@ -777,15 +890,19 @@
 
 <script>
 // =========================
-// PEŁNY KOD - CZATBOT + MAPA + FORMULARZ + EMAIL
+// SCALONY KOD - SUPER CZATBOT + MAPA + FORMULARZ
+// Z DANAMI WŁAŚCICIELA: Mariusz Krawczyk
 // =========================
+
+// --- Inicjalizacja EmailJS ---
+// Uwaga: Zastąp poniższe wartości swoimi danymi z EmailJS
+emailjs.init("Twój_User_ID");
 
 // --- podstawowe ustawienia ---
 document.getElementById('curYear').textContent = new Date().getFullYear();
 const SECRET_PASS = 'ManiekManiek';
 
 // --- DANE WŁAŚCICIELA ---
-const OWNER_EMAIL = 'mariusz.krawczyk7.88@gmail.com';
 const OWNER_DATA = {
   name: 'Mariusz Krawczyk',
   phone: '+48 575 686 277',
@@ -807,38 +924,6 @@ function saveReservations(arr){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
 }
 
-// --- Funkcja wysyłania emaila ---
-function sendBookingEmail(bookingData) {
-  const subject = `Nowa rezerwacja - ${bookingData.name}`;
-  
-  // Tworzymy tabelkę w HTML dla emaila
-  const emailBody = `
-Nowa rezerwacja przejazdu:
-
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; font-family: Arial, sans-serif;">
-<tr><td><b>Klient:</b></td><td>${bookingData.name}</td></tr>
-<tr><td><b>Telefon:</b></td><td>${bookingData.phone}</td></tr>
-<tr><td><b>Email:</b></td><td>${bookingData.email}</td></tr>
-<tr><td><b>Trasa:</b></td><td>${bookingData.from} → ${bookingData.to}</td></tr>
-<tr><td><b>Data i godzina:</b></td><td>${new Date(bookingData.date).toLocaleString('pl-PL')}</td></tr>
-<tr><td><b>Liczba osób:</b></td><td>${bookingData.people}</td></tr>
-<tr><td><b>Uwagi:</b></td><td>${bookingData.notes || 'Brak uwag'}</td></tr>
-<tr><td><b>Data rezerwacji:</b></td><td>${new Date().toLocaleString('pl-PL')}</td></tr>
-</table>
-
----
-Wiadomość wysłana ze strony Maniek - Pewny Przewóz
-  `.trim();
-
-  // Tworzymy link mailto
-  const mailtoLink = `mailto:${OWNER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-  
-  // Otwieramy klienta pocztowego
-  window.location.href = mailtoLink;
-  
-  return true;
-}
-
 // --- Opinie rotator ---
 const opinie = [
   "⭐ „Mariusz to kierowca jak złoto! Spokój i pełna kultura.”",
@@ -855,9 +940,20 @@ showOpinion();
 setInterval(showOpinion,4500);
 
 // =========================
-// MAPA LEAFLET
+// NOWA MAPA I CZATBOT
 // =========================
 
+/* ---------- SETTINGS ---------- */
+const PRICE_PER_KM = 2.0;          // PLN per km base
+const NIGHT_SURCHARGE = 0.30;      // 30% more night hours
+const HIGHWAY_SURCHARGE = 0.15;    // 15% if autopays assumed
+const MIN_FARE = 120;              // minimal fee
+
+/* ---------- HELPERS ---------- */
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function esc(s=''){ return String(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ---------- MAP (Leaflet) ---------- */
 const map = L.map('map', { zoomControl:true }).setView([52.2297,21.0122], 7);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{ maxZoom:19, attribution:'© OpenStreetMap contributors' }).addTo(map);
 let routeLayer = null;
@@ -873,8 +969,9 @@ async function geocode(query){
   }catch(e){ console.error(e); return []; }
 }
 
-/* use OSRM for routing */
+/* use OSRM for routing (public demo) */
 async function routeBetween(lat1,lon1,lat2,lon2){
+  // OSRM expects lon,lat pairs
   const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson&annotations=distance,duration`;
   try{
     const r = await fetch(url);
@@ -885,26 +982,74 @@ async function routeBetween(lat1,lon1,lat2,lon2){
   }catch(e){ console.warn('Routing failed', e); return null; }
 }
 
-/* search box functionality */
+/* calculate price from distance (meters) and options */
+function estimatePriceFromMeters(meters, options={}){
+  const km = meters/1000;
+  let base = Math.max(MIN_FARE, km * PRICE_PER_KM);
+  // time-based surcharges (options.night boolean)
+  if(options.night) base *= (1 + NIGHT_SURCHARGE);
+  if(options.highway) base *= (1 + HIGHWAY_SURCHARGE);
+  return Math.round(base);
+}
+
+/* ---------- UI: search box -> geocode -> marker -------- */
 const searchBox = document.getElementById('searchBox');
 searchBox.addEventListener('keypress', async (e) => {
   if(e.key !== 'Enter') return;
   const q = searchBox.value.trim();
   if(!q) return;
   const res = await geocode(q);
-  if(!res || res.length===0){ alert('Nie znaleziono adresu.'); return; }
+  if(!res || res.length===0){ alert('Nie znaleziono adresu. Spróbuj bardziej precyzyjnie (ulica, miasto).'); return; }
   const place = res[0];
   const lat = parseFloat(place.lat), lon = parseFloat(place.lon);
   if(tempMarker) map.removeLayer(tempMarker);
-  tempMarker = L.marker([lat,lon]).addTo(map).bindPopup(place.display_name).openPopup();
+  tempMarker = L.marker([lat,lon]).addTo(map).bindPopup(esc(place.display_name)).openPopup();
   map.setView([lat,lon], 15);
 });
 
-// =========================
-// CZATBOT
-// =========================
+/* Convenience: if user writes "Skąd → Dokąd" in chat, bot will compute route */
+async function showRouteFromString(str){
+  // expected formats: "Poznań → Berlin", "ul. Długa 5 Poznań -> ul. ...", "skąd;dokąd"
+  const arrows = ['→','->','—','–','>','⇒'];
+  let parts = null;
+  for(const a of arrows){
+    if(str.includes(a)){ parts = str.split(a).map(s=>s.trim()); break; }
+  }
+  if(!parts){
+    // try " do "
+    if(str.toLowerCase().includes(' do ')) parts = str.split(/ do /i).map(s=>s.trim());
+  }
+  if(!parts || parts.length<2) { return null; }
+  const fromQ = parts[0], toQ = parts[1];
+  const fromRes = await geocode(fromQ);
+  const toRes = await geocode(toQ);
+  if(!fromRes.length || !toRes.length) return { error:'Nie znaleziono jednego z adresów.' };
+  const f = fromRes[0], t = toRes[0];
+  const fLat = parseFloat(f.lat), fLon = parseFloat(f.lon);
+  const tLat = parseFloat(t.lat), tLon = parseFloat(t.lon);
+  const route = await routeBetween(fLat,fLon,tLat,tLon);
+  if(!route) return { error:'Nie udało się wyznaczyć trasy.' };
 
-let LANG = 'pl';
+  // draw route
+  if(routeLayer) map.removeLayer(routeLayer);
+  routeLayer = L.geoJSON(route.geometry, { style: { color:'#4FA3FF', weight:4, opacity:0.9 } }).addTo(map);
+  // fit bounds
+  const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
+  map.fitBounds(coords, { padding:[40,40] });
+
+  // markers
+  if(tempMarker) map.removeLayer(tempMarker);
+  const m1 = L.marker([fLat,fLon]).addTo(map).bindPopup(esc(f.display_name));
+  const m2 = L.marker([tLat,tLon]).addTo(map).bindPopup(esc(t.display_name));
+  tempMarker = L.layerGroup([m1,m2]).addTo(map);
+
+  return { route, from: f, to: t };
+}
+
+/* ---------- CHATBOT LOGIC ---------- */
+
+// language support (simple)
+let LANG = 'pl'; // 'pl','en','de','nl' - default pl
 const langBtn = document.getElementById('langBtn');
 langBtn.addEventListener('click', ()=>{
   const order = ['pl','en','de','nl'];
@@ -936,10 +1081,12 @@ cbClose.addEventListener('click', ()=>{ cbWindow.style.display='none'; cbToggle.
 cbSend.addEventListener('click', ()=>{ handleUserMessage(cbInput.value.trim()); cbInput.value=''; });
 cbInput.addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ cbSend.click(); }});
 
+// start message
 function botSystemIntro(){
   if(cbMessages.children.length===0) botAddMessage(getResponseText('greeting') + ' ' + getResponseText('help'));
 }
 
+/* add message */
 function botAddMessage(text, from='bot'){
   const d = document.createElement('div');
   d.className = 'message ' + (from==='user' ? 'user' : 'bot');
@@ -948,15 +1095,14 @@ function botAddMessage(text, from='bot'){
   cbMessages.scrollTop = cbMessages.scrollHeight;
 }
 
-function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
-function esc(s=''){ return String(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
+/* language-based canned responses */
 const canned = {
   pl: {
     greeting: `Cześć! Jestem Asystent ${OWNER_DATA.formalName}. 😊`,
     help: `Pomogę Ci z wyceną, rezerwacją trasy, zasadami bezpieczeństwa. Bezpośredni kontakt: ${OWNER_DATA.phone}`,
     unknown: `Przepraszam, nie zrozumiałem. Możesz zapytać o wycenę lub zadzwonić bezpośrednio do ${OWNER_DATA.name} - ${OWNER_DATA.phone}`,
     booking_confirm: `Zarezerwowałem wstępnie—${OWNER_DATA.name} potwierdzi telefonicznie. Chcesz abym zebrał dane teraz?`,
+    available_none: 'Brak dostępnych terminów na wskazany dzień.',
     contact: `Kontakt bezpośredni:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
   },
   en: {
@@ -964,6 +1110,23 @@ const canned = {
     help: `I can help with price estimates, booking routes, safety rules. Direct contact: ${OWNER_DATA.phone}`,
     unknown: `Sorry, I didn't get that. Try 'price Poznan to Berlin' or call ${OWNER_DATA.name} directly at ${OWNER_DATA.phone}`,
     booking_confirm: 'Provisional booking created — driver will confirm by phone. Collect details now?',
+    available_none: 'No availability for the selected date.',
+    contact: `Direct contact:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
+  },
+  de: {
+    greeting: `Hallo! Ich bin ${OWNER_DATA.name} Assistent. 😊`,
+    help: `Ich helfe bei Preisberechnungen, Buchungen, Sicherheitsregeln. Direktkontakt: ${OWNER_DATA.phone}`,
+    unknown: 'Entschuldigung, ich habe das nicht verstanden.',
+    booking_confirm: 'Vorläufige Buchung erstellt — Fahrer bestätigt telefonisch. Daten jetzt sammeln?',
+    available_none: 'Keine Verfügbarkeit an diesem Datum.',
+    contact: `Direktkontakt:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
+  },
+  nl: {
+    greeting: `Hoi! Ik ben ${OWNER_DATA.name} Assistent. 😊`,
+    help: `Ik help met prijsinschatting, routeboekingen, veiligheidsregels. Direct contact: ${OWNER_DATA.phone}`,
+    unknown: 'Sorry, dat begreep ik niet.',
+    booking_confirm: 'Voorlopige boeking gemaakt — chauffeur bevestigt telefonisch. Gegevens nu verzamelen?',
+    available_none: 'Geen beschikbaarheid op die datum.',
     contact: `Direct contact:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
   }
 };
@@ -972,6 +1135,7 @@ function getResponseText(key){
   return canned[LANG] && canned[LANG][key] ? canned[LANG][key] : canned.pl[key];
 }
 
+/* BOT knowledge (big set) */
 const BOT_KB = {
   driver: {
     name: OWNER_DATA.formalName,
@@ -981,7 +1145,8 @@ const BOT_KB = {
     'Pasy bezpieczeństwa obowiązkowe dla wszystkich pasażerów.',
     'Regularne przeglądy techniczne co 30 dni.',
     'Pełne ubezpieczenie OC/AC + NNW.',
-    'Zakaz spożywania alkoholu i środków odurzających w pojeździe.'
+    'Zakaz spożywania alkoholu i środków odurzających w pojeździe.',
+    'Dezynfekcja pojazdu przed każdym kursem.'
   ],
   faq: {
     'faktura': 'Wystawiamy faktury VAT na życzenie — podaj dane do faktury przy rezerwacji.',
@@ -995,28 +1160,59 @@ const BOT_KB = {
   hits: [
     'Hit: Express Berlin — szybkie połączenia w promocji!',
     'Voucher -30% dla klientów którzy zamówią 3x w miesiącu.',
-    'Nocne przejazdy -20% (po 22:00).'
+    'Nocne przejazdy -20% (po 22:00).',
+    'Stali klienci - dodatkowe rabaty!'
   ]
 };
 
+/* natural-language handler (simple heuristics) */
 async function handleUserMessage(raw){
   if(!raw) return;
   botAddMessage(esc(raw), 'user');
   cbTyping.style.display = 'block';
 
+  // small delay
   await sleep(400 + Math.random()*600);
 
+  // process
   const text = raw.toLowerCase();
 
+  // direct route request: "Poznań -> Berlin" or "Skąd -> Dokąd"
+  if(/→|->|do|->| to /i.test(text) && (text.includes('→') || text.includes('->') || text.includes(' do ') || text.includes(' to '))){
+    const result = await showRouteFromString(raw);
+    cbTyping.style.display='none';
+    if(!result) { botAddMessage(getResponseText('unknown')); return; }
+    if(result.error){ botAddMessage(esc(result.error)); return; }
+
+    // present summary: distance/time/price
+    const meters = result.route.distance;
+    const seconds = result.route.duration;
+    const price = estimatePriceFromMeters(meters, { night: isNightTime(), highway:true });
+    const distKm = (meters/1000).toFixed(1);
+    const timeMin = Math.round(seconds/60);
+
+    const reply = `
+      Trasa: <b>${esc(result.from.display_name.split(',')[0])} → ${esc(result.to.display_name.split(',')[0])}</b><br>
+      Dystans: <b>${distKm} km</b>, Szac. czas: <b>${timeMin} min</b>.<br>
+      Szac. cena: <b>${price} PLN</b> (orientacyjnie).<br>
+      <span class="chat-link" onclick="startBookingFromRoute('${escape(JSON.stringify(result.from))}','${escape(JSON.stringify(result.to))}','${meters}','${seconds}')">Zarezerwuj tę trasę</span>
+    `;
+    botAddMessage(reply);
+    return;
+  }
+
+  // keywords
   if(/cześć|hej|witam|dzień dobry/.test(text)){ cbTyping.style.display='none'; botAddMessage(getResponseText('greeting')); return; }
   if(/ile koszt|cena|koszt/.test(text)){
+    // try to detect city name, else ask for route
     const cities = ['berlin','warszawa','kraków','wrocław','gdańsk','poznan'];
-    for(const c of cities){ if(text.includes(c)){ botAddMessage(`Przejazd do ${c.charAt(0).toUpperCase()+c.slice(1)}: orientacyjnie  ${estimateCityRange(c)} PLN.`); cbTyping.style.display='none'; return; } }
+    for(const c of cities){ if(text.includes(c)){ const price = BOT_KB.hits.includes(c)?'promocyjna' : 'orientacyjna'; botAddMessage(`Przejazd do ${c.charAt(0).toUpperCase()+c.slice(1)}: orientacyjnie  ${estimateCityRange(c)} PLN.`); cbTyping.style.display='none'; return; } }
     cbTyping.style.display='none'; botAddMessage('Podaj proszę trasę (Skąd → Dokąd) lub miasto docelowe, a policzę przybliżoną cenę.'); return;
   }
   if(/rezerw|zarezerwuj|book/.test(text)){
     cbTyping.style.display='none';
     botAddMessage(getResponseText('booking_confirm'));
+    // start booking flow
     await sleep(300);
     startBookingFlow();
     return;
@@ -1026,14 +1222,25 @@ async function handleUserMessage(raw){
   if(/hit|trend|polec|promoc/.test(text)){ cbTyping.style.display='none'; botAddMessage(BOT_KB.hits[Math.floor(Math.random()*BOT_KB.hits.length)]); return; }
   if(/kontakt|telefon|mail|email/.test(text)){ cbTyping.style.display='none'; botAddMessage(getResponseText('contact')); return; }
 
+  // faq match
   for(const k of Object.keys(BOT_KB.faq)){
     if(text.includes(k)){ cbTyping.style.display='none'; botAddMessage(BOT_KB.faq[k]); return; }
   }
 
+  // check availability question
+  if(/dostęp|wolne|terminy|termin/.test(text)){
+    const arr = loadReservations();
+    cbTyping.style.display='none';
+    botAddMessage(`Aktualnie zapisane rezerwacje: <b>${arr.length}</b>. Możesz podać datę (YYYY-MM-DD) a sprawdzę dostępność.`);
+    return;
+  }
+
+  // fallback
   cbTyping.style.display='none';
   botAddMessage(getResponseText('unknown'));
 }
 
+/* small pricing helper for city keywords (simple approximations) */
 function estimateCityRange(city){
   const map = {
     berlin: '350-450',
@@ -1046,6 +1253,13 @@ function estimateCityRange(city){
   return map[city] || 'do ustalenia';
 }
 
+/* crude night-time detection */
+function isNightTime(){
+  const h = new Date().getHours();
+  return (h < 6 || h >= 22);
+}
+
+/* ---------- BOOKING FLOW (chat-driven) ---------- */
 let bookingContext = null;
 
 async function startBookingFlow(prefill={}){
@@ -1066,36 +1280,45 @@ async function askBookingQuestion(){
     { key:'notes', q:'Dodatkowe uwagi? (bagaż, fotelik...)' }
   ];
   if(bookingContext.step >= qmap.length){
+    // finalize
     finalizeBooking();
     return;
   }
   const cur = qmap[bookingContext.step];
   botAddMessage(cur.q);
-  
+  // wait for user input via chat - override cbSend handler temporarily
   const handler = async () => {
     const val = cbInput.value.trim();
     if(!val){ botAddMessage('Proszę podaj wartość.'); return; }
     bookingContext.data[cur.key] = val;
     cbInput.value='';
     bookingContext.step++;
+    // restore normal handler and continue
     await askBookingQuestion();
   };
 
+  // we replace the send handler once to capture next answer
+  const old = cbSend.onclick;
   cbSend.onclick = handler;
+  // also Enter key - we rely on default enter->click
+  // when booking completes, restore handler inside finalizeBooking
 }
 
+/* finalize booking: save local + show summary + offer email/send via EmailJS if configured */
 async function finalizeBooking(){
+  // restore send handler
   cbSend.onclick = ()=>{ handleUserMessage(cbInput.value.trim()); cbInput.value=''; };
 
   const data = bookingContext.data;
+  // convert date if possible
   let dateIso = data.date;
+  // attempt parsing "YYYY-MM-DD HH:mm"
   try {
     if(/\d{4}-\d{2}-\d{2}/.test(data.date)){
       const d = new Date(data.date.replace(' ','T'));
       if(!isNaN(d)) dateIso = d.toISOString();
     }
   }catch(e){}
-  
   const r = {
     id: 'r_' + Date.now(),
     name: data.name || 'Anon',
@@ -1114,41 +1337,63 @@ async function finalizeBooking(){
   arr.unshift(r);
   saveReservations(arr);
 
-  const emailSent = sendBookingEmail(r);
-  
-  if (emailSent) {
-    botAddMessage(`✅ Rezerwacja zapisana i wysłana emailem do ${OWNER_DATA.name}! Odezwie się do Ciebie w ciągu 24h.`);
-  } else {
-    botAddMessage(`📝 Rezerwacja zapisana lokalnie. ${OWNER_DATA.name} skontaktuje się z Tobą.`);
-  }
+  // show summary + price estimate if route resolvable
+  let priceText = 'Cena orientacyjna: nieznana (brak trasy)';
+  // try to geocode route and price
+  try{
+    const res = await showRouteFromString(`${r.from} → ${r.to}`);
+    if(res && !res.error){
+      const meters = res.route.distance;
+      const p = estimatePriceFromMeters(meters, { night: isNightTime(), highway:true });
+      priceText = `Szacunkowa cena: <b>${p} PLN</b> (dystans ${(meters/1000).toFixed(1)} km).`;
+    }
+  }catch(e){ console.warn(e); }
 
+  botAddMessage(`Dziękuję — rezerwacja zapisana. ${priceText} ${OWNER_DATA.name} skontaktuje się telefonicznie w celu potwierdzenia.`);
   bookingContext = null;
 }
 
+/* helper used in route reply to start booking with route prefilled */
+window.startBookingFromRoute = async function(fromJSON,toJSON,meters,seconds){
+  const fromObj = JSON.parse(unescape(fromJSON));
+  const toObj = JSON.parse(unescape(toJSON));
+  const fromStr = fromObj.display_name ? fromObj.display_name.split(',')[0] : (fromObj.name||fromObj.address||'');
+  const toStr = toObj.display_name ? toObj.display_name.split(',')[0] : (toObj.name||toObj.address||'');
+  startBookingFlow({ from: fromStr, to: toStr });
+  botAddMessage('Rozpoczynam proces rezerwacji z predefiniowaną trasą. Podaj kolejne dane proszę.');
+}
+
+/* ---------- init: greet + quick info ---------- */
 function initBotUI(){
+  // greeting message
   botAddMessage(`<b>${BOT_KB.driver.name}</b> — ${BOT_KB.driver.desc}`);
   botAddMessage(getResponseText('greeting') + ' ' + getResponseText('help'));
+  // show top FAQ as hints
   botAddMessage('Możesz zapytać o: <i>cena</i>, <i>rezerwacja</i>, <i>bezpieczeństwo</i>, <i>bagaż</i>, <i>kontakt</i>, <i>hit sezonu</i>.');
 }
 initBotUI();
 
 // =========================
-// FORMULARZ REZERWACJI
+// ORYGINALNA FUNKCJONALNOŚĆ FORMULARZA
 // =========================
 
+// --- Walidacja formularza ---
 function validateForm() {
   let isValid = true;
   
+  // Reset errors
   document.querySelectorAll('.form-error').forEach(el => {
     el.style.display = 'none';
   });
   
+  // Name validation
   const name = document.getElementById('name').value.trim();
   if (!name) {
     document.getElementById('nameError').style.display = 'block';
     isValid = false;
   }
   
+  // Phone validation
   const phone = document.getElementById('phone').value.trim();
   const phoneRegex = /^[\+]?[0-9\s\-\(\)]{9,}$/;
   if (!phone || !phoneRegex.test(phone)) {
@@ -1156,31 +1401,38 @@ function validateForm() {
     isValid = false;
   }
   
+  // Email validation (optional)
   const email = document.getElementById('email').value.trim();
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailRegex.test(email)) {
-    document.getElementById('emailError').style.display = 'block';
-    isValid = false;
+  if (email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      document.getElementById('emailError').style.display = 'block';
+      isValid = false;
+    }
   }
   
+  // From validation
   const from = document.getElementById('from').value.trim();
   if (!from) {
     document.getElementById('fromError').style.display = 'block';
     isValid = false;
   }
   
+  // To validation
   const to = document.getElementById('to').value.trim();
   if (!to) {
     document.getElementById('toError').style.display = 'block';
     isValid = false;
   }
   
+  // Date validation
   const date = document.getElementById('date').value;
   if (!date) {
     document.getElementById('dateError').style.display = 'block';
     isValid = false;
   }
   
+  // People validation
   const people = document.getElementById('people').value;
   if (!people || people < 1 || people > 8) {
     document.getElementById('peopleError').style.display = 'block';
@@ -1190,6 +1442,7 @@ function validateForm() {
   return isValid;
 }
 
+// --- Reszta funkcjonalności ---
 const form = document.getElementById('bookingForm');
 const formStatus = document.getElementById('formStatus');
 
@@ -1221,27 +1474,36 @@ form.addEventListener('submit', function(e){
   arr.unshift(r);
   saveReservations(arr);
 
-  const emailSent = sendBookingEmail(r);
-
-  if (emailSent) {
-    document.getElementById('emailSuccess').style.display = 'block';
-    formStatus.textContent = 'Otwieram klienta pocztowego...';
+  // Uwaga: Zastąp poniższe wartości swoimi danymi z EmailJS
+  emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
+    name: r.name,
+    phone: r.phone,
+    email: r.email || 'Nie podano',
+    from: r.from,
+    to: r.to,
+    date: new Date(r.date).toLocaleString('pl-PL'),
+    people: r.people,
+    notes: r.notes || 'Brak uwag',
+    created_at: new Date().toLocaleString('pl-PL'),
+    owner_name: OWNER_DATA.name,
+    owner_phone: OWNER_DATA.phone,
+    owner_email: OWNER_DATA.email
+  }).then(() => {
+    formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
     formStatus.style.color = '#4CAF50';
-    
-    setTimeout(() => {
-      form.reset();
-      formStatus.textContent = '';
-      document.getElementById('emailSuccess').style.display = 'none';
-    }, 2000);
-  }
+    form.reset();
+    setTimeout(()=>formStatus.textContent='','4200');
+  }, (error) => {
+    formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
+    formStatus.style.color = '#ff9800';
+    form.reset();
+    setTimeout(()=>formStatus.textContent='','4200');
+  });
 
   renderReservationsTable(); 
 });
 
-// =========================
-// PANEL KIEROWCY
-// =========================
-
+// Panel kierowcy
 const panelArea = document.getElementById('panelArea');
 const panelLoginBtn = document.getElementById('panelLogin');
 const panelPassInput = document.getElementById('panelPass');
@@ -1336,6 +1598,27 @@ function escapeHtml(s=''){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; 
   }); 
 }
+
+/* ---------- small helper to escape in HTML attributes ---------- */
+function escape(s=''){ return String(s).replace(/"/g,'&quot;').replace(/'/g,"&#39;"); }
+
+/* ---------- utility: small function to add user messages (for flows) ---------- */
+function addUserText(text){ botAddMessage(esc(text),'user'); }
+
+/* ---------- expose some functions to console if needed ---------- */
+window.maniek = {
+  estimateFromRouteString: async (s)=> {
+    const res = await showRouteFromString(s);
+    if(!res || res.error) return res;
+    return {
+      distance_km: (res.route.distance/1000).toFixed(2),
+      duration_min: Math.round(res.route.duration/60),
+      price_pln: estimatePriceFromMeters(res.route.distance, { night:isNightTime(), highway:true })
+    };
+  },
+  listReservations: () => loadReservations(),
+  owner: OWNER_DATA
+};
 </script>
 
 </body>
