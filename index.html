@@ -385,51 +385,12 @@
     margin-left: 8px;
   }
 
-  #rules {
-    background: var(--card) !important;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    margin-top: 30px;
-    padding:20px 0;
-  }
-  
-  #rules .max-w-5xl {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding:0 16px;
-  }
-  
-  #rules h2, #rules h3 {
-    color: var(--accent);
-    font-size:clamp(20px, 5vw, 24px);
-  }
-  
-  #rules h3 {
-    font-size:clamp(18px, 4vw, 20px);
-  }
-  
-  #rules p {
-    color: var(--muted);
-    line-height: 1.6;
-    font-size:14px;
-    margin-bottom:12px;
-  }
-  
-  .lang-flag {
-    border-radius: 3px;
-    transition: transform 0.2s;
-    width:32px;
-    height:24px;
-    cursor:pointer;
-  }
-  
-  .lang-flag:hover {
-    transform: scale(1.1);
-  }
-  
+  /* ===== SEKCJA PARTNERZY ===== */
   #partners {
     background: rgba(11,19,33,0.95) !important;
     border-top: 1px solid rgba(255,255,255,0.05);
-    padding:30px 0;
+    padding:40px 0;
+    margin-top: 40px;
   }
   
   #partners .max-w-6xl {
@@ -452,60 +413,144 @@
     font-size:14px;
   }
   
-  .grid-cols-2 {
+  .partners-grid {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap:15px;
-  }
-  
-  .place-items-center {
+    gap: 15px;
     place-items: center;
   }
   
-  .bg-gray-50 {
+  .partner-card {
     background: rgba(255,255,255,0.03);
-  }
-  
-  .rounded-lg {
     border-radius: 12px;
-  }
-  
-  .shadow {
+    padding: 1rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
   }
   
-  .hover-shadow-lg:hover {
+  .partner-card:hover {
     box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.05);
   }
   
-  .transition {
+  .partner-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .partner-name {
+    color: var(--white);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .partner-desc {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  @media (min-width: 768px) {
+    .partners-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+    }
+    
+    .partner-card {
+      min-height: 140px;
+      padding: 1.5rem;
+    }
+    
+    .partner-icon {
+      font-size: 40px;
+    }
+  }
+
+  /* ===== SEKCJA KORZYŚCI DLA KLIENTÓW ===== */
+  #benefits {
+    background: var(--card) !important;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 40px 0;
+    margin-top: 40px;
+  }
+  
+  #benefits .max-w-5xl {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding:0 16px;
+  }
+  
+  #benefits h2 {
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 10px;
+    font-size:clamp(20px, 5vw, 24px);
+  }
+  
+  #benefits p {
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size:14px;
+  }
+  
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+  
+  .benefit-card {
+    background: linear-gradient(135deg, rgba(79,163,255,0.1), rgba(218,165,32,0.05));
+    border: 1px solid rgba(79,163,255,0.2);
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
     transition: all 0.3s ease;
   }
   
-  .cursor-pointer {
-    cursor: pointer;
+  .benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(79,163,255,0.2);
+    border-color: var(--accent);
   }
   
-  .p-4 {
-    padding: 1rem;
+  .benefit-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
   }
   
+  .benefit-title {
+    color: var(--white);
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .benefit-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
   @media (min-width: 768px) {
-    .md-grid-cols-4 {
-      grid-template-columns: repeat(4, 1fr);
-      gap:25px;
+    .benefits-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
     }
     
-    #rules {
-      padding:30px 0;
-    }
-    
-    #partners {
-      padding:40px 0;
-    }
-    
-    .contact-links {
-      flex-direction: row;
-      justify-content: center;
+    .benefit-card {
+      padding: 30px 25px;
     }
   }
 
@@ -681,6 +726,8 @@
       <a class="btn" href="#kierowca">O kierowcy</a>
       <a class="btn" href="#bezpieczenstwo">Bezpieczeństwo</a>
       <a class="btn" href="#opinie">Opinie</a>
+      <a class="btn" href="#benefits">Korzyści</a>
+      <a class="btn" href="#partners">Partnerzy</a>
       <a class="btn primary" id="openPanelBtn">Panel kierowcy</a>
     </nav>
   </div>
@@ -845,6 +892,68 @@
     </aside>
   </div>
 </main>
+
+<!-- SEKCJA KORZYŚCI DLA KLIENTÓW -->
+<section id="benefits">
+  <div class="max-w-5xl">
+    <h2>Dlaczego warto wybrać nasze usługi?</h2>
+    <p>Komfort, bezpieczeństwo i niezawodność — to nasze priorytety</p>
+    
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">🚗</div>
+        <h3 class="benefit-title">Komfort Podróży</h3>
+        <p class="benefit-desc">Nowoczesne, klimatyzowane samochody z wygodnymi fotelami. Maksymalny komfort nawet podczas długich tras.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <div class="benefit-icon">⏱️</div>
+        <h3 class="benefit-title">Terminowość</h3>
+        <p class="benefit-desc">Zawsze dotrzymujemy terminów. Punktualność to nasza wizytówka. Dojedziemy na czas, bez względu na warunki.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <div class="benefit-icon">💰</div>
+        <h3 class="benefit-title">Konkurencyjne Ceny</h3>
+        <p class="benefit-desc">Atrakcyjne ceny bez ukrytych kosztów. Oferujemy najlepszy stosunek jakości do ceny na rynku.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEKCJA PARTNERZY -->
+<section id="partners">
+  <div class="max-w-6xl">
+    <h2>Nasi Zaufani Partnerzy</h2>
+    <p>Współpracujemy z najlepszymi firmami dla zapewnienia najwyższej jakości usług</p>
+    
+    <div class="partners-grid">
+      <div class="partner-card">
+        <div class="partner-icon">🏨</div>
+        <div class="partner-name">Hotel Premium</div>
+        <div class="partner-desc">Partner hotelowy</div>
+      </div>
+      
+      <div class="partner-card">
+        <div class="partner-icon">✈️</div>
+        <div class="partner-name">Lotnisko Okęcie</div>
+        <div class="partner-desc">Transfery lotniskowe</div>
+      </div>
+      
+      <div class="partner-card">
+        <div class="partner-icon">🏢</div>
+        <div class="partner-name">Business Center</div>
+        <div class="partner-desc">Transfery korporacyjne</div>
+      </div>
+      
+      <div class="partner-card">
+        <div class="partner-icon">🎯</div>
+        <div class="partner-name">Event Masters</div>
+        <div class="partner-desc">Transport eventowy</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- NOWY SUPER CZATBOT -->
 <button class="chatbot-toggle" title="Asystent Maniek">💬</button>
