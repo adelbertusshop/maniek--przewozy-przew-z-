@@ -894,10 +894,6 @@
 // Z DANAMI WŁAŚCICIELA: Mariusz Krawczyk
 // =========================
 
-// --- Inicjalizacja EmailJS ---
-// Uwaga: Zastąp poniższe wartości swoimi danymi z EmailJS
-emailjs.init("Twój_User_ID");
-
 // --- podstawowe ustawienia ---
 document.getElementById('curYear').textContent = new Date().getFullYear();
 const SECRET_PASS = 'ManiekManiek';
@@ -922,6 +918,34 @@ function loadReservations(){
 
 function saveReservations(arr){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+// --- Funkcja wysyłająca email do właściciela ---
+function sendEmailToOwner(bookingData) {
+  const subject = `Nowa rezerwacja od ${bookingData.name}`;
+  const body = `
+NOWA REZERWACJA - Maniek Pewny Przewóz
+
+DANE KLIENTA:
+Imię i nazwisko: ${bookingData.name}
+Telefon: ${bookingData.phone}
+Email: ${bookingData.email || 'Nie podano'}
+
+SZCZEGÓŁY PRZEJAZDU:
+Trasa: ${bookingData.from} → ${bookingData.to}
+Data i godzina: ${new Date(bookingData.date).toLocaleString('pl-PL')}
+Liczba osób: ${bookingData.people}
+
+UWAGI:
+${bookingData.notes || 'Brak uwag'}
+
+DATA REZERWACJI: ${new Date(bookingData.created_at).toLocaleString('pl-PL')}
+ID REZERWACJI: ${bookingData.id}
+  `.trim();
+
+  // Otwórz klienta poczty z wypełnionym emailem
+  const mailtoLink = `mailto:${OWNER_DATA.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailtoLink;
 }
 
 // --- Opinie rotator ---
@@ -1443,46 +1467,6 @@ function validateForm() {
   }
   
   return isValid;
-}
-
-// --- Funkcja wysyłająca email do właściciela ---
-function sendEmailToOwner(bookingData) {
-  const emailBody = `
-Nowa rezerwacja od: ${bookingData.name}
-Telefon: ${bookingData.phone}
-Email: ${bookingData.email || 'Nie podano'}
-
-Trasa: ${bookingData.from} → ${bookingData.to}
-Data i godzina: ${new Date(bookingData.date).toLocaleString('pl-PL')}
-Liczba osób: ${bookingData.people}
-
-Uwagi: ${bookingData.notes || 'Brak uwag'}
-
-Data rezerwacji: ${new Date(bookingData.created_at).toLocaleString('pl-PL')}
-ID rezerwacji: ${bookingData.id}
-  `;
-
-  // Wysyłanie emaila przez EmailJS
-  emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
-    to_email: OWNER_DATA.email,
-    from_name: "Formularz rezerwacji",
-    subject: `Nowa rezerwacja od ${bookingData.name}`,
-    message: emailBody,
-    customer_name: bookingData.name,
-    customer_phone: bookingData.phone,
-    customer_email: bookingData.email || 'Nie podano',
-    route: `${bookingData.from} → ${bookingData.to}`,
-    date: new Date(bookingData.date).toLocaleString('pl-PL'),
-    people: bookingData.people,
-    notes: bookingData.notes || 'Brak uwag'
-  }).then(() => {
-    console.log('Email wysłany pomyślnie do właściciela');
-  }, (error) => {
-    console.error('Błąd wysyłania emaila:', error);
-    // Fallback - otwarcie klienta poczty
-    const mailtoLink = `mailto:${OWNER_DATA.email}?subject=Nowa rezerwacja od ${encodeURIComponent(bookingData.name)}&body=${encodeURIComponent(emailBody)}`;
-    window.open(mailtoLink, '_blank');
-  });
 }
 
 // --- Reszta funkcjonalności ---
