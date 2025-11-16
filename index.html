@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Maniek — Pewny Przewóz</title>
+<title>Maniek — Pewny Przewóz | Mariusz Krawczyk</title>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -331,6 +331,60 @@
 
   .hidden { display: none !important; }
   
+  .contact-info {
+    background: linear-gradient(135deg, rgba(79,163,255,0.1), rgba(218,165,32,0.1));
+    border: 1px solid rgba(79,163,255,0.2);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+  }
+  
+  .contact-info h3 {
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--white);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    transition: all 0.3s ease;
+    font-size: 14px;
+  }
+  
+  .contact-link:hover {
+    background: var(--accent);
+    color: #072033;
+    transform: translateY(-2px);
+  }
+  
+  .owner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--accent-2), #b8860b);
+    color: #072033;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 12px;
+    margin-left: 8px;
+  }
+
   #rules {
     background: var(--card) !important;
     border-top: 1px solid rgba(255,255,255,0.05);
@@ -447,6 +501,11 @@
     
     #partners {
       padding:40px 0;
+    }
+    
+    .contact-links {
+      flex-direction: row;
+      justify-content: center;
     }
   }
 
@@ -613,8 +672,8 @@
     <div class="brand">
       <div class="logo">MP</div>
       <div>
-        <h1>Maniek — Pewny Przewóz</h1>
-        <p>Bezpiecznie. Na czas. Zawsze.</p>
+        <h1>Maniek — Pewny Przewóz <span class="owner-badge">Mariusz Krawczyk</span></h1>
+        <p>Bezpiecznie. Na czas. Zawsze. | Tel: +48 575 686 277</p>
       </div>
     </div>
 
@@ -632,7 +691,19 @@
     <div>
       <div class="card">
         <h2>Zarezerwuj przejazd</h2>
-        <p class="small muted">Wypełnij formularz — Maniek potwierdzi telefonicznie.</p>
+        <p class="small muted">Wypełnij formularz — Mariusz Krawczyk potwierdzi telefonicznie.</p>
+
+        <div class="contact-info">
+          <h3>📞 Bezpośredni kontakt z właścicielem</h3>
+          <div class="contact-links">
+            <a href="tel:+48575686277" class="contact-link">
+              <span>📞</span> +48 575 686 277
+            </a>
+            <a href="mailto:mariusz.krawczyk7.88@gmail.com" class="contact-link">
+              <span>✉️</span> mariusz.krawczyk7.88@gmail.com
+            </a>
+          </div>
+        </div>
 
         <form id="bookingForm" autocomplete="off">
           <div style="margin-top:12px;">
@@ -716,7 +787,19 @@
     <aside>
       <div class="card">
         <h2 id="kierowca">O kierowcy</h2>
-        <p><strong>Maniek</strong> — spokój za kierownicą, doświadczenie i odpowiedzialność. Ponad 10 lat praktyki na trasach lokalnych i międzynarodowych. Zawsze punktualny, dba o komfort pasażera i stan techniczny pojazdu.</p>
+        <p><strong>Mariusz "Maniek" Krawczyk</strong> — właściciel firmy z 12-letnim doświadczeniem. Specjalizacja w trasach międzynarodowych PL↔DE/NL/BE. Certyfikowany kierowca z kursem pierwszej pomocy. Spokój i kultura osobista gwarantowane.</p>
+        
+        <div class="contact-info" style="margin: 15px 0; padding: 12px;">
+          <div style="text-align: center;">
+            <div style="font-weight: bold; color: var(--accent); margin-bottom: 5px;">Właściciel</div>
+            <div>Mariusz Krawczyk</div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 5px;">
+              Tel: +48 575 686 277<br>
+              Email: mariusz.krawczyk7.88@gmail.com
+            </div>
+          </div>
+        </div>
+        
         <div style="margin-top:12px;" class="icons-row">
           <div class="icon-box"><div class="icon-emoji">🛡️</div><div class="small">Bezpieczeństwo</div></div>
           <div class="icon-box"><div class="icon-emoji">📍</div><div class="small">GPS / Śledzenie</div></div>
@@ -731,6 +814,7 @@
           <li>Systemy ABS / ESP</li>
           <li>Kierowca z certyfikatem i doświadczeniem</li>
           <li>Auto dezynfekowane i czyste</li>
+          <li>Pełne ubezpieczenie OC/AC + NNW</li>
         </ul>
       </div>
 
@@ -744,7 +828,7 @@
 
         <div id="panelArea" style="display:none; margin-top:12px;">
           <div id="welcomeMessage" class="welcome-message hidden">
-            Cześć Maniek! Witaj w panelu kierowcy.
+            Cześć Mariusz! Witaj w panelu kierowcy.
           </div>
           <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">
             <input id="panelPass" type="password" placeholder="Wprowadź hasło" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06); min-width:150px;">
@@ -767,7 +851,7 @@
 
 <div class="chatbot-window" aria-hidden="true">
   <div class="chatbot-header">
-    <div>Asystent Maniek</div>
+    <div>Asystent Mariusz</div>
     <div style="display:flex;gap:8px;align-items:center">
       <button id="langBtn" class="btn" title="Zmień język" style="background:transparent;border:1px solid rgba(255,255,255,0.05);color:var(--muted);padding:6px;border-radius:8px">PL</button>
       <button id="chatClose" style="background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer">✕</button>
@@ -798,7 +882,7 @@
 
 <footer>
   <div class="container">
-    <div class="small">© <span id="curYear"></span> Maniek — Pewny Przewóz</div>
+    <div class="small">© <span id="curYear"></span> Maniek — Pewny Przewóz | Mariusz Krawczyk | Tel: +48 575 686 277 | Email: mariusz.krawczyk7.88@gmail.com</div>
   </div>
 </footer>
 
@@ -807,6 +891,7 @@
 <script>
 // =========================
 // SCALONY KOD - SUPER CZATBOT + MAPA + FORMULARZ
+// Z DANAMI WŁAŚCICIELA: Mariusz Krawczyk
 // =========================
 
 // --- Inicjalizacja EmailJS ---
@@ -816,6 +901,14 @@ emailjs.init("Twój_User_ID");
 // --- podstawowe ustawienia ---
 document.getElementById('curYear').textContent = new Date().getFullYear();
 const SECRET_PASS = 'ManiekManiek';
+
+// --- DANE WŁAŚCICIELA ---
+const OWNER_DATA = {
+  name: 'Mariusz Krawczyk',
+  phone: '+48 575 686 277',
+  email: 'mariusz.krawczyk7.88@gmail.com',
+  formalName: 'Mariusz "Maniek" Krawczyk'
+};
 
 // --- lokalne przechowywanie rezerwacji ---
 const STORAGE_KEY = 'maniek_reservations_v1';
@@ -833,10 +926,10 @@ function saveReservations(arr){
 
 // --- Opinie rotator ---
 const opinie = [
-  "⭐ „Kierowca jak złoto! Spokój i pełna kultura.”",
-  "⭐ „Jechałem do Niemiec — zero stresu, pełen komfort.”",
-  "⭐ „Bezpiecznie, czysto i zawsze na czas. Polecam!”",
-  "⭐ „Maniek to kierowca, który naprawdę dba o ludzi.”"
+  "⭐ „Mariusz to kierowca jak złoto! Spokój i pełna kultura.”",
+  "⭐ „Jechałem do Niemiec — zero stresu, pełen komfort. Polecam!”",
+  "⭐ „Bezpiecznie, czysto i zawsze na czas. Mariusz to profesjonalista!”",
+  "⭐ „Maniek to kierowca, który naprawdę dba o ludzi i ich bezpieczeństwo.”"
 ];
 let opinIndex = 0;
 function showOpinion(){ 
@@ -1005,32 +1098,36 @@ function botAddMessage(text, from='bot'){
 /* language-based canned responses */
 const canned = {
   pl: {
-    greeting: 'Cześć! Jestem Asystent Maniek. 😊',
-    help: 'Pomogę Ci z wyceną, rezerwacją trasy, zasadami bezpieczeństwa, pytaniami o bagaż, faktury i hity sezonu.',
-    unknown: 'Przepraszam, nie zrozumiałem. Możesz zapytać np. "Ile kosztuje przejazd z Poznania do Berlina?" lub "Zarezerwuj".',
-    booking_confirm: 'Zarezerwowałem wstępnie—rezerwację potwierdzi kierowca telefonicznie. Chcesz abym zebrał dane teraz?',
+    greeting: `Cześć! Jestem Asystent ${OWNER_DATA.formalName}. 😊`,
+    help: `Pomogę Ci z wyceną, rezerwacją trasy, zasadami bezpieczeństwa. Bezpośredni kontakt: ${OWNER_DATA.phone}`,
+    unknown: `Przepraszam, nie zrozumiałem. Możesz zapytać o wycenę lub zadzwonić bezpośrednio do ${OWNER_DATA.name} - ${OWNER_DATA.phone}`,
+    booking_confirm: `Zarezerwowałem wstępnie—${OWNER_DATA.name} potwierdzi telefonicznie. Chcesz abym zebrał dane teraz?`,
     available_none: 'Brak dostępnych terminów na wskazany dzień.',
+    contact: `Kontakt bezpośredni:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
   },
   en: {
-    greeting: 'Hi! I am Maniek Assistant. 😊',
-    help: 'I can help with price estimates, booking routes, safety rules, luggage, invoices and seasonal deals.',
-    unknown: "Sorry, I didn't get that. Try 'price Poznan to Berlin' or 'book'.",
+    greeting: `Hi! I am ${OWNER_DATA.name} Assistant. 😊`,
+    help: `I can help with price estimates, booking routes, safety rules. Direct contact: ${OWNER_DATA.phone}`,
+    unknown: `Sorry, I didn't get that. Try 'price Poznan to Berlin' or call ${OWNER_DATA.name} directly at ${OWNER_DATA.phone}`,
     booking_confirm: 'Provisional booking created — driver will confirm by phone. Collect details now?',
     available_none: 'No availability for the selected date.',
+    contact: `Direct contact:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
   },
   de: {
-    greeting: 'Hallo! Ich bin Maniek Assistent. 😊',
-    help: 'Ich helfe bei Preisberechnungen, Buchungen, Sicherheitsregeln, Gepäck, Rechnungen und Angeboten.',
+    greeting: `Hallo! Ich bin ${OWNER_DATA.name} Assistent. 😊`,
+    help: `Ich helfe bei Preisberechnungen, Buchungen, Sicherheitsregeln. Direktkontakt: ${OWNER_DATA.phone}`,
     unknown: 'Entschuldigung, ich habe das nicht verstanden.',
     booking_confirm: 'Vorläufige Buchung erstellt — Fahrer bestätigt telefonisch. Daten jetzt sammeln?',
     available_none: 'Keine Verfügbarkeit an diesem Datum.',
+    contact: `Direktkontakt:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
   },
   nl: {
-    greeting: 'Hoi! Ik ben Maniek Assistent. 😊',
-    help: 'Ik help met prijsinschatting, routeboekingen, veiligheidsregels, bagage, facturen en aanbiedingen.',
+    greeting: `Hoi! Ik ben ${OWNER_DATA.name} Assistent. 😊`,
+    help: `Ik help met prijsinschatting, routeboekingen, veiligheidsregels. Direct contact: ${OWNER_DATA.phone}`,
     unknown: 'Sorry, dat begreep ik niet.',
     booking_confirm: 'Voorlopige boeking gemaakt — chauffeur bevestigt telefonisch. Gegevens nu verzamelen?',
     available_none: 'Geen beschikbaarheid op die datum.',
+    contact: `Direct contact:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
   }
 };
 
@@ -1041,14 +1138,15 @@ function getResponseText(key){
 /* BOT knowledge (big set) */
 const BOT_KB = {
   driver: {
-    name: 'Mariusz Krawczyk',
-    desc: 'Kierowca z 12-letnim doświadczeniem. Specjalizowane trasy PL↔DE/NL/BE. Kurs pierwszej pomocy, certyfikat przewozu osób.'
+    name: OWNER_DATA.formalName,
+    desc: 'Właściciel firmy z 12-letnim doświadczeniem. Specjalizowane trasy PL↔DE/NL/BE. Kurs pierwszej pomocy, certyfikat przewozu osób.'
   },
   safety: [
     'Pasy bezpieczeństwa obowiązkowe dla wszystkich pasażerów.',
     'Regularne przeglądy techniczne co 30 dni.',
     'Pełne ubezpieczenie OC/AC + NNW.',
-    'Zakaz spożywania alkoholu i środków odurzających w pojeździe.'
+    'Zakaz spożywania alkoholu i środków odurzających w pojeździe.',
+    'Dezynfekcja pojazdu przed każdym kursem.'
   ],
   faq: {
     'faktura': 'Wystawiamy faktury VAT na życzenie — podaj dane do faktury przy rezerwacji.',
@@ -1056,12 +1154,14 @@ const BOT_KB = {
     'zwierzęta': 'Małe zwierzęta przewozimy w transporterach za dopłatą 40–60 PLN.',
     'rower': 'Przewóz roweru możliwy po wcześniejszym zgłoszeniu (+50 PLN).',
     'dziecko': 'Foteliki dziecięce dostępne za dopłatą 30 PLN — powiedz przy rezerwacji.',
-    'zaliczka': 'Zaliczka 50% opcjonalnie; zasady płatności ustalane przy rezerwacji.'
+    'zaliczka': 'Zaliczka 50% opcjonalnie; zasady płatności ustalane przy rezerwacji.',
+    'kontakt': `Bezpośredni kontakt z właścicielem:<br>📞 ${OWNER_DATA.phone}<br>✉️ ${OWNER_DATA.email}`
   },
   hits: [
     'Hit: Express Berlin — szybkie połączenia w promocji!',
     'Voucher -30% dla klientów którzy zamówią 3x w miesiącu.',
-    'Nocne przejazdy -20% (po 22:00).'
+    'Nocne przejazdy -20% (po 22:00).',
+    'Stali klienci - dodatkowe rabaty!'
   ]
 };
 
@@ -1117,9 +1217,10 @@ async function handleUserMessage(raw){
     startBookingFlow();
     return;
   }
-  if(/kierowc|mariusz|kierowca/.test(text)){ cbTyping.style.display='none'; botAddMessage(`<b>${BOT_KB.driver.name}</b><br>${BOT_KB.driver.desc || BOT_KB.driver}`); return; }
+  if(/kierowc|mariusz|maniek|krawczyk/.test(text)){ cbTyping.style.display='none'; botAddMessage(`<b>${BOT_KB.driver.name}</b><br>${BOT_KB.driver.desc}<br><br>${getResponseText('contact')}`); return; }
   if(/pasy|bezpiecze|zasad/.test(text)){ cbTyping.style.display='none'; botAddMessage(BOT_KB.safety.map(s=>'• '+s).join('<br>')); return; }
-  if(/hit|trend|polec/.test(text)){ cbTyping.style.display='none'; botAddMessage(BOT_KB.hits[Math.floor(Math.random()*BOT_KB.hits.length)]); return; }
+  if(/hit|trend|polec|promoc/.test(text)){ cbTyping.style.display='none'; botAddMessage(BOT_KB.hits[Math.floor(Math.random()*BOT_KB.hits.length)]); return; }
+  if(/kontakt|telefon|mail|email/.test(text)){ cbTyping.style.display='none'; botAddMessage(getResponseText('contact')); return; }
 
   // faq match
   for(const k of Object.keys(BOT_KB.faq)){
@@ -1248,7 +1349,7 @@ async function finalizeBooking(){
     }
   }catch(e){ console.warn(e); }
 
-  botAddMessage(`Dziękuję — rezerwacja zapisana. ${priceText} Kierowca skontaktuje się telefonicznie w celu potwierdzenia.`);
+  botAddMessage(`Dziękuję — rezerwacja zapisana. ${priceText} ${OWNER_DATA.name} skontaktuje się telefonicznie w celu potwierdzenia.`);
   bookingContext = null;
 }
 
@@ -1268,7 +1369,7 @@ function initBotUI(){
   botAddMessage(`<b>${BOT_KB.driver.name}</b> — ${BOT_KB.driver.desc}`);
   botAddMessage(getResponseText('greeting') + ' ' + getResponseText('help'));
   // show top FAQ as hints
-  botAddMessage('Możesz zapytać o: <i>cena</i>, <i>rezerwacja</i>, <i>bezpieczeństwo</i>, <i>bagaż</i>, <i>kierowca</i>, <i>hit sezonu</i>.');
+  botAddMessage('Możesz zapytać o: <i>cena</i>, <i>rezerwacja</i>, <i>bezpieczeństwo</i>, <i>bagaż</i>, <i>kontakt</i>, <i>hit sezonu</i>.');
 }
 initBotUI();
 
@@ -1383,7 +1484,10 @@ form.addEventListener('submit', function(e){
     date: new Date(r.date).toLocaleString('pl-PL'),
     people: r.people,
     notes: r.notes || 'Brak uwag',
-    created_at: new Date().toLocaleString('pl-PL')
+    created_at: new Date().toLocaleString('pl-PL'),
+    owner_name: OWNER_DATA.name,
+    owner_phone: OWNER_DATA.phone,
+    owner_email: OWNER_DATA.email
   }).then(() => {
     formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
     formStatus.style.color = '#4CAF50';
@@ -1433,6 +1537,7 @@ panelLoginBtn.addEventListener('click', ()=> {
     renderReservationsTable();
     document.getElementById('panelPass').placeholder = 'Zalogowano';
     panelLoginBtn.textContent = 'Odśwież';
+    welcomeMessage.textContent = `Cześć ${OWNER_DATA.name}! Witaj w panelu kierowcy.`;
     welcomeMessage.classList.remove('hidden');
   } else {
     alert('Błędne hasło.');
@@ -1511,7 +1616,8 @@ window.maniek = {
       price_pln: estimatePriceFromMeters(res.route.distance, { night:isNightTime(), highway:true })
     };
   },
-  listReservations: () => loadReservations()
+  listReservations: () => loadReservations(),
+  owner: OWNER_DATA
 };
 </script>
 
