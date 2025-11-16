@@ -760,7 +760,7 @@
             <div class="muted" id="formStatus"></div>
           </div>
 
-          <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — zostanie ona zapisana lokalnie (kierowca może ją zobaczyć po zalogowaniu na Panel kierowcy).</p>
+          <p class="muted" style="margin-top:10px;">Po wysłaniu rezerwacji — zostanie ona zapisana lokalnie i wysłana bezpośrednio na email właściciela.</p>
         </form>
       </div>
 
@@ -1337,6 +1337,9 @@ async function finalizeBooking(){
   arr.unshift(r);
   saveReservations(arr);
 
+  // WYSYŁANIE EMAILA DO WŁAŚCICIELA
+  sendEmailToOwner(r);
+
   // show summary + price estimate if route resolvable
   let priceText = 'Cena orientacyjna: nieznana (brak trasy)';
   // try to geocode route and price
@@ -1349,7 +1352,7 @@ async function finalizeBooking(){
     }
   }catch(e){ console.warn(e); }
 
-  botAddMessage(`Dziękuję — rezerwacja zapisana. ${priceText} ${OWNER_DATA.name} skontaktuje się telefonicznie w celu potwierdzenia.`);
+  botAddMessage(`Dziękuję — rezerwacja zapisana i wysłana do właściciela. ${priceText} ${OWNER_DATA.name} skontaktuje się telefonicznie w celu potwierdzenia.`);
   bookingContext = null;
 }
 
@@ -1442,6 +1445,46 @@ function validateForm() {
   return isValid;
 }
 
+// --- Funkcja wysyłająca email do właściciela ---
+function sendEmailToOwner(bookingData) {
+  const emailBody = `
+Nowa rezerwacja od: ${bookingData.name}
+Telefon: ${bookingData.phone}
+Email: ${bookingData.email || 'Nie podano'}
+
+Trasa: ${bookingData.from} → ${bookingData.to}
+Data i godzina: ${new Date(bookingData.date).toLocaleString('pl-PL')}
+Liczba osób: ${bookingData.people}
+
+Uwagi: ${bookingData.notes || 'Brak uwag'}
+
+Data rezerwacji: ${new Date(bookingData.created_at).toLocaleString('pl-PL')}
+ID rezerwacji: ${bookingData.id}
+  `;
+
+  // Wysyłanie emaila przez EmailJS
+  emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
+    to_email: OWNER_DATA.email,
+    from_name: "Formularz rezerwacji",
+    subject: `Nowa rezerwacja od ${bookingData.name}`,
+    message: emailBody,
+    customer_name: bookingData.name,
+    customer_phone: bookingData.phone,
+    customer_email: bookingData.email || 'Nie podano',
+    route: `${bookingData.from} → ${bookingData.to}`,
+    date: new Date(bookingData.date).toLocaleString('pl-PL'),
+    people: bookingData.people,
+    notes: bookingData.notes || 'Brak uwag'
+  }).then(() => {
+    console.log('Email wysłany pomyślnie do właściciela');
+  }, (error) => {
+    console.error('Błąd wysyłania emaila:', error);
+    // Fallback - otwarcie klienta poczty
+    const mailtoLink = `mailto:${OWNER_DATA.email}?subject=Nowa rezerwacja od ${encodeURIComponent(bookingData.name)}&body=${encodeURIComponent(emailBody)}`;
+    window.open(mailtoLink, '_blank');
+  });
+}
+
 // --- Reszta funkcjonalności ---
 const form = document.getElementById('bookingForm');
 const formStatus = document.getElementById('formStatus');
@@ -1474,31 +1517,13 @@ form.addEventListener('submit', function(e){
   arr.unshift(r);
   saveReservations(arr);
 
-  // Uwaga: Zastąp poniższe wartości swoimi danymi z EmailJS
-  emailjs.send("Twój_Service_ID", "Twój_Template_ID", {
-    name: r.name,
-    phone: r.phone,
-    email: r.email || 'Nie podano',
-    from: r.from,
-    to: r.to,
-    date: new Date(r.date).toLocaleString('pl-PL'),
-    people: r.people,
-    notes: r.notes || 'Brak uwag',
-    created_at: new Date().toLocaleString('pl-PL'),
-    owner_name: OWNER_DATA.name,
-    owner_phone: OWNER_DATA.phone,
-    owner_email: OWNER_DATA.email
-  }).then(() => {
-    formStatus.textContent = 'Rezerwacja zapisana i e-mail wysłany!';
-    formStatus.style.color = '#4CAF50';
-    form.reset();
-    setTimeout(()=>formStatus.textContent='','4200');
-  }, (error) => {
-    formStatus.textContent = 'Rezerwacja zapisana, ale błąd e-maila.';
-    formStatus.style.color = '#ff9800';
-    form.reset();
-    setTimeout(()=>formStatus.textContent='','4200');
-  });
+  // WYSYŁANIE EMAILA DO WŁAŚCICIELA
+  sendEmailToOwner(r);
+
+  formStatus.textContent = 'Rezerwacja zapisana i wysłana do właściciela!';
+  formStatus.style.color = '#4CAF50';
+  form.reset();
+  setTimeout(()=>formStatus.textContent='','4200');
 
   renderReservationsTable(); 
 });
